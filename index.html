@@ -123,46 +123,92 @@
         <a href="#contacto" onclick="document.getElementById('menu-movil').classList.add('hidden')" class="block py-1.5 hover:text-[#C87D87]">Contacto</a>
     </div>
 
-    <!-- BANNER PRINCIPAL (PORTADA BOUTIQUE) -->
-    <section class="relative bg-gradient-to-r from-[#F9ECEE] via-[#F4DFE3] to-[#EDD0D6] overflow-hidden">
-        <div class="max-w-6xl mx-auto px-4 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+    <!-- PORTADA PRINCIPAL EN CARRUSEL AUTOMÁTICO -->
+    <section class="relative overflow-hidden bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8] to-[#F3D1D8] border-b border-rose-100">
+        
+        <!-- Contenedor de diapositivas -->
+        <div id="carrusel-portada" class="max-w-6xl mx-auto px-6 py-14 md:py-20 transition-all duration-500">
             
-            <!-- Textos y Llamado a la Acción -->
-            <div class="space-y-5 text-center md:text-left z-10">
-                <p class="text-xs uppercase tracking-[0.3em] text-[#C87D87] font-bold">
-                    Belleza • Cuidado • Esencia
-                </p>
+             <!-- DIAPOSITIVA 1 (Banner Completo Estilo Atenea) -->
+            <div class="slide-portada relative w-full min-h-[460px] md:min-h-[540px] flex items-center bg-cover bg-center" style="background-image: url('hada.jpeg');">
+                <!-- Capa suave para que el texto siempre se lea nítido -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#FDF2F4]/95 via-[#F9E4E8]/80 to-transparent"></div>
                 
-                <h1 class="font-editorial text-4xl sm:text-5xl md:text-6xl text-stone-800 leading-tight">
-                    Tu Belleza es <br>
-                    <span class="font-cursiva text-5xl sm:text-6xl md:text-7xl text-[#C87D87] font-normal">Nuestra Prioridad ♡</span>
-                </h1>
-                
-                <p class="text-sm sm:text-base text-stone-600 max-w-md mx-auto md:mx-0 leading-relaxed">
-                    Descubre productos exclusivos, maquillaje y Skincare diseñados para resaltar tu esencia todos los días.
-                </p>
-                
-                <div class="pt-2">
-                    <a href="#catalogo" class="inline-flex items-center gap-2 bg-[#C87D87] hover:bg-[#b56a74] text-white font-semibold px-7 py-3.5 rounded-full shadow-md transition">
-                        <span>Explorar Catálogo</span>
-                        <span>→</span>
-                    </a>
+                <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-12 w-full">
+                    <div class="max-w-lg text-left">
+                        <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Belleza • Cuidado • Esencia</span>
+                        <h1 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
+                            Tu Belleza es <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Nuestra Prioridad ♡</span>
+                        </h1>
+                        <p class="text-sm text-stone-700 mt-4 leading-relaxed">
+                            Descubre productos exclusivos, maquillaje y skincare diseñados para resaltar tu esencia todos los días.
+                        </p>
+                        <a href="#catalogo" class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                            Explorar Catálogo →
+                        </a>
+                    </div>
                 </div>
             </div>
 
-            <!-- Fotografía Estética Derecha -->
-            <div class="relative flex justify-center">
-                <div class="w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[420px] rounded-t-full overflow-hidden shadow-xl border-4 border-white">
-                    <img src="hada.jpeg" alt="Belleza Macalía" class="w-full h-full object-cover">
+
+            <!-- DIAPOSITIVA 2 (Nueva Colección / Tonos) -->
+            <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
+                <div class="max-w-lg text-center md:text-left">
+                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Nueva Colección 2026</span>
+                    <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
+                        Brillo y Color <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Para Tus Labios ✨</span>
+                    </h2>
+                    <p class="text-sm text-stone-600 mt-4 leading-relaxed">
+                        Prueba nuestros nuevos delineadores y gloss hidratantes con tonos pensados para cada tipo de piel.
+                    </p>
+                    <a href="#catalogo" class="inline-block mt-7 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                        Ver Tonos Nuevos →
+                    </a>
                 </div>
-                <!-- Detalle flotante cursivo -->
-                <div class="hidden sm:block absolute bottom-6 -left-4 bg-white/90 backdrop-blur px-5 py-3 rounded-2xl shadow-lg border border-rose-100">
-                    <p class="font-cursiva text-2xl text-[#C87D87]">Luce bien, siéntete bien ♡</p>
+                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
+                    <span class="text-7xl mb-3">💄</span>
+                    <span class="font-editorial text-xl text-stone-800 font-bold">Rose Glow Edition</span>
+                    <span class="text-xs text-[#C87D87] mt-1">Hidratación 12 Horas</span>
+                </div>
+            </div>
+
+            <!-- DIAPOSITIVA 3 (Envíos y Promociones) -->
+            <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
+                <div class="max-w-lg text-center md:text-left">
+                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Beneficio Exclusivo</span>
+                    <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
+                        Envíos Gratis <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">A Toda Colombia 🚚</span>
+                    </h2>
+                    <p class="text-sm text-stone-600 mt-4 leading-relaxed">
+                        Por compras superiores a $150.000 recibe tu pedido en la puerta de tu casa con empaque de regalo.
+                    </p>
+                    <a href="#catalogo" class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                        Comprar Ahora →
+                    </a>
+                </div>
+                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
+                    <span class="text-7xl mb-3">🎁</span>
+                    <span class="font-editorial text-xl text-stone-800 font-bold">Empaque Boutique</span>
+                    <span class="text-xs text-[#C87D87] mt-1">Medellín • Bello • Nacional</span>
                 </div>
             </div>
 
         </div>
+
+        <!-- Flechas Izquierda y Derecha -->
+        <button onclick="cambiarSlidePortada(-1)" title="Anterior" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">‹</button>
+        <button onclick="cambiarSlidePortada(1)" title="Siguiente" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">›</button>
+
+        <!-- Puntos indicadores abajo -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+            <button onclick="irASlidePortada(0)" class="dot-portada w-2.5 h-2.5 rounded-full bg-[#C87D87] transition"></button>
+            <button onclick="irASlidePortada(1)" class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
+            <button onclick="irASlidePortada(2)" class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
+        </div>
+
     </section>
+
+
     <!-- SECCIÓN DE CATEGORÍAS -->
     <section id="categorias" class="max-w-6xl mx-auto px-4 py-14">
         <div class="text-center mb-10">
@@ -350,6 +396,18 @@
                         <span id="detalle-badge-mayorista" class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full">👑 Tarifa Mayorista</span>
                     </div>
 
+
+                    <!-- SELECTOR CIRCULAR DE TONOS (Estilo Atenea) -->
+                    <div id="contenedor-tonos-detalle" class="mt-4 pt-3 border-t border-rose-50">
+                        <p class="text-[11px] uppercase tracking-wider text-stone-500">
+                            Tono: <span id="detalle-nombre-tono" class="font-bold text-stone-800">Único</span>
+                        </p>
+                        <div id="detalle-bolitas-tonos" class="flex flex-wrap items-center gap-2.5 mt-2">
+                            <!-- Aquí JavaScript dibujará las bolitas de color -->
+                        </div>
+                    </div>
+
+
                     <!-- Descripción detallada -->
                     <p id="detalle-descripcion" class="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed border-t border-rose-50 pt-4">
                         Descripción del producto...
@@ -494,16 +552,24 @@
 
 
     <script>
-        // Catálogo inicial de muestra (luego lo conectaremos directo a tu inventario CLAVEX)
+        let TONO_SELECCIONADO = "";
+
+        // Ejemplo de estructura con tonos y foto de aplicación por cada tono
         const productosMacalia = [
             { 
                 id: 1, 
-                nombre: "Gloss Hidratante Rose Glow", 
+                nombre: "Delineador & Gloss Rose Glow", 
                 categoria: "Maquillaje", 
                 precio: 28000, 
                 emoji: "💄",
-                descripcion: "Brillo labial enriquecido con vitamina E y aceite de jojoba. Deja un acabado espejo luminoso sin sensación pegajosa y con un suave aroma a vainilla.",
-                fotos: ["💄", "💋", "✨"]
+                descripcion: "Fórmula cremosa de larga duración con acabado hidratante. Selecciona cada tono para ver cómo luce aplicado.",
+                fotos: ["💄", "💋", "✨"],
+                tonos: [
+                    { nombre: "ROSE PETAL", color: "#D4848C", foto: "💄" },
+                    { nombre: "TRUFFLE BROWN", color: "#6E3B33", foto: "💋" },
+                    { nombre: "BERRY WINE", color: "#8B2232", foto: "🍷" },
+                    { nombre: "NUDE SILK", color: "#C68B77", foto: "✨" }
+                ]
             },
             { 
                 id: 2, 
@@ -511,8 +577,13 @@
                 categoria: "Maquillaje", 
                 precio: 35000, 
                 emoji: "🌸",
-                descripcion: "Fórmula ligera de alta pigmentación y fácil difuminado. Aporta un rubor natural aterciopelado que dura hasta 12 horas en pieles secas o mixtas.",
-                fotos: ["🌸", "🌷", "✨"]
+                descripcion: "Aporta un rubor natural aterciopelado que dura hasta 12 horas en pieles secas o mixtas.",
+                fotos: ["🌸", "🌷", "✨"],
+                tonos: [
+                    { nombre: "PINK BLOSSOM", color: "#F29CA3", foto: "🌸" },
+                    { nombre: "CORAL SUNSET", color: "#E07A5F", foto: "🍑" },
+                    { nombre: "MAUVE DREAM", color: "#A45A68", foto: "🌷" }
+                ]
             },
             { 
                 id: 3, 
@@ -520,19 +591,22 @@
                 categoria: "Skincare", 
                 precio: 54000, 
                 emoji: "🧴",
-                descripcion: "Hidratación profunda multicapa que rellena líneas finas y prepara tu rostro antes del maquillaje para un acabado jugoso y saludable.",
-                fotos: ["🧴", "💧", "🌿"]
+                descripcion: "Hidratación profunda multicapa que prepara tu rostro antes del maquillaje.",
+                fotos: ["🧴", "💧"],
+                tonos: []
             },
             { 
                 id: 4, 
                 nombre: "Bruma Corporal Vainilla & Rosa", 
-                categoria: "Bases", 
+                categoria: "Fragancias", 
                 precio: 45000, 
                 emoji: "✨",
-                descripcion: "Fragancia dulce y sofisticada con notas de pétalos de rosa damascena, vainilla cálida y un toque sutil de almizcle blanco.",
-                fotos: ["✨", "🌹", "🧴"]
+                descripcion: "Fragancia dulce y sofisticada con notas de pétalos de rosa y vainilla.",
+                fotos: ["✨", "🌹"],
+                tonos: []
             }
         ];
+
 
 
         let bolsa = [];
@@ -669,54 +743,92 @@
             buscarProducto();
         }
 
-        function agregarABolsa(id) {
-            const prod = productosMacalia.find(p => p.id === id);
-            const precioFinal = ES_MAYORISTA ? Math.round(prod.precio * 0.8) : prod.precio;
-
-            const existe = bolsa.find(item => item.id === id);
-            if (existe) {
-                existe.cantidad += 1;
-            } else {
-                bolsa.push({ ...prod, precio: precioFinal, cantidad: 1 });
+        function mostrarAvisoBolsa(texto) {
+            let toast = document.getElementById("toast-macalia");
+            if (!toast) {
+                toast = document.createElement("div");
+                toast.id = "toast-macalia";
+                toast.className = "fixed top-20 right-6 z-50 bg-stone-900 text-white text-xs font-semibold px-5 py-3 rounded-full shadow-xl border border-rose-200/30 transition-opacity duration-300";
+                document.body.appendChild(toast);
             }
-            actualizarBolsa();
-            abrirCarrito();
+            toast.innerText = texto;
+            toast.style.opacity = "1";
+            clearTimeout(toast.timer);
+            toast.timer = setTimeout(() => { toast.style.opacity = "0"; }, 2500);
         }
 
-        function actualizarBolsa() {
-            const contenedor = document.getElementById("lista-bolsa");
-            const contador = document.getElementById("contador-bolsa");
-            const totalTexto = document.getElementById("total-bolsa");
-            
-            let totalUnidades = 0;
-            let totalDinero = 0;
-            contenedor.innerHTML = "";
+        function agregarABolsa(id, tonoElegido = "") {
+            const prod = productosMacalia.find(p => p.id === id);
+            if (!prod) return;
 
-            if (bolsa.length === 0) {
-                contenedor.innerHTML = `<p class="text-center text-stone-400 text-sm py-10">Tu bolsa está vacía ✨</p>`;
+            const precioFinal = ES_MAYORISTA ? Math.round(prod.precio * 0.8) : prod.precio;
+            // Si viene tono elegido lo usa; si agregaron rápido desde fuera, toma el primer tono [0]
+            const tonoFinal = tonoElegido !== "" ? tonoElegido : (prod.tonos && prod.tonos.length > 0 ? prod.tonos[0].nombre : "");
+            const claveUnica = `${prod.id}-${tonoFinal}`;
+
+            const existente = bolsa.find(item => item.claveUnica === claveUnica);
+            if (existente) {
+                existente.cantidad += 1;
             } else {
-                bolsa.forEach((item, index) => {
-                    totalUnidades += item.cantidad;
-                    totalDinero += item.precio * item.cantidad;
-                    contenedor.innerHTML += `
-                        <div class="flex justify-between items-center bg-[#FDFBF9] p-3 rounded-xl border border-rose-100">
-                            <div>
-                                <p class="text-sm font-semibold text-stone-800">${item.nombre}</p>
-                                <p class="text-xs text-stone-500">${item.cantidad} x $${item.precio.toLocaleString()}</p>
-                            </div>
-                            <button onclick="quitarDeBolsa(${index})" class="text-rose-400 hover:text-rose-600 text-xs font-bold px-2">Quitar</button>
-                        </div>`;
+                bolsa.push({ 
+                    ...prod, 
+                    claveUnica,
+                    tono: tonoFinal,
+                    precio: precioFinal, 
+                    cantidad: 1 
                 });
             }
 
-            contador.innerText = totalUnidades;
-            totalTexto.innerText = `$${totalDinero.toLocaleString()}`;
+            actualizarBolsa();
+            mostrarAvisoBolsa(`✓ Agregado: ${prod.nombre}${tonoFinal ? ' (' + tonoFinal + ')' : ''}`);
         }
 
-        function quitarDeBolsa(index) {
-            bolsa.splice(index, 1);
+        function agregarDesdeDetalle() {
+            if (!PRODUCTO_DETALLE_ACTUAL) return;
+            for (let i = 0; i < CANTIDAD_DETALLE; i++) {
+                agregarABolsa(PRODUCTO_DETALLE_ACTUAL.id, TONO_SELECCIONADO);
+            }
+            // No cerramos la ventana para que pueda elegir otro tono si quiere
+        }
+
+
+
+        function actualizarBolsa() {
+            const lista = document.getElementById("lista-bolsa");
+            const totalEl = document.getElementById("total-bolsa");
+            const contadorEl = document.getElementById("contador-bolsa");
+            
+            lista.innerHTML = "";
+            let total = 0;
+            let totalItems = 0;
+
+            bolsa.forEach(item => {
+                total += item.precio * item.cantidad;
+                totalItems += item.cantidad;
+                lista.innerHTML += `
+                    <div class="flex justify-between items-center bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100">
+                        <div>
+                            <p class="font-editorial font-semibold text-sm text-stone-800">${item.nombre}</p>
+                            ${item.tono ? `<span class="inline-block text-[10px] uppercase tracking-wider bg-rose-100 text-[#C87D87] font-bold px-2 py-0.5 rounded-full mt-0.5">Tono: ${item.tono}</span>` : ''}
+                            <p class="text-xs text-stone-500 mt-1">${item.cantidad} x $${item.precio.toLocaleString()}</p>
+                        </div>
+                        <button onclick="quitarDeBolsa('${item.claveUnica}')" class="text-xs text-[#C87D87] hover:underline font-semibold">Quitar</button>
+                    </div>`;
+            });
+
+            if (bolsa.length === 0) {
+                lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Tu bolsa está vacía ✨</p>`;
+            }
+
+            totalEl.innerText = `$${total.toLocaleString()}`;
+            contadorEl.innerText = totalItems;
+        }
+
+        function quitarDeBolsa(claveUnica) {
+            bolsa = bolsa.filter(item => item.claveUnica !== claveUnica);
             actualizarBolsa();
         }
+
 
         function abrirCarrito() {
             const modal = document.getElementById("modal-bolsa");
@@ -993,6 +1105,8 @@
                         ${esUrl ? `<img src="${foto}" class="w-full h-full object-cover">` : `<span class="text-2xl">${foto}</span>`}
                     </button>`;
             });
+            cargarTonosDetalle(prod);
+
 
             const modal = document.getElementById("modal-detalle-producto");
             modal.classList.remove("hidden");
@@ -1012,13 +1126,6 @@
             document.getElementById("detalle-cantidad").innerText = CANTIDAD_DETALLE;
         }
 
-        function agregarDesdeDetalle() {
-            if (!PRODUCTO_DETALLE_ACTUAL) return;
-            for (let i = 0; i < CANTIDAD_DETALLE; i++) {
-                agregarABolsa(PRODUCTO_DETALLE_ACTUAL.id);
-            }
-            cerrarDetalleProducto();
-        }
 
         function cerrarDetalleProducto() {
             const modal = document.getElementById("modal-detalle-producto");
@@ -1030,6 +1137,86 @@
             const filtrados = productosMacalia.filter(p => p.nombre.toLowerCase().includes(texto.toLowerCase()));
             mostrarProductos(filtrados);
         }
+
+
+        function cargarTonosDetalle(prod) {
+            const contenedor = document.getElementById("contenedor-tonos-detalle");
+            const listaBolitas = document.getElementById("detalle-bolitas-tonos");
+            const labelNombre = document.getElementById("detalle-nombre-tono");
+
+            if (!prod.tonos || prod.tonos.length === 0) {
+                contenedor.classList.add("hidden");
+                TONO_SELECCIONADO = "";
+                return;
+            }
+
+            contenedor.classList.remove("hidden");
+            listaBolitas.innerHTML = "";
+
+            prod.tonos.forEach((t, index) => {
+                const activo = index === 0;
+                if (activo) {
+                    TONO_SELECCIONADO = t.nombre;
+                    labelNombre.innerText = t.nombre;
+                    if (t.foto) seleccionarFotoDetalle(t.foto);
+                }
+
+                listaBolitas.innerHTML += `
+                    <button type="button" 
+                        onclick="elegirTonoDetalle('${t.nombre}', '${t.foto || ''}', this)" 
+                        style="background-color: ${t.color};"
+                        title="${t.nombre}"
+                        class="bolita-tono w-7 h-7 rounded-full border-2 transition transform hover:scale-110 ${activo ? 'ring-2 ring-offset-2 ring-stone-800 border-white' : 'border-white shadow-sm'}">
+                    </button>`;
+            });
+        }
+
+        function elegirTonoDetalle(nombreTono, fotoTono, boton) {
+            TONO_SELECCIONADO = nombreTono;
+            document.getElementById("detalle-nombre-tono").innerText = nombreTono;
+            
+            // Si ese tono tiene una foto específica (ej. labios pintados), cambia la foto principal
+            if (fotoTono) seleccionarFotoDetalle(fotoTono);
+
+            // Actualizar el anillo visual de selección en las bolitas
+            document.querySelectorAll(".bolita-tono").forEach(b => {
+                b.classList.remove("ring-2", "ring-offset-2", "ring-stone-800");
+            });
+            boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
+        }
+
+        let SLIDE_ACTUAL = 0;
+
+        function irASlidePortada(indice) {
+            const slides = document.querySelectorAll(".slide-portada");
+            const dots = document.querySelectorAll(".dot-portada");
+            if (slides.length === 0) return;
+
+            SLIDE_ACTUAL = (indice + slides.length) % slides.length;
+
+            slides.forEach((s, i) => {
+                if (i === SLIDE_ACTUAL) {
+                    s.classList.remove("hidden");
+                    s.classList.add("flex");
+                } else {
+                    s.classList.add("hidden");
+                    s.classList.remove("flex");
+                }
+            });
+
+            dots.forEach((d, i) => {
+                d.className = i === SLIDE_ACTUAL 
+                    ? "dot-portada w-6 h-2.5 rounded-full bg-[#C87D87] transition-all" 
+                    : "dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition-all";
+            });
+        }
+
+        function cambiarSlidePortada(delta) {
+            irASlidePortada(SLIDE_ACTUAL + delta);
+        }
+
+        // Rotación automática cada 5 segundos
+        setInterval(() => cambiarSlidePortada(1), 5000);
 
 
 
