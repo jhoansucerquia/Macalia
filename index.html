@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MACALÍA | Belleza y Más</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Great+Vibes">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cedarville+Cursive">
+
+
+    <style>
+        .font-editorial { font-family: 'Playfair Display', serif; }
+        .font-cursiva { font-family: 'Great Vibes', cursive; }
+        .font-logo { font-family: 'Cedarville Cursive', cursive; }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#FDFBF9] text-stone-800">
+
+
+    <!-- CINTA SUPERIOR DE ANUNCIOS -->
+    <div class="bg-[#C87D87] text-white text-xs text-center py-2 tracking-wider font-medium">
+        ✨ Envío GRATIS por compras superiores a $150.000 | Pagos 100% Seguros ✨
+    </div>
+
+    <!-- BARRA DE NAVEGACIÓN CON EL COLOR EXACTO DEL LOGO -->
+    <header class="bg-[#eddedb] sticky top-0 z-40 border-b border-[#E5D5D2]">
+
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
+            
+            <!-- 1. LOGO REAL VECTORIAL MACALIA -->
+            <a href="#" class="flex items-center w-40 sm:w-48 h-16 overflow-hidden">
+                <img src="logo-macalia.svg" alt="Macalia Makeup Store" class="w-full h-full object-contain scale-[2.1]"">
+            </a>
+
+
+            <!-- 2. MENÚ CENTRAL CON DESPLEGABLE Y LÍNEA ACTIVA -->
+            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+                <a href="#" onclick="seleccionarMenu(this)" class="menu-link text-[#C87D87] border-b-2 border-[#C87D87] pb-1 transition">Inicio</a>
+                
+                <!-- Menú desplegable de Categorías (como imagen 1) -->
+                <div class="relative group py-2">
+                    <a id="link-productos" href="#catalogo" onclick="seleccionarMenu(this)" class="menu-link flex items-center gap-1 hover:text-[#C87D87] pb-1 transition">
+                        <span>Productos</span>
+                        <span class="text-[10px]">▼</span>
+                    </a>
+                    <div class="hidden group-hover:block absolute left-0 top-full w-56 bg-white shadow-xl rounded-xl border border-rose-100 py-3 z-50 text-stone-700">
+                        <button onclick="filtrarCategoria('Todos')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">✨ Ver Todo el Catálogo</button>
+                        <button onclick="filtrarCategoria('Brochas')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition flex justify-between"><span>Brochas</span><span>▸</span></button>
+                        <button onclick="filtrarCategoria('Cabello')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cabello</button>
+                        <button onclick="filtrarCategoria('Cejas')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cejas</button>
+                        <button onclick="filtrarCategoria('Bases')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Bases</button>
+                        <button onclick="filtrarCategoria('Skincare')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cuidados de la piel</button>
+                        <button onclick="filtrarCategoria('Delineadores')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Delineadores</button>
+                        <button onclick="filtrarCategoria('Glitter')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition flex justify-between"><span>Glitter y pigmentos</span><span>▸</span></button>
+                    </div>
+                </div>
+
+                <a href="#categorias" onclick="seleccionarMenu(this)" class="menu-link hover:text-[#C87D87] pb-1 transition">Categorías</a>
+                <a href="#contacto" onclick="seleccionarMenu(this)" class="menu-link hover:text-[#C87D87] pb-1 transition">Contacto</a>
+            </nav>
+
+            <!-- 3. DERECHA MINIMALISTA (BUSCADOR PREDICTIVO + MAYORISTA + BOLSA) -->
+            <div class="flex items-center gap-4">
+                <!-- Barra de búsqueda con panel de sugerencias en vivo -->
+                <div class="relative hidden sm:flex items-center">
+                    <input type="text" id="buscador-header" oninput="mostrarSugerencias(this.value)" onfocus="mostrarSugerencias(this.value)" placeholder="Buscar belleza..." class="w-48 md:w-64 pl-4 pr-9 py-2 bg-white border border-rose-200/80 rounded-full text-xs text-stone-700 placeholder-stone-400 focus:outline-none focus:border-[#C87D87] transition">
+                    <svg class="w-4 h-4 text-stone-500 absolute right-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="7"></circle>
+                        <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
+                    </svg>
+
+                    <!-- PANEL DESPLEGABLE DE SUGERENCIAS (Como imagen 3) -->
+                    <div id="panel-sugerencias" class="hidden absolute right-0 top-12 w-[420px] bg-white rounded-2xl shadow-2xl border border-rose-100 p-4 z-50">
+                        <div class="flex justify-between items-center border-b border-rose-50 pb-2 mb-3">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Sugerencias de búsqueda</span>
+                            <button onclick="cerrarSugerencias()" class="text-xs text-stone-400 hover:text-stone-700">✕</button>
+                        </div>
+                        <div id="lista-sugerencias" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+                    </div>
+                </div>
+
+                <!-- Botón Acceso Mayorista (Perfil) -->
+                <button onclick="abrirModalMayorista()" title="Acceso Mayoristas" class="flex items-center gap-1.5 text-stone-700 hover:text-[#C87D87] transition p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path stroke-linecap="round" d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"></path>
+                    </svg>
+                    <span id="etiqueta-mayorista" class="hidden md:inline text-[11px] font-semibold text-stone-600">Mayoristas</span>
+                </button>
+
+                <!-- Ícono minimalista de Bolsa con burbuja -->
+                <button onclick="abrirCarrito()" title="Ver Bolsa" class="relative text-stone-700 hover:text-[#C87D87] transition p-1">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12l1 13H5L6 7z"></path>
+                        <path stroke-linecap="round" d="M9 7V5a3 3 0 016 0v2"></path>
+                    </svg>
+                    <span id="contador-bolsa" class="absolute -top-1 -right-1.5 bg-[#C87D87] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">0</span>
+                </button>
+            </div>
+
+    </header>
+
+    <!-- BANNER PRINCIPAL (PORTADA BOUTIQUE) -->
+    <section class="relative bg-gradient-to-r from-[#F9ECEE] via-[#F4DFE3] to-[#EDD0D6] overflow-hidden">
+        <div class="max-w-6xl mx-auto px-4 py-14 md:py-20 grid grid-cols-1 md:grid-cols-2 items-center gap-10">
+            
+            <!-- Textos y Llamado a la Acción -->
+            <div class="space-y-5 text-center md:text-left z-10">
+                <p class="text-xs uppercase tracking-[0.3em] text-[#C87D87] font-bold">
+                    Belleza • Cuidado • Esencia
+                </p>
+                
+                <h1 class="font-editorial text-4xl sm:text-5xl md:text-6xl text-stone-800 leading-tight">
+                    Tu Belleza es <br>
+                    <span class="font-cursiva text-5xl sm:text-6xl md:text-7xl text-[#C87D87] font-normal">Nuestra Prioridad ♡</span>
+                </h1>
+                
+                <p class="text-sm sm:text-base text-stone-600 max-w-md mx-auto md:mx-0 leading-relaxed">
+                    Descubre productos exclusivos, maquillaje y Skincare diseñados para resaltar tu esencia todos los días.
+                </p>
+                
+                <div class="pt-2">
+                    <a href="#catalogo" class="inline-flex items-center gap-2 bg-[#C87D87] hover:bg-[#b56a74] text-white font-semibold px-7 py-3.5 rounded-full shadow-md transition">
+                        <span>Explorar Catálogo</span>
+                        <span>→</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Fotografía Estética Derecha -->
+            <div class="relative flex justify-center">
+                <div class="w-72 h-80 sm:w-80 sm:h-96 md:w-96 md:h-[420px] rounded-t-full overflow-hidden shadow-xl border-4 border-white">
+                    <img src="hada.jpeg" alt="Belleza Macalía" class="w-full h-full object-cover">
+                </div>
+                <!-- Detalle flotante cursivo -->
+                <div class="hidden sm:block absolute bottom-6 -left-4 bg-white/90 backdrop-blur px-5 py-3 rounded-2xl shadow-lg border border-rose-100">
+                    <p class="font-cursiva text-2xl text-[#C87D87]">Luce bien, siéntete bien ♡</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- SECCIÓN DE CATEGORÍAS -->
+    <section id="categorias" class="max-w-6xl mx-auto px-4 py-14">
+        <div class="text-center mb-10">
+            <p class="text-xs uppercase tracking-[0.25em] text-[#C87D87] font-bold">Explora por estilo</p>
+            <h2 class="font-editorial text-3xl text-stone-800 mt-1">Nuestras Categorías</h2>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+            <div onclick="filtrarCategoria('Todos')" class="group cursor-pointer">
+                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">✨</div>
+                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Ver Todo</p>
+            </div>
+            <div onclick="filtrarCategoria('Maquillaje')" class="group cursor-pointer">
+                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">💄</div>
+                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Maquillaje</p>
+            </div>
+            <div onclick="filtrarCategoria('Skincare')" class="group cursor-pointer">
+                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">🧴</div>
+                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Skincare</p>
+            </div>
+            <div onclick="filtrarCategoria('BASES')" class="group cursor-pointer">
+                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">🌸</div>
+                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Bases</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- VITRINA DE PRODUCTOS (CATÁLOGO) -->
+    <section id="catalogo" class="max-w-6xl mx-auto px-4 pb-20">
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-rose-100 pb-4">
+            <div>
+                <h2 class="font-editorial text-3xl text-stone-800">Productos Destacados</h2>
+                <p class="text-xs text-stone-500 mt-1">Selecciona tus favoritos para agregarlos a tu bolsa</p>
+            </div>
+            <div class="flex items-center gap-3 w-full sm:w-auto">
+                <!-- Botones para cambiar entre Vista Cuadrícula y Vista Tabla -->
+                <div class="flex bg-rose-50 p-1 rounded-full border border-rose-200/70">
+                    <button onclick="cambiarVistaCatalogo('tarjetas')" id="btn-vista-tarjetas" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition">▦ Tarjetas</button>
+                    <button onclick="cambiarVistaCatalogo('tabla')" id="btn-vista-tabla" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition">☰ Tabla</button>
+                </div>
+                <input type="text" id="buscador-tienda" oninput="buscarProducto()" placeholder="🔍 Buscar producto..." class="w-full sm:w-60 px-4 py-2 bg-white border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
+            </div>
+        </div>
+
+        <!-- VISTA 1: CUADRÍCULA DE TARJETAS -->
+        <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+
+        <!-- VISTA 2: TABLA ESTILO BOUTIQUE (Ideal para compras rápidas y mayoristas) -->
+        <div id="contenedor-tabla-productos" class="hidden bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#EFE3E1] text-stone-700 text-[11px] uppercase tracking-wider border-b border-[#E3D1CC]">
+                            <th class="py-3.5 px-5">Producto</th>
+                            <th class="py-3.5 px-4">Categoría</th>
+                            <th class="py-3.5 px-4">Precio Detal</th>
+                            <th class="py-3.5 px-4">Precio Mayorista</th>
+                            <th class="py-3.5 px-5 text-right">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbody-productos" class="divide-y divide-rose-50 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+    <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer id="contacto" class="bg-[#eddedb] border-t border-[#E3D1CC] text-stone-700 py-12 mt-10">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
+            <div>
+                <h3 class="font-editorial text-xl font-bold text-stone-800">Macalia Makeup Store</h3>
+                <p class="text-xs text-stone-600 mt-2 leading-relaxed">Resaltando tu belleza natural con productos seleccionados con amor.</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-3">Atención al Cliente</h4>
+                <p class="text-xs text-stone-600">📍 Envíos a toda Colombia</p>
+                <p class="text-xs text-stone-600">📍 Domicilios en todo el Valle de Aburrá</p>
+                <p class="text-xs text-stone-600 mt-1">⏰ Lunes a Sábado: 9:00 AM - 7:00 PM</p>
+            </div>
+            <div>
+                <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-4">Síguenos y Contáctanos</h4>
+                <div class="flex items-center justify-center md:justify-start gap-4">
+                    <!-- Enlace a Instagram -->
+                    <a href="https://www.instagram.com/macaliamakeupstore/" target="_blank" title="Instagram Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                            <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                        </svg>
+                    </a>
+
+                    <!-- Enlace a Facebook -->
+                    <a href="https://www.facebook.com/macaliamakeupstore?locale=es_LA" target="_blank" title="Facebook Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"></path>
+                        </svg>
+                    </a>
+
+                    <!-- Enlace a WhatsApp -->
+                    <a href="https://wa.me/573106051359?text=♡%20Quisiera%20más%20información" target="_blank" title="WhatsApp Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            
+
+    </footer>
+
+    <!-- CAJÓN DESLIZANTE DE LA BOLSA DE COMPRAS -->
+    <div id="modal-bolsa" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 hidden justify-end">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6">
+            <!-- Encabezado de la bolsa -->
+            <div class="flex justify-between items-center border-b border-rose-100 pb-4">
+                <h3 class="font-editorial text-2xl text-stone-800">Tu Bolsa Macalia ♡</h3>
+                <button onclick="cerrarCarrito()" class="text-stone-400 hover:text-stone-800 text-2xl leading-none">&times;</button>
+            </div>
+
+            <!-- Lista de productos agregados -->
+            <div id="lista-bolsa" class="flex-1 overflow-y-auto py-4 space-y-4">
+                <p class="text-center text-stone-400 text-sm py-10">Tu bolsa está vacía ✨</p>
+            </div>
+
+            <!-- Total, Datos de Envío y Pasarela de Pagos -->
+            <div class="border-t border-rose-100 pt-4 space-y-2.5">
+                <div class="flex justify-between text-lg font-bold text-stone-800">
+                    <span>Total a pagar:</span>
+                    <span id="total-bolsa" class="text-[#C87D87]">$0</span>
+                </div>
+                <input type="text" id="cliente-nombre-web" placeholder="Tu nombre completo" class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="text" id="cliente-ciudad-web" placeholder="Ciudad y dirección de envío" class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                
+                <!-- Selector de Pago -->
+                <div class="pt-1">
+                    <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1">Método de Pago:</label>
+                    <select id="metodo-pago-web" onchange="cambiarBotonPago()" class="w-full px-3.5 py-2 bg-[#FDFBF9] border border-rose-200 rounded-xl text-xs font-semibold text-stone-700 focus:outline-none focus:border-[#C87D87]">
+                        <option value="wompi">💳 Pago en Línea (Wompi: Nequi, PSE, Tarjetas)</option>
+                        <option value="whatsapp">💬 Coordinar por WhatsApp / Contraentrega</option>
+                    </select>
+                </div>
+
+                <!-- Botón Principal Wompi -->
+                <button id="btn-pagar-wompi" onclick="pagarConWompi()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3.5 rounded-full shadow-md transition text-xs flex items-center justify-center gap-2">
+                    <span>🔒 Pagar Seguro con Wompi</span>
+                </button>
+
+                <!-- Botón Alternativo WhatsApp -->
+                <button id="btn-pagar-whatsapp" onclick="enviarPedidoWhatsApp()" class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs">
+                    Finalizar Pedido por WhatsApp 💬
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE DETALLE DEL PRODUCTO (GALERÍA + DESCRIPCIÓN + CANTIDAD) -->
+    <div id="modal-detalle-producto" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-rose-100 relative grid grid-cols-1 md:grid-cols-2">
+            
+            <!-- Botón Cerrar -->
+            <button onclick="cerrarDetalleProducto()" class="absolute top-4 right-5 z-10 w-8 h-8 rounded-full bg-white/90 text-stone-500 hover:text-stone-900 flex items-center justify-center text-xl shadow-sm">&times;</button>
+
+            <!-- Columna Izquierda: Foto Principal y Miniaturas -->
+            <div class="bg-[#FDF6F7] p-6 flex flex-col justify-between items-center border-b md:border-b-0 md:border-r border-rose-100">
+                <div id="detalle-foto-principal" class="w-full h-64 rounded-2xl bg-white border border-rose-100 flex items-center justify-center overflow-hidden shadow-sm">
+                    <!-- Aquí se carga la foto grande o emoji -->
+                </div>
+                
+                <!-- Tira de miniaturas para cambiar de foto -->
+                <div id="detalle-miniaturas" class="flex items-center gap-2.5 mt-4 overflow-x-auto max-w-full py-1">
+                    <!-- Aquí JavaScript pondrá las miniaturas si hay varias fotos -->
+                </div>
+            </div>
+
+            <!-- Columna Derecha: Información, Precios y Selector de Cantidad -->
+            <div class="p-6 sm:p-8 flex flex-col justify-between">
+                <div>
+                    <span id="detalle-categoria" class="text-[10px] uppercase tracking-[0.25em] text-[#C87D87] font-bold">CATEGORÍA</span>
+                    <h3 id="detalle-nombre" class="font-editorial text-2xl sm:text-3xl text-stone-800 font-bold mt-1 leading-snug">Nombre del Producto</h3>
+                    
+                    <!-- Precios Detal / Mayorista -->
+                    <div class="mt-3 flex items-baseline gap-3">
+                        <span id="detalle-precio-final" class="text-2xl font-bold text-[#C87D87]">$0</span>
+                        <span id="detalle-precio-tachado" class="hidden text-xs line-through text-stone-400">$0</span>
+                        <span id="detalle-badge-mayorista" class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full">👑 Tarifa Mayorista</span>
+                    </div>
+
+                    <!-- Descripción detallada -->
+                    <p id="detalle-descripcion" class="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed border-t border-rose-50 pt-4">
+                        Descripción del producto...
+                    </p>
+                </div>
+
+                <!-- Selector de Cantidad y Botón Agregar -->
+                <div class="mt-6 pt-4 border-t border-rose-100 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-stone-600">Cantidad:</span>
+                        <div class="flex items-center border border-rose-200 rounded-full bg-[#FDFBF9]">
+                            <button type="button" onclick="cambiarCantidadDetalle(-1)" class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">-</button>
+                            <span id="detalle-cantidad" class="w-8 text-center text-xs font-bold text-stone-800">1</span>
+                            <button type="button" onclick="cambiarCantidadDetalle(1)" class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">+</button>
+                        </div>
+                    </div>
+
+                    <button onclick="agregarDesdeDetalle()" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs tracking-wide">
+                        🛍️ Agregar a Mi Bolsa
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MODAL DE INGRESO Y REGISTRO MAYORISTA ANTI-BOTS -->
+    <div id="modal-mayorista" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl border border-rose-100 relative">
+            <button onclick="cerrarModalMayorista()" class="absolute top-4 right-5 text-stone-400 hover:text-stone-800 text-2xl">&times;</button>
+            
+            <div class="text-center mb-5">
+                <span class="text-3xl">👑</span>
+                <h3 class="font-editorial text-2xl text-stone-800 mt-1">Portal Mayoristas</h3>
+                <p class="text-xs text-stone-500 mt-1">Accede a precios especiales para tu negocio</p>
+            </div>
+
+            <!-- Pestañas Ingresar / Crear Cuenta -->
+            <div class="grid grid-cols-2 bg-rose-50 p-1 rounded-full border border-rose-100 mb-5 text-xs font-semibold">
+                <button type="button" id="tab-login-may" onclick="cambiarTabMayorista('login')" class="py-2 rounded-full bg-[#C87D87] text-white transition">Ingresar</button>
+                <button type="button" id="tab-reg-may" onclick="cambiarTabMayorista('registro')" class="py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition">Crear Cuenta</button>
+            </div>
+
+            <!-- FORMULARIO 1: INICIAR SESIÓN -->
+            <form id="form-login-mayorista" onsubmit="event.preventDefault(); iniciarSesionMayorista();" class="space-y-3.5">
+                <input type="text" id="login-may-usuario" required placeholder="Correo electrónico o # de celular" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="password" id="login-may-clave" required placeholder="Tu contraseña" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <button type="submit" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
+                    Ingresar y Activar Precios
+                </button>
+            </form>
+
+            <!-- FORMULARIO 2: REGISTRO NUEVO CON ESCUDO ANTI-ROBOTS -->
+            <form id="form-registro-mayorista" onsubmit="event.preventDefault(); registrarMayorista();" class="hidden space-y-3">
+                <!-- Campo trampa invisible (Honeypot) que solo llenan los robots -->
+                <input type="text" id="trampa-robot" class="hidden" tabindex="-1" autocomplete="off">
+
+                <input type="text" id="reg-may-nombre" required placeholder="Tu nombre o nombre de tu tienda" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="text" id="reg-may-contacto" required placeholder="Correo electrónico o # de celular" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="password" id="reg-may-clave" required minlength="6" placeholder="Crea una contraseña (mín. 6 caracteres)" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                
+                <!-- Verificación Humana Anti-Robots -->
+                <div class="bg-[#FDFBF9] border border-rose-200 rounded-xl p-3 flex items-center justify-between">
+                    <label class="text-[11px] font-semibold text-stone-600">🤖 Verificación: ¿Cuánto es <span id="pregunta-captcha" class="font-bold text-[#C87D87]"></span>?</label>
+                    <input type="number" id="respuesta-captcha" required placeholder="?" class="w-16 px-2.5 py-1.5 border border-rose-200 rounded-lg text-xs text-center font-bold focus:outline-none focus:border-[#C87D87]">
+                </div>
+
+                <button type="submit" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 rounded-full text-xs shadow transition">
+                    Crear Cuenta Mayorista ✨
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- WIDGET DE CHAT FLOTANTE ESTILO MACALIA -->
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+        
+        <!-- VENTANA DE CHAT DESPLEGABLE (Oculta al inicio) -->
+        <div id="caja-chat-macalia" class="hidden w-80 bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden mb-3 transition-all">
+            
+            <!-- Encabezado con el color de la marca -->
+            <div class="bg-[#C87D87] text-white p-4 flex justify-between items-center">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-editorial font-bold text-lg">M</div>
+                    <div>
+                        <h4 class="font-editorial text-sm font-bold leading-tight">Asesoría Macalia ♡</h4>
+                        <p class="text-[10px] text-rose-100 flex items-center gap-1">
+                            <span class="w-2 h-2 rounded-full bg-emerald-300 inline-block"></span> En línea ahora
+                        </p>
+                    </div>
+                </div>
+                <button onclick="alternarChatMacalia()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+            </div>
+
+            <!-- Franja de acceso directo a Asesora Humana en WhatsApp -->
+            <div class="bg-[#EFE3E1] px-4 py-2 flex justify-between items-center border-b border-[#E3D1CC]">
+                <span class="text-[10px] text-stone-600">¿Prefieres atención personalizada?</span>
+                <a href="https://wa.me" target="_blank" class="text-[10px] font-bold text-[#C87D87] hover:underline flex items-center gap-1">
+                    <span>Ir a WhatsApp</span>
+                    <span>↗</span>
+                </a>
+            </div>
+
+
+            <!-- Cuerpo de mensajes con fondo crema cálido -->
+            <div id="historial-chat-macalia" class="p-4 bg-[#FDFBF9] space-y-3 max-h-64 overflow-y-auto text-xs">
+                <!-- Mensaje automático de bienvenida -->
+                <div class="bg-[#eddedb]/70 text-stone-800 p-3 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
+                    ¡Hola! ✨ Bienvenida a <b>Macalia Makeup Store</b>. ¿En qué podemos asesorarte hoy?
+                </div>
+
+                <!-- Botones de preguntas rápidas -->
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                    <button onclick="enviarDudaRapida('Hola, quiero saber sobre envíos y tiempos de entrega')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">🚚 Envíos</button>
+                    <button onclick="enviarDudaRapida('Hola, quisiera información para ser mayorista')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">👑 Mayoristas</button>
+                    <button onclick="enviarDudaRapida('Hola, necesito asesoría con tonos de maquillaje')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">💄 Asesoría</button>
+                </div>
+            </div>
+
+            <!-- Caja para escribir y enviar a WhatsApp -->
+            <form onsubmit="event.preventDefault(); enviarMensajeChat();" class="p-3 bg-white border-t border-rose-100 flex items-center gap-2">
+                <input type="text" id="input-mensaje-chat" placeholder="Escribe tu pregunta aquí..." class="flex-1 px-3 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
+                <button type="submit" title="Enviar a WhatsApp" class="bg-[#C87D87] hover:bg-[#b56a74] text-white p-2 rounded-full transition shadow-sm">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                    </svg>
+                </button>
+            </form>
+        </div>
+
+        <!-- BOTÓN FLOTANTE ESTILO BOUTIQUE -->
+        <button onclick="alternarChatMacalia()" class="flex items-center gap-2.5 bg-[#C87D87] hover:bg-[#b56a74] text-white px-4 py-3.5 rounded-full shadow-xl hover:scale-105 transition duration-300 border border-white/30">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z"></path>
+            </svg>
+            <span class="hidden sm:inline text-xs font-bold tracking-wide">¿Ayuda?</span>
+        </button>
+
+    </div>
+
+
+
+    <script>
+        // Catálogo inicial de muestra (luego lo conectaremos directo a tu inventario CLAVEX)
+        const productosMacalia = [
+            { 
+                id: 1, 
+                nombre: "Gloss Hidratante Rose Glow", 
+                categoria: "Maquillaje", 
+                precio: 28000, 
+                emoji: "💄",
+                descripcion: "Brillo labial enriquecido con vitamina E y aceite de jojoba. Deja un acabado espejo luminoso sin sensación pegajosa y con un suave aroma a vainilla.",
+                fotos: ["💄", "💋", "✨"]
+            },
+            { 
+                id: 2, 
+                nombre: "Rubor Líquido Pétalo Suave", 
+                categoria: "Maquillaje", 
+                precio: 35000, 
+                emoji: "🌸",
+                descripcion: "Fórmula ligera de alta pigmentación y fácil difuminado. Aporta un rubor natural aterciopelado que dura hasta 12 horas en pieles secas o mixtas.",
+                fotos: ["🌸", "🌷", "✨"]
+            },
+            { 
+                id: 3, 
+                nombre: "Sérum Facial Ácido Hialurónico", 
+                categoria: "Skincare", 
+                precio: 54000, 
+                emoji: "🧴",
+                descripcion: "Hidratación profunda multicapa que rellena líneas finas y prepara tu rostro antes del maquillaje para un acabado jugoso y saludable.",
+                fotos: ["🧴", "💧", "🌿"]
+            },
+            { 
+                id: 4, 
+                nombre: "Bruma Corporal Vainilla & Rosa", 
+                categoria: "Bases", 
+                precio: 45000, 
+                emoji: "✨",
+                descripcion: "Fragancia dulce y sofisticada con notas de pétalos de rosa damascena, vainilla cálida y un toque sutil de almizcle blanco.",
+                fotos: ["✨", "🌹", "🧴"]
+            }
+        ];
+
+
+        let bolsa = [];
+
+        let VISTA_ACTUAL = 'tarjetas';
+        let LISTA_FILTRADA = [...productosMacalia];
+
+        function cambiarVistaCatalogo(tipo) {
+            VISTA_ACTUAL = tipo;
+            const grid = document.getElementById("grid-productos");
+            const tabla = document.getElementById("contenedor-tabla-productos");
+            const btnTarjetas = document.getElementById("btn-vista-tarjetas");
+            const btnTabla = document.getElementById("btn-vista-tabla");
+
+            if (tipo === 'tabla') {
+                grid.classList.add("hidden");
+                tabla.classList.remove("hidden");
+                btnTabla.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition";
+                btnTarjetas.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition";
+            } else {
+                tabla.classList.add("hidden");
+                grid.classList.remove("hidden");
+                btnTarjetas.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition";
+                btnTabla.className = "px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition";
+            }
+        }
+
+        function mostrarProductos(lista) {
+            LISTA_FILTRADA = lista;
+            const grid = document.getElementById("grid-productos");
+            const tbody = document.getElementById("tbody-productos");
+            grid.innerHTML = "";
+            tbody.innerHTML = "";
+
+            lista.forEach(p => {
+                const precioMayorista = Math.round(p.precio * 0.8);
+                const precioFinal = ES_MAYORISTA ? precioMayorista : p.precio;
+
+                // 1. Dibujar Tarjeta
+                grid.innerHTML += `
+                    <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
+                        <div onclick="abrirDetalleProducto(${p.id})" class="cursor-pointer">
+                            <div class="h-44 bg-[#FDF6F7] rounded-xl flex items-center justify-center text-5xl mb-4 group-hover:scale-105 transition">${p.emoji}</div>
+                            <span class="text-[10px] uppercase tracking-widest text-[#C87D87] font-bold">${p.categoria}</span>
+                            <h3 class="font-editorial text-lg text-stone-800 font-semibold mt-1">${p.nombre}</h3>
+                        </div>
+                        <div class="mt-4 pt-3 border-t border-rose-50 flex justify-between items-center">
+                            <div>
+                                ${ES_MAYORISTA ? `<span class="block text-[10px] line-through text-stone-400">$${p.precio.toLocaleString()}</span>` : ''}
+                                <span class="font-bold text-stone-800">$${precioFinal.toLocaleString()}</span>
+                            </div>
+                            <button onclick="agregarABolsa(${p.id})" class="bg-rose-50 hover:bg-[#C87D87] text-[#C87D87] hover:text-white text-xs font-bold px-3.5 py-2 rounded-full transition">
+                                + Agregar
+                            </button>
+                        </div>
+                    </div>`;
+
+                // 2. Dibujar Fila de Tabla Boutique
+                tbody.innerHTML += `
+                    <tr class="hover:bg-rose-50/40 transition">
+                        <td onclick="abrirDetalleProducto(${p.id})" class="py-3.5 px-5 flex items-center gap-3 cursor-pointer hover:text-[#C87D87] transition">
+                            <span class="text-2xl bg-[#FDF6F7] w-10 h-10 flex items-center justify-center rounded-xl border border-rose-100">${p.emoji}</span>
+                            <span class="font-editorial font-semibold text-stone-800">${p.nombre}</span>
+                        </td>
+                        <td class="py-3.5 px-4"><span class="text-xs bg-rose-50 text-[#C87D87] font-semibold px-2.5 py-1 rounded-full">${p.categoria}</span></td>
+                        <td class="py-3.5 px-4 text-xs ${ES_MAYORISTA ? 'line-through text-stone-400' : 'font-bold text-stone-800'}">$${p.precio.toLocaleString()}</td>
+                        <td class="py-3.5 px-4 text-xs ${ES_MAYORISTA ? 'font-bold text-[#C87D87]' : 'text-stone-500'}">$${precioMayorista.toLocaleString()} <span class="text-[10px]">(Mayorista)</span></td>
+                        <td class="py-3.5 px-5 text-right">
+                            <button onclick="agregarABolsa(${p.id})" class="bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold px-4 py-2 rounded-full shadow-sm transition">+ Bolsa</button>
+                        </td>
+                    </tr>`;
+            });
+        }
+
+        function cambiarBotonPago() {
+            const metodo = document.getElementById("metodo-pago-web").value;
+            const btnWompi = document.getElementById("btn-pagar-wompi");
+            const btnWa = document.getElementById("btn-pagar-whatsapp");
+            if (metodo === "wompi") {
+                btnWompi.classList.remove("hidden");
+                btnWa.classList.add("hidden");
+            } else {
+                btnWompi.classList.add("hidden");
+                btnWa.classList.remove("hidden");
+            }
+        }
+
+        function pagarConWompi() {
+            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
+            const nombre = document.getElementById("cliente-nombre-web").value.trim();
+            const ciudad = document.getElementById("cliente-ciudad-web").value.trim();
+            if (!nombre || !ciudad) return alert("⚠️ Por favor completa tu nombre y dirección de envío antes de pagar.");
+
+            const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            
+            // Aquí conectaremos tu Llave Pública real de Wompi (pub_prod_...) cuando crees tu cuenta en comercios.wompi.co
+            alert(`💳 Conectando con Pasarela Wompi Colombia...\n\nCliente: ${nombre}\nEnvío: ${ciudad}\nTotal a cobrar: $${total.toLocaleString()} COP\n\n(Listo para insertar tu Llave Pública de Wompi y abrir Nequi / PSE / Tarjetas).`);
+        }
+
+
+        function filtrarCategoria(cat) {
+            const seccionCatalogo = document.getElementById("catalogo");
+            if (seccionCatalogo) {
+                seccionCatalogo.scrollIntoView({ behavior: "smooth" });
+            }
+            const linkProd = document.getElementById("link-productos");
+            if (linkProd) seleccionarMenu(linkProd);
+
+            if (cat === "Todos") {
+                return mostrarProductos(productosMacalia);
+            }
+
+            const filtrados = productosMacalia.filter(p => p.categoria.toLowerCase() === cat.toLowerCase());
+            mostrarProductos(filtrados);
+
+            if (filtrados.length === 0) {
+                document.getElementById("grid-productos").innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-rose-100">
+                        <p class="font-editorial text-xl text-stone-700">Próximamente en ${cat} ✨</p>
+                        <p class="text-xs text-stone-400 mt-1">Aún no hay productos cargados en esta categoría.</p>
+                        <button onclick="filtrarCategoria('Todos')" class="mt-4 bg-[#C87D87] text-white text-xs font-bold px-5 py-2 rounded-full">Ver Todo el Catálogo</button>
+                    </div>`;
+            }
+        }
+
+
+        function buscarProducto() {
+            const texto = document.getElementById("buscador-tienda").value.toLowerCase();
+            mostrarProductos(productosMacalia.filter(p => p.nombre.toLowerCase().includes(texto)));
+        }
+
+        function sincronizarBusqueda(valor) {
+            document.getElementById("buscador-tienda").value = valor;
+            buscarProducto();
+        }
+
+        function agregarABolsa(id) {
+            const prod = productosMacalia.find(p => p.id === id);
+            const precioFinal = ES_MAYORISTA ? Math.round(prod.precio * 0.8) : prod.precio;
+
+            const existe = bolsa.find(item => item.id === id);
+            if (existe) {
+                existe.cantidad += 1;
+            } else {
+                bolsa.push({ ...prod, precio: precioFinal, cantidad: 1 });
+            }
+            actualizarBolsa();
+            abrirCarrito();
+        }
+
+        function actualizarBolsa() {
+            const contenedor = document.getElementById("lista-bolsa");
+            const contador = document.getElementById("contador-bolsa");
+            const totalTexto = document.getElementById("total-bolsa");
+            
+            let totalUnidades = 0;
+            let totalDinero = 0;
+            contenedor.innerHTML = "";
+
+            if (bolsa.length === 0) {
+                contenedor.innerHTML = `<p class="text-center text-stone-400 text-sm py-10">Tu bolsa está vacía ✨</p>`;
+            } else {
+                bolsa.forEach((item, index) => {
+                    totalUnidades += item.cantidad;
+                    totalDinero += item.precio * item.cantidad;
+                    contenedor.innerHTML += `
+                        <div class="flex justify-between items-center bg-[#FDFBF9] p-3 rounded-xl border border-rose-100">
+                            <div>
+                                <p class="text-sm font-semibold text-stone-800">${item.nombre}</p>
+                                <p class="text-xs text-stone-500">${item.cantidad} x $${item.precio.toLocaleString()}</p>
+                            </div>
+                            <button onclick="quitarDeBolsa(${index})" class="text-rose-400 hover:text-rose-600 text-xs font-bold px-2">Quitar</button>
+                        </div>`;
+                });
+            }
+
+            contador.innerText = totalUnidades;
+            totalTexto.innerText = `$${totalDinero.toLocaleString()}`;
+        }
+
+        function quitarDeBolsa(index) {
+            bolsa.splice(index, 1);
+            actualizarBolsa();
+        }
+
+        function abrirCarrito() {
+            const modal = document.getElementById("modal-bolsa");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function cerrarCarrito() {
+            const modal = document.getElementById("modal-bolsa");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        function enviarPedidoWhatsApp() {
+            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
+            const nombre = document.getElementById("cliente-nombre-web").value || "Cliente Web";
+            const ciudad = document.getElementById("cliente-ciudad-web").value || "Sin dirección";
+            
+            let resumen = `Hola Macalia ♡ Quiero hacer este pedido:\n\n`;
+            bolsa.forEach(i => resumen += `• ${i.cantidad}x ${i.nombre} ($${(i.precio * i.cantidad).toLocaleString()})\n`);
+            resumen += `\nTotal: ${document.getElementById("total-bolsa").innerText}\nNombre: ${nombre}\nEnvío: ${ciudad}`;
+            
+            alert("✨ Pedido armado:\n\n" + resumen);
+        }
+
+        let ES_MAYORISTA = false;
+
+        function seleccionarMenu(elemento) {
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('text-[#C87D87]', 'border-b-2', 'border-[#C87D87]');
+            });
+            elemento.classList.add('text-[#C87D87]', 'border-b-2', 'border-[#C87D87]');
+        }
+
+        function mostrarSugerencias(texto) {
+            const panel = document.getElementById("panel-sugerencias");
+            const lista = document.getElementById("lista-sugerencias");
+            const consulta = texto.trim().toLowerCase();
+
+            if (!consulta) {
+                panel.classList.add("hidden");
+                return;
+            }
+
+            const coincidencias = productosMacalia.filter(p => 
+                p.nombre.toLowerCase().includes(consulta) || p.categoria.toLowerCase().includes(consulta)
+            );
+
+            panel.classList.remove("hidden");
+            lista.innerHTML = "";
+
+            if (coincidencias.length === 0) {
+                lista.innerHTML = `<p class="text-xs text-stone-400 py-3 text-center">No encontramos productos con "${texto}"</p>`;
+                return;
+            }
+
+            coincidencias.forEach(p => {
+                const precioMostrar = ES_MAYORISTA ? (p.precioMayorista || Math.round(p.precio * 0.8)) : p.precio;
+                lista.innerHTML += `
+                    <div onclick="irAProducto(${p.id})" class="flex items-center justify-between p-2 hover:bg-rose-50 rounded-xl cursor-pointer transition">
+                        <div class="flex items-center gap-3">
+                            <span class="text-2xl bg-[#FDF6F7] w-10 h-10 flex items-center justify-center rounded-lg">${p.emoji}</span>
+                            <div>
+                                <p class="text-xs font-semibold text-stone-800">${p.nombre}</p>
+                                <p class="text-[10px] text-[#C87D87]">en ${p.categoria}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-bold text-stone-800">$${precioMostrar.toLocaleString()}</span>
+                    </div>`;
+            });
+        }
+
+        function cerrarSugerencias() {
+            document.getElementById("panel-sugerencias").classList.add("hidden");
+        }
+
+        function irAProducto(id) {
+            cerrarSugerencias();
+            const prod = productosMacalia.find(p => p.id === id);
+            if (prod) {
+                mostrarProductos([prod]);
+                document.getElementById("catalogo").scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
+        function abrirModalMayorista() {
+            const modal = document.getElementById("modal-mayorista");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function cerrarModalMayorista() {
+            const modal = document.getElementById("modal-mayorista");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        let RESPUESTA_HUMANA = 0;
+
+        function generarCaptcha() {
+            const num1 = Math.floor(Math.random() * 9) + 1;
+            const num2 = Math.floor(Math.random() * 9) + 1;
+            RESPUESTA_HUMANA = num1 + num2;
+            const label = document.getElementById("pregunta-captcha");
+            if (label) label.innerText = `${num1} + ${num2}`;
+            const input = document.getElementById("respuesta-captcha");
+            if (input) input.value = "";
+        }
+
+        function cambiarTabMayorista(tab) {
+            const formLogin = document.getElementById("form-login-mayorista");
+            const formReg = document.getElementById("form-registro-mayorista");
+            const tabLogin = document.getElementById("tab-login-may");
+            const tabReg = document.getElementById("tab-reg-may");
+
+            if (tab === "registro") {
+                formLogin.classList.add("hidden");
+                formReg.classList.remove("hidden");
+                tabReg.className = "py-2 rounded-full bg-[#C87D87] text-white transition";
+                tabLogin.className = "py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition";
+                generarCaptcha();
+            } else {
+                formReg.classList.add("hidden");
+                formLogin.classList.remove("hidden");
+                tabLogin.className = "py-2 rounded-full bg-[#C87D87] text-white transition";
+                tabReg.className = "py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition";
+            }
+        }
+
+        function registrarMayorista() {
+            // 1. Filtro Honeypot contra robots invisibles
+            const trampa = document.getElementById("trampa-robot").value;
+            if (trampa !== "") return;
+
+            // 2. Filtro de Verificación Humana
+            const respuestaUsuario = parseInt(document.getElementById("respuesta-captcha").value);
+            if (respuestaUsuario !== RESPUESTA_HUMANA) {
+                generarCaptcha();
+                return alert("⚠️ Respuesta de verificación incorrecta. Intenta de nuevo para confirmar que eres humano.");
+            }
+
+            const nombre = document.getElementById("reg-may-nombre").value.trim();
+            const contacto = document.getElementById("reg-may-contacto").value.trim();
+            const clave = document.getElementById("reg-may-clave").value;
+
+            // Guardamos temporalmente en el navegador mientras lo conectamos a Supabase
+            localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto, clave }));
+            
+            activarBeneficioMayorista(nombre);
+            alert(`🎉 ¡Cuenta creada con éxito, ${nombre}! Ya tienes activos los precios mayoristas.`);
+        }
+
+        function iniciarSesionMayorista() {
+            const usuario = document.getElementById("login-may-usuario").value.trim();
+            const clave = document.getElementById("login-may-clave").value;
+            const guardado = JSON.parse(localStorage.getItem("macalia_mayorista") || "null");
+
+            if (guardado && guardado.contacto === usuario && guardado.clave === clave) {
+                activarBeneficioMayorista(guardado.nombre);
+                alert(`👑 ¡Bienvenida de nuevo, ${guardado.nombre}! Precios mayoristas activos.`);
+            } else {
+                alert("❌ Usuario o contraseña incorrectos. Si aún no tienes cuenta, selecciona 'Crear Cuenta'.");
+            }
+        }
+
+        function activarBeneficioMayorista(nombre) {
+            ES_MAYORISTA = true;
+            cerrarModalMayorista();
+            const etiqueta = document.getElementById("etiqueta-mayorista");
+            etiqueta.innerText = `👑 ${nombre}`;
+            etiqueta.classList.add("text-[#C87D87]", "font-bold");
+            mostrarProductos(productosMacalia);
+        }
+
+        function alternarChatMacalia() {
+            const caja = document.getElementById("caja-chat-macalia");
+            caja.classList.toggle("hidden");
+        }
+
+        function agregarBurbujaChat(texto, esCliente) {
+            const historial = document.getElementById("historial-chat-macalia");
+            if (esCliente) {
+                historial.innerHTML += `
+                    <div class="flex justify-end">
+                        <div class="bg-[#C87D87] text-white p-3 rounded-2xl rounded-tr-none shadow-sm max-w-[82%] leading-relaxed">
+                            ${texto}
+                        </div>
+                    </div>`;
+            } else {
+                historial.innerHTML += `
+                    <div class="flex justify-start">
+                        <div class="bg-[#eddedb]/80 text-stone-800 p-3 rounded-2xl rounded-tl-none shadow-sm max-w-[85%] leading-relaxed">
+                            ${texto}
+                        </div>
+                    </div>`;
+            }
+            historial.scrollTop = historial.scrollHeight;
+        }
+
+        function generarRespuestaMacalia(pregunta) {
+            const p = pregunta.toLowerCase();
+            if (p.includes("envio") || p.includes("envío") || p.includes("entrega")) {
+                return "🚚 Hacemos envíos a toda Colombia. En el Área Metropolitana (Medellín y Bello) llega en 24 horas, y a otras ciudades de 2 a 4 días hábiles. ¡Envío GRATIS por compras superiores a $150.000!";
+            }
+            if (p.includes("mayorista") || p.includes("por mayor")) {
+                return "👑 Para comprar al por mayor, toca el ícono de perfil arriba a la derecha (<b>Mayoristas</b>) y crea tu cuenta. Al ingresar, todos los precios de la tienda bajarán automáticamente.";
+            }
+            if (p.includes("tono") || p.includes("asesoria") || p.includes("asesoría") || p.includes("piel")) {
+                return "💄 ¡Con gusto! Cuéntanos qué tipo de piel tienes (seca, mixta o grasa) y qué producto buscas para recomendarte el tono ideal.";
+            }
+            if (p.includes("pago") || p.includes("wompi") || p.includes("nequi")) {
+                return "💳 Aceptamos Nequi, Bancolombia, PSE y tarjetas de crédito/débito mediante Wompi, además de pago contra entrega en ciudades principales.";
+            }
+            return "✨ ¡Gracias por escribirnos! Una asesora de <b>Macalia Makeup Store</b> recibió tu mensaje y te responderá en breve por este mismo chat.";
+        }
+
+        function enviarDudaRapida(texto) {
+            agregarBurbujaChat(texto, true);
+            setTimeout(() => {
+                const respuesta = generarRespuestaMacalia(texto);
+                agregarBurbujaChat(respuesta, false);
+            }, 500);
+        }
+
+        function enviarMensajeChat() {
+            const input = document.getElementById("input-mensaje-chat");
+            const mensaje = input.value.trim();
+            if (!mensaje) return;
+            input.value = "";
+            enviarDudaRapida(mensaje);
+        }
+
+        let PRODUCTO_DETALLE_ACTUAL = null;
+        let CANTIDAD_DETALLE = 1;
+
+        function abrirDetalleProducto(id) {
+            const prod = productosMacalia.find(p => p.id === id);
+            if (!prod) return;
+
+            PRODUCTO_DETALLE_ACTUAL = prod;
+            CANTIDAD_DETALLE = 1;
+            document.getElementById("detalle-cantidad").innerText = "1";
+
+            document.getElementById("detalle-categoria").innerText = prod.categoria;
+            document.getElementById("detalle-nombre").innerText = prod.nombre;
+            document.getElementById("detalle-descripcion").innerText = prod.descripcion || "Producto seleccionado por Macalia Makeup Store.";
+
+            // Calcular precio detal o mayorista
+            const precioMayorista = Math.round(prod.precio * 0.8);
+            const precioFinal = ES_MAYORISTA ? precioMayorista : prod.precio;
+            document.getElementById("detalle-precio-final").innerText = `$${precioFinal.toLocaleString()}`;
+
+            const tachado = document.getElementById("detalle-precio-tachado");
+            const badge = document.getElementById("detalle-badge-mayorista");
+            if (ES_MAYORISTA) {
+                tachado.innerText = `$${prod.precio.toLocaleString()}`;
+                tachado.classList.remove("hidden");
+                badge.classList.remove("hidden");
+            } else {
+                tachado.classList.add("hidden");
+                badge.classList.add("hidden");
+            }
+
+            // Cargar galería de fotos (soporta tanto URLs reales de fotos como emojis)
+            const galeria = (prod.fotos && prod.fotos.length > 0) ? prod.fotos : [prod.emoji];
+            seleccionarFotoDetalle(galeria[0]);
+
+            const contMiniaturas = document.getElementById("detalle-miniaturas");
+            contMiniaturas.innerHTML = "";
+            galeria.forEach(foto => {
+                const esUrl = foto.startsWith("http") || foto.includes(".");
+                contMiniaturas.innerHTML += `
+                    <button type="button" onclick="seleccionarFotoDetalle('${foto}')" class="w-14 h-14 rounded-xl bg-white border border-rose-200 hover:border-[#C87D87] flex items-center justify-center overflow-hidden shrink-0 transition">
+                        ${esUrl ? `<img src="${foto}" class="w-full h-full object-cover">` : `<span class="text-2xl">${foto}</span>`}
+                    </button>`;
+            });
+
+            const modal = document.getElementById("modal-detalle-producto");
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function seleccionarFotoDetalle(foto) {
+            const visor = document.getElementById("detalle-foto-principal");
+            const esUrl = foto.startsWith("http") || foto.includes(".");
+            visor.innerHTML = esUrl 
+                ? `<img src="${foto}" class="w-full h-full object-cover">` 
+                : `<span class="text-7xl">${foto}</span>`;
+        }
+
+        function cambiarCantidadDetalle(delta) {
+            CANTIDAD_DETALLE = Math.max(1, CANTIDAD_DETALLE + delta);
+            document.getElementById("detalle-cantidad").innerText = CANTIDAD_DETALLE;
+        }
+
+        function agregarDesdeDetalle() {
+            if (!PRODUCTO_DETALLE_ACTUAL) return;
+            for (let i = 0; i < CANTIDAD_DETALLE; i++) {
+                agregarABolsa(PRODUCTO_DETALLE_ACTUAL.id);
+            }
+            cerrarDetalleProducto();
+        }
+
+        function cerrarDetalleProducto() {
+            const modal = document.getElementById("modal-detalle-producto");
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+
+
+        mostrarProductos(productosMacalia);
+
+    </script>
+</body>
+</html>
