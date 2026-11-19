@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MACALÍA | Belleza y Más</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Great+Vibes">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cedarville+Cursive">
+
+
+    <style>
+        .font-editorial { font-family: 'Playfair Display', serif; }
+        .font-cursiva { font-family: 'Great Vibes', cursive; }
+        .font-logo { font-family: 'Cedarville Cursive', cursive; }
+
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#FDFBF9] text-stone-800 min-h-screen">
+
+    <!-- PANTALLA DE ACCESO PRIVADO PARA LA DUEÑA -->
+    <div id="pantalla-login-admin" class="min-h-screen flex items-center justify-center p-4 bg-[#eddedb]/50">
+        <div class="bg-white p-8 rounded-3xl shadow-xl border border-rose-100 max-w-sm w-full text-center">
+            <img src="logo-macalia.svg" alt="Macalia" class="h-14 mx-auto mb-3">
+            <h1 class="font-editorial text-2xl text-stone-800">Panel Administrativo</h1>
+            <p class="text-xs text-stone-500 mt-1 mb-6">Ingresa la clave maestra para gestionar el catálogo</p>
+            <form onsubmit="event.preventDefault(); verificarAccesoAdmin();" class="space-y-4">
+                <input type="password" id="clave-admin-input" required placeholder="Contraseña de administradora" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs text-center focus:outline-none focus:border-[#C87D87]">
+                <button type="submit" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
+                    Entrar al Panel ✨
+                </button>
+            </form>
+            <a href="index.html" class="inline-block mt-5 text-[11px] text-stone-400 hover:text-[#C87D87]">← Volver a la tienda pública</a>
+        </div>
+    </div>
+    <!-- PANEL PRINCIPAL DE GESTIÓN -->
+    <div id="contenido-admin" class="hidden">
+        <header class="bg-[#eddedb] border-b border-[#dfd0cd] px-6 py-4 flex justify-between items-center sticky top-0 z-30">
+            <div class="flex items-center gap-3">
+                <img src="logo-macalia.svg" alt="Macalia" class="h-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-[#C87D87] hidden sm:inline">| Catálogo en Vivo</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="index.html" target="_blank" class="bg-white text-stone-700 hover:text-[#C87D87] text-xs font-semibold px-4 py-2 rounded-full border border-rose-200 transition">Ver Tienda ↗</a>
+                <button onclick="cerrarSesionAdmin()" class="text-xs text-stone-500 hover:text-stone-900">Salir</button>
+            </div>
+        </header>
+
+        <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- FORMULARIO PARA SUBIR NUEVO PRODUCTO -->
+            <section class="lg:col-span-5 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm h-fit">
+                <h2 class="font-editorial text-2xl text-stone-800 mb-1">Subir Nuevo Producto</h2>
+                <p class="text-xs text-stone-400 mb-5">Completa los datos y sube las fotos desde tu galería</p>
+
+                <form id="form-producto-macalia" onsubmit="event.preventDefault(); guardarProductoNube();" class="space-y-4 text-xs">
+                    <div>
+                        <label class="font-bold text-stone-600 block mb-1">Nombre del producto *</label>
+                        <input type="text" id="prod-nombre" required placeholder="Ej. Gloss Hidratante Rose Glow" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="font-bold text-stone-600 block mb-1">Categoría *</label>
+                            <input type="text" id="prod-categoria" required list="lista-categorias-sug" placeholder="Ej. Labios, Bases..." class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <datalist id="lista-categorias-sug">
+                                <option value="Labios"><option value="Rostro"><option value="Ojos"><option value="Brochas"><option value="Skincare"><option value="Cabello">
+                            </datalist>
+                        </div>
+                        <div>
+                            <label class="font-bold text-stone-600 block mb-1">Inventario (Stock)</label>
+                            <input type="number" id="prod-stock" value="10" min="0" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="font-bold text-stone-600 block mb-1">Precio Venta ($) *</label>
+                            <input type="number" id="prod-precio" required placeholder="28000" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+                        <div>
+                            <label class="font-bold text-stone-600 block mb-1">Precio Mayorista ($)</label>
+                            <input type="number" id="prod-mayorista" placeholder="22000" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="font-bold text-stone-600 block mb-1">Descripción y beneficios</label>
+                        <textarea id="prod-descripcion" rows="2" placeholder="Describe su acabado, textura o modo de uso..." class="w-full px-3.5 py-2 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]"></textarea>
+                    </div>
+
+                    <!-- SUBIDA DE FOTOS PRINCIPALES -->
+                    <div class="bg-[#FDF6F7] p-3.5 rounded-2xl border border-rose-200/70">
+                        <label class="font-bold text-[#C87D87] block mb-1">📸 Fotos del Producto (puedes elegir varias)</label>
+                        <input type="file" id="prod-fotos" accept="image/*" multiple required class="w-full text-[11px] text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-[#C87D87] file:text-white file:font-semibold">
+                    </div>
+
+                    <!-- SECCIÓN OPCIONAL DE TONOS CON GOTERO VISUAL -->
+                    <div class="bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="font-bold text-stone-700">🎨 Tonos disponibles (Opcional)</label>
+                            <button type="button" onclick="agregarFilaTono()" class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+ Agregar Tono</button>
+                        </div>
+                        <p class="text-[10px] text-stone-400 mb-2">Usa el gotero del cuadrito de color para capturar el tono exacto de tu foto.</p>
+                        <div id="contenedor-filas-tonos" class="space-y-2"></div>
+                    </div>
+
+                    <button type="submit" id="btn-guardar-prod" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition">
+                        Publicar en la Tienda ✨
+                    </button>
+                </form>
+            </section>
+
+            <!-- LISTA DE PRODUCTOS PUBLICADOS EN SUPABASE -->
+            <section class="lg:col-span-7 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="font-editorial text-2xl text-stone-800">Productos Publicados</h2>
+                    <span id="contador-admin-prod" class="text-xs bg-rose-50 text-[#C87D87] font-bold px-3 py-1 rounded-full">0 productos</span>
+                </div>
+                <div id="lista-admin-productos" class="space-y-3 max-h-[650px] overflow-y-auto pr-1">
+                    <p class="text-xs text-stone-400 text-center py-10">Cargando catálogo desde Supabase...</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script>
+        // PEGA AQUÍ TUS CREDENCIALES REALES DE SUPABASE
+        const SUPABASE_URL = "https://qcuvuyvdbyzvtswriqws.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_RdgPMIJRPh0dR6N_MdceGA_ABQ65-QZ";
+        const CLAVE_MAESTRA = "macalia2026";
+
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        function verificarAccesoAdmin() {
+            const clave = document.getElementById("clave-admin-input").value;
+            if (clave === CLAVE_MAESTRA) {
+                sessionStorage.setItem("macalia_admin_ok", "1");
+                mostrarPanelAdmin();
+            } else {
+                alert("❌ Contraseña incorrecta.");
+            }
+        }
+
+        function cerrarSesionAdmin() {
+            sessionStorage.removeItem("macalia_admin_ok");
+            location.reload();
+        }
+
+        function mostrarPanelAdmin() {
+            document.getElementById("pantalla-login-admin").classList.add("hidden");
+            document.getElementById("contenido-admin").classList.remove("hidden");
+            cargarProductosAdmin();
+        }
+
+        if (sessionStorage.getItem("macalia_admin_ok") === "1") mostrarPanelAdmin();
+
+        function agregarFilaTono() {
+            const cont = document.getElementById("contenedor-filas-tonos");
+            const div = document.createElement("div");
+            div.className = "fila-tono flex items-center gap-2 bg-white p-2 rounded-xl border border-rose-100";
+            div.innerHTML = `
+                <input type="color" value="#C87D87" title="Toca para elegir color o usar gotero" class="tono-color w-8 h-8 rounded-lg cursor-pointer border-0">
+                <input type="text" placeholder="Nombre (ej. Rose Petal)" class="tono-nombre flex-1 px-2.5 py-1.5 border border-rose-100 rounded-lg text-[11px]">
+                <input type="file" accept="image/*" title="Foto de este tono aplicado" class="tono-foto w-28 text-[10px]">
+                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
+            `;
+            cont.appendChild(div);
+        }
+
+        async function subirArchivoStorage(archivo) {
+            const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${archivo.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
+            const { error } = await sb.storage.from("fotos-productos").upload(nombreUnico, archivo);
+            if (error) throw error;
+            const { data } = sb.storage.from("fotos-productos").getPublicUrl(nombreUnico);
+            return data.publicUrl;
+        }
+
+        async function guardarProductoNube() {
+            const btn = document.getElementById("btn-guardar-prod");
+            btn.disabled = true;
+            btn.innerText = "Subiendo fotos y guardando... ⏳";
+
+            try {
+                const archivosFotos = document.getElementById("prod-fotos").files;
+                const urlsFotos = [];
+                for (let file of archivosFotos) {
+                    const url = await subirArchivoStorage(file);
+                    urlsFotos.push(url);
+                }
+
+                const filasTonos = document.querySelectorAll(".fila-tono");
+                const listaTonos = [];
+                for (let fila of filasTonos) {
+                    const nombreTono = fila.querySelector(".tono-nombre").value.trim();
+                    const colorTono = fila.querySelector(".tono-color").value;
+                    const archivoFotoTono = fila.querySelector(".tono-foto").files[0];
+                    if (nombreTono) {
+                        let urlFotoTono = urlsFotos[0];
+                        if (archivoFotoTono) {
+                            urlFotoTono = await subirArchivoStorage(archivoFotoTono);
+                        }
+                        listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, foto: urlFotoTono });
+                    }
+                }
+
+                const nuevoProducto = {
+                    tienda: "macalia",
+                    nombre: document.getElementById("prod-nombre").value.trim(),
+                    categoria: document.getElementById("prod-categoria").value.trim(),
+                    precio: parseFloat(document.getElementById("prod-precio").value),
+                    precio_mayorista: parseFloat(document.getElementById("prod-mayorista").value) || 0,
+                    stock: parseInt(document.getElementById("prod-stock").value) || 0,
+                    descripcion: document.getElementById("prod-descripcion").value.trim(),
+                    fotos: urlsFotos,
+                    tonos: listaTonos,
+                    disponible: true
+                };
+
+                const { error } = await sb.from("catalogo_web").insert([nuevoProducto]);
+                if (error) throw error;
+
+                alert("🎉 ¡Producto publicado exitosamente en Macalia!");
+                document.getElementById("form-producto-macalia").reset();
+                document.getElementById("contenedor-filas-tonos").innerHTML = "";
+                cargarProductosAdmin();
+            } catch (err) {
+                alert("❌ Error al guardar: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Publicar en la Tienda ✨";
+            }
+        }
+
+        async function cargarProductosAdmin() {
+            const lista = document.getElementById("lista-admin-productos");
+            const { data, error } = await sb.from("catalogo_web").select("*").eq("tienda", "macalia").order("id", { ascending: false });
+            
+            if (error) return lista.innerHTML = `<p class="text-xs text-red-500">Error de conexión: ${error.message}</p>`;
+
+            document.getElementById("contador-admin-prod").innerText = `${data.length} productos`;
+            if (data.length === 0) {
+                return lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Aún no has subido productos. Usa el formulario de la izquierda ✨</p>`;
+            }
+
+            lista.innerHTML = data.map(p => `
+                <div class="flex items-center justify-between p-3 bg-[#FDFBF9] rounded-2xl border border-rose-100">
+                    <div class="flex items-center gap-3">
+                        <img src="${(p.fotos && p.fotos[0]) || 'hada.jpeg'}" class="w-12 h-12 rounded-xl object-cover border border-rose-100">
+                        <div>
+                            <p class="font-editorial font-bold text-sm text-stone-800">${p.nombre}</p>
+                            <p class="text-[11px] text-stone-500">${p.categoria} • <b class="text-[#C87D87]">$${Number(p.precio).toLocaleString()}</b> • Stock: ${p.stock}</p>
+                        </div>
+                    </div>
+                    <button onclick="eliminarProductoAdmin(${p.id})" class="text-xs text-red-400 hover:text-red-600 font-semibold px-3 py-1">Borrar</button>
+                </div>
+            `).join("");
+        }
+
+        async function eliminarProductoAdmin(id) {
+            if (!confirm("¿Seguro que deseas eliminar este producto de la tienda?")) return;
+            await sb.from("catalogo_web").delete().eq("id", id);
+            cargarProductosAdmin();
+        }
+    </script>
+</body>
+</html>

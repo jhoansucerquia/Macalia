@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MACALÍA | Belleza y Más</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Great+Vibes">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
@@ -13,13 +15,24 @@
 
 
     <style>
-        .font-editorial { font-family: 'Playfair Display', serif; }
-        .font-cursiva { font-family: 'Great Vibes', cursive; }
-        .font-logo { font-family: 'Cedarville Cursive', cursive; }
+        .font-editorial {
+            font-family: 'Playfair Display', serif;
+        }
 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-cursiva {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .font-logo {
+            font-family: 'Cedarville Cursive', cursive;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
     </style>
 </head>
+
 <body class="bg-[#FDFBF9] text-stone-800">
 
 
@@ -32,12 +45,13 @@
     <header class="bg-[#eddedb] sticky top-0 z-40 border-b border-[#E5D5D2]">
 
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center gap-4">
-         
-<button onclick="document.getElementById('menu-movil').classList.toggle('hidden')" class="lg:hidden text-stone-700 hover:text-[#C87D87] p-1">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
-    </svg>
-</button>
+
+            <button onclick="document.getElementById('menu-movil').classList.toggle('hidden')"
+                class="lg:hidden text-stone-700 hover:text-[#C87D87] p-1">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
 
 
             <!-- 1. LOGO REAL VECTORIAL MACALIA -->
@@ -47,125 +61,165 @@
 
 
             <!-- 2. MENÚ CENTRAL CON DESPLEGABLE Y LÍNEA ACTIVA -->
-            <nav class="hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
-                <a href="#" onclick="seleccionarMenu(this)" class="menu-link text-[#C87D87] border-b-2 border-[#C87D87] pb-1 transition">Inicio</a>
-                
+            <nav class=" hidden lg:flex items-center gap-7 text-sm font-medium text-stone-600">
+                <a href="#" onclick="seleccionarMenu(this)"
+                    class="menu-link text-[#C87D87] border-b-2 border-[#C87D87] pb-1 transition">Inicio</a>
+
                 <!-- Menú desplegable de Categorías (como imagen 1) -->
                 <div class="relative group py-2">
-                    <a id="link-productos" href="#catalogo" onclick="seleccionarMenu(this)" class="menu-link flex items-center gap-1 hover:text-[#C87D87] pb-1 transition">
+                    <a id="link-productos" href="#catalogo" onclick="seleccionarMenu(this)"
+                        class="menu-link flex items-center gap-1 hover:text-[#C87D87] pb-1 transition">
                         <span>Productos</span>
                         <span class="text-[10px]">▼</span>
                     </a>
-                    <div class="hidden group-hover:block absolute left-0 top-full w-56 bg-white shadow-xl rounded-xl border border-rose-100 py-3 z-50 text-stone-700">
-                        <button onclick="filtrarCategoria('Todos')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">✨ Ver Todo el Catálogo</button>
-                        <button onclick="filtrarCategoria('Brochas')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition flex justify-between"><span>Brochas</span><span>▸</span></button>
-                        <button onclick="filtrarCategoria('Cabello')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cabello</button>
-                        <button onclick="filtrarCategoria('Cejas')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cejas</button>
-                        <button onclick="filtrarCategoria('Bases')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Bases</button>
-                        <button onclick="filtrarCategoria('Skincare')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Cuidados de la piel</button>
-                        <button onclick="filtrarCategoria('Delineadores')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition">Delineadores</button>
-                        <button onclick="filtrarCategoria('Glitter')" class="w-full text-left px-5 py-2.5 text-xs hover:bg-rose-50 hover:text-[#C87D87] transition flex justify-between"><span>Glitter y pigmentos</span><span>▸</span></button>
-                    </div>
-                </div>
+                    <div
+                        class="hidden group-hover:block absolute left-0 top-full w-56 bg-white shadow-xl rounded-xl border border-rose-100 py-3 z-50 text-stone-700">
 
-                <a href="#categorias" onclick="seleccionarMenu(this)" class="menu-link hover:text-[#C87D87] pb-1 transition">Categorías</a>
-                <a href="#contacto" onclick="seleccionarMenu(this)" class="menu-link hover:text-[#C87D87] pb-1 transition">Contacto</a>
-            </nav>
-
-            <!-- 3. DERECHA MINIMALISTA (BUSCADOR PREDICTIVO + MAYORISTA + BOLSA) -->
-            <div class="flex items-center gap-4">
-                <!-- Barra de búsqueda con panel de sugerencias en vivo -->
-                <div class="relative hidden sm:flex items-center">
-                    <input type="text" id="buscador-header" oninput="mostrarSugerencias(this.value)" onfocus="mostrarSugerencias(this.value)" placeholder="Buscar belleza..." class="w-48 md:w-64 pl-4 pr-9 py-2 bg-white border border-rose-200/80 rounded-full text-xs text-stone-700 placeholder-stone-400 focus:outline-none focus:border-[#C87D87] transition">
-                    <svg class="w-4 h-4 text-stone-500 absolute right-3.5 pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                        <circle cx="11" cy="11" r="7"></circle>
-                        <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
-                    </svg>
-
-                    <!-- PANEL DESPLEGABLE DE SUGERENCIAS (Como imagen 3) -->
-                    <div id="panel-sugerencias" class="hidden absolute right-0 top-12 w-[420px] bg-white rounded-2xl shadow-2xl border border-rose-100 p-4 z-50">
-                        <div class="flex justify-between items-center border-b border-rose-50 pb-2 mb-3">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Sugerencias de búsqueda</span>
-                            <button onclick="cerrarSugerencias()" class="text-xs text-stone-400 hover:text-stone-700">✕</button>
+                        <div id="menu-categorias-dinamicas" class="py-2">
+                            <a href="#catalogo" onclick="filtrarPorCategoria('Todos')"
+                                class="block px-4 py-2.5 text-xs font-semibold text-[#C87D87] hover:bg-rose-50 transition">✨
+                                Ver Todo el Catálogo</a>
                         </div>
-                        <div id="lista-sugerencias" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+
                     </div>
                 </div>
 
-                <!-- Botón Acceso Mayorista (Perfil) -->
-                <button onclick="abrirModalMayorista()" title="Acceso Mayoristas" class="flex items-center gap-1.5 text-stone-700 hover:text-[#C87D87] transition p-1">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <circle cx="12" cy="8" r="4"></circle>
-                        <path stroke-linecap="round" d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"></path>
-                    </svg>
-                    <span id="etiqueta-mayorista" class="hidden md:inline text-[11px] font-semibold text-stone-600">Mayoristas</span>
-                </button>
+                <a href="#categorias" onclick="seleccionarMenu(this)"
+                    class="menu-link hover:text-[#C87D87] pb-1 transition">Categorías</a>
+                <a href="#contacto" onclick="seleccionarMenu(this)"
+                    class="menu-link hover:text-[#C87D87] pb-1 transition">Contacto</a>
+                </nav>
 
-                <!-- Ícono minimalista de Bolsa con burbuja -->
-                <button onclick="abrirCarrito()" title="Ver Bolsa" class="relative text-stone-700 hover:text-[#C87D87] transition p-1">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12l1 13H5L6 7z"></path>
-                        <path stroke-linecap="round" d="M9 7V5a3 3 0 016 0v2"></path>
-                    </svg>
-                    <span id="contador-bolsa" class="absolute -top-1 -right-1.5 bg-[#C87D87] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">0</span>
-                </button>
-            </div>
+                <!-- 3. DERECHA MINIMALISTA (BUSCADOR PREDICTIVO + MAYORISTA + BOLSA) -->
+                <div class="flex items-center gap-4">
+                    <!-- Barra de búsqueda con panel de sugerencias en vivo -->
+                    <div class="relative hidden sm:flex items-center">
+                        <input type="text" id="buscador-header" oninput="mostrarSugerencias(this.value)"
+                            onfocus="mostrarSugerencias(this.value)" placeholder="Buscar belleza..."
+                            class="w-48 md:w-64 pl-4 pr-9 py-2 bg-white border border-rose-200/80 rounded-full text-xs text-stone-700 placeholder-stone-400 focus:outline-none focus:border-[#C87D87] transition">
+                        <svg class="w-4 h-4 text-stone-500 absolute right-3.5 pointer-events-none" fill="none"
+                            stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
+                        </svg>
+
+                        <!-- PANEL DESPLEGABLE DE SUGERENCIAS (Como imagen 3) -->
+                        <div id="panel-sugerencias"
+                            class="hidden absolute right-0 top-12 w-[420px] bg-white rounded-2xl shadow-2xl border border-rose-100 p-4 z-50">
+                            <div class="flex justify-between items-center border-b border-rose-50 pb-2 mb-3">
+                                <span class="text-[11px] font-bold uppercase tracking-wider text-stone-400">Sugerencias
+                                    de búsqueda</span>
+                                <button onclick="cerrarSugerencias()"
+                                    class="text-xs text-stone-400 hover:text-stone-700">✕</button>
+                            </div>
+                            <div id="lista-sugerencias" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Acceso Mayorista (Perfil) -->
+                    <button onclick="abrirModalMayorista()" title="Acceso Mayoristas"
+                        class="flex items-center gap-1.5 text-stone-700 hover:text-[#C87D87] transition p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="4"></circle>
+                            <path stroke-linecap="round" d="M5 20c0-3.5 3.1-6 7-6s7 2.5 7 6"></path>
+                        </svg>
+                        <span id="etiqueta-mayorista"
+                            class="hidden md:inline text-[11px] font-semibold text-stone-600">Mayoristas</span>
+                    </button>
+
+                    <!-- Ícono minimalista de Bolsa con burbuja -->
+                    <button onclick="abrirCarrito()" title="Ver Bolsa"
+                        class="relative text-stone-700 hover:text-[#C87D87] transition p-1">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 7h12l1 13H5L6 7z"></path>
+                            <path stroke-linecap="round" d="M9 7V5a3 3 0 016 0v2"></path>
+                        </svg>
+                        <span id="contador-bolsa"
+                            class="absolute -top-1 -right-1.5 bg-[#C87D87] text-white text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full shadow-sm">0</span>
+                    </button>
+                </div>
         </div>
-    
+
 
     </header>
 
-    <div id="menu-movil" class="hidden lg:hidden sticky top-16 z-40 bg-white border-t border-rose-100 px-6 py-4 space-y-3 text-sm font-medium text-stone-700 shadow-lg">
-        <input type="text" oninput="buscarProductoDesdemovil(this.value)" placeholder="🔍 Buscar belleza..." class="w-full px-4 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs">
-        <a href="#" onclick="document.getElementById('menu-movil').classList.add('hidden')" class="block py-1.5 text-[#C87D87] font-semibold">Inicio</a>
-        <a href="#catalogo" onclick="document.getElementById('menu-movil').classList.add('hidden')" class="block py-1.5 hover:text-[#C87D87]">Productos y Catálogo</a>
-        <a href="#categorias" onclick="document.getElementById('menu-movil').classList.add('hidden')" class="block py-1.5 hover:text-[#C87D87]">Categorías</a>
-        <a href="#contacto" onclick="document.getElementById('menu-movil').classList.add('hidden')" class="block py-1.5 hover:text-[#C87D87]">Contacto</a>
+    <div id="menu-movil"
+        class="hidden lg:hidden sticky top-16 z-40 bg-white border-t border-rose-100 px-6 py-4 space-y-3 text-sm font-medium text-stone-700 shadow-lg">
+        <input type="text" oninput="buscarProductoDesdemovil(this.value)" placeholder="🔍 Buscar belleza..."
+            class="w-full px-4 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs">
+        <a href="#" onclick="document.getElementById('menu-movil').classList.add('hidden')"
+            class="block py-1.5 text-[#C87D87] font-semibold">Inicio</a>
+        <a href="#catalogo" onclick="document.getElementById('menu-movil').classList.add('hidden')"
+            class="block py-1.5 hover:text-[#C87D87]">Productos y Catálogo</a>
+        <a href="#categorias" onclick="document.getElementById('menu-movil').classList.add('hidden')"
+            class="block py-1.5 hover:text-[#C87D87]">Categorías</a>
+        <a href="#contacto" onclick="document.getElementById('menu-movil').classList.add('hidden')"
+            class="block py-1.5 hover:text-[#C87D87]">Contacto</a>
     </div>
 
     <!-- PORTADA PRINCIPAL EN CARRUSEL AUTOMÁTICO -->
-    <section class="relative overflow-hidden bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8] to-[#F3D1D8] border-b border-rose-100">
-        
+    <section
+        class="relative overflow-hidden bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8] to-[#F3D1D8] border-b border-rose-100">
+
         <!-- Contenedor de diapositivas -->
         <div id="carrusel-portada" class="max-w-6xl mx-auto px-6 py-14 md:py-20 transition-all duration-500">
-            
-             <!-- DIAPOSITIVA 1 (Banner Completo Estilo Atenea) -->
-            <div class="slide-portada relative w-full min-h-[460px] md:min-h-[540px] flex items-center bg-cover bg-center" style="background-image: url('hada.jpeg');">
-                <!-- Capa suave para que el texto siempre se lea nítido -->
-                <div class="absolute inset-0 bg-gradient-to-r from-[#FDF2F4]/95 via-[#F9E4E8]/80 to-transparent"></div>
-                
-                <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-12 w-full">
+
+            <!-- DIAPOSITIVA 1 (Imagen integrada de arriba a abajo con difuminado hacia el texto) -->
+            <div class="slide-portada relative w-full min-h-[420px] md:min-h-[460px] flex items-center overflow-hidden">
+
+                <!-- Foto en toda la mitad derecha (sin borde ni marco blanco) -->
+                <div class="absolute inset-y-0 right-0 w-full md:w-3/5">
+                    <img src="hada.jpeg" alt="Macalia Belleza" class="w-full h-full object-cover object-top">
+                    <!-- Degradado que aclara y funde la foto hacia las letras de la izquierda -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8]/85 to-transparent"></div>
+                </div>
+
+                <!-- Texto limpio a la izquierda -->
+                <div class="relative z-10 max-w-6xl mx-auto px-6 md:px-12 w-full py-10">
                     <div class="max-w-lg text-left">
-                        <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Belleza • Cuidado • Esencia</span>
-                        <h1 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
-                            Tu Belleza es <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Nuestra Prioridad ♡</span>
+                        <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Belleza • Cuidado
+                            • Esencia</span>
+                        <h1 class="font-editorial text-4xl md:text-5xl text-stone-800 mt-3 leading-tight">
+                            Tu Belleza es <span
+                                class="font-cursiva text-5xl md:text-6xl text-[#C87D87] block mt-1">Nuestra Prioridad
+                                ♡</span>
                         </h1>
-                        <p class="text-sm text-stone-700 mt-4 leading-relaxed">
-                            Descubre productos exclusivos, maquillaje y skincare diseñados para resaltar tu esencia todos los días.
+                        <p class="text-sm text-stone-700 mt-3 leading-relaxed">
+                            Descubre productos exclusivos, maquillaje y skincare diseñados para resaltar tu esencia
+                            todos los días.
                         </p>
-                        <a href="#catalogo" class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                        <a href="#catalogo"
+                            class="inline-block mt-6 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-full shadow-md transition">
                             Explorar Catálogo →
                         </a>
                     </div>
                 </div>
+
             </div>
+
+
 
 
             <!-- DIAPOSITIVA 2 (Nueva Colección / Tonos) -->
             <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
                 <div class="max-w-lg text-center md:text-left">
-                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Nueva Colección 2026</span>
+                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Nueva Colección
+                        2026</span>
                     <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
-                        Brillo y Color <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Para Tus Labios ✨</span>
+                        Brillo y Color <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Para
+                            Tus Labios ✨</span>
                     </h2>
                     <p class="text-sm text-stone-600 mt-4 leading-relaxed">
-                        Prueba nuestros nuevos delineadores y gloss hidratantes con tonos pensados para cada tipo de piel.
+                        Prueba nuestros nuevos delineadores y gloss hidratantes con tonos pensados para cada tipo de
+                        piel.
                     </p>
-                    <a href="#catalogo" class="inline-block mt-7 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                    <a href="#catalogo"
+                        class="inline-block mt-7 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
                         Ver Tonos Nuevos →
                     </a>
                 </div>
-                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
+                <div
+                    class="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
                     <span class="text-7xl mb-3">💄</span>
                     <span class="font-editorial text-xl text-stone-800 font-bold">Rose Glow Edition</span>
                     <span class="text-xs text-[#C87D87] mt-1">Hidratación 12 Horas</span>
@@ -175,18 +229,23 @@
             <!-- DIAPOSITIVA 3 (Envíos y Promociones) -->
             <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
                 <div class="max-w-lg text-center md:text-left">
-                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Beneficio Exclusivo</span>
+                    <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Beneficio
+                        Exclusivo</span>
                     <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
-                        Envíos Gratis <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">A Toda Colombia 🚚</span>
+                        Envíos Gratis <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">A Toda
+                            Colombia 🚚</span>
                     </h2>
                     <p class="text-sm text-stone-600 mt-4 leading-relaxed">
-                        Por compras superiores a $150.000 recibe tu pedido en la puerta de tu casa con empaque de regalo.
+                        Por compras superiores a $150.000 recibe tu pedido en la puerta de tu casa con empaque de
+                        regalo.
                     </p>
-                    <a href="#catalogo" class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
+                    <a href="#catalogo"
+                        class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
                         Comprar Ahora →
                     </a>
                 </div>
-                <div class="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
+                <div
+                    class="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
                     <span class="text-7xl mb-3">🎁</span>
                     <span class="font-editorial text-xl text-stone-800 font-bold">Empaque Boutique</span>
                     <span class="text-xs text-[#C87D87] mt-1">Medellín • Bello • Nacional</span>
@@ -196,14 +255,19 @@
         </div>
 
         <!-- Flechas Izquierda y Derecha -->
-        <button onclick="cambiarSlidePortada(-1)" title="Anterior" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">‹</button>
-        <button onclick="cambiarSlidePortada(1)" title="Siguiente" class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">›</button>
+        <button onclick="cambiarSlidePortada(-1)" title="Anterior"
+            class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">‹</button>
+        <button onclick="cambiarSlidePortada(1)" title="Siguiente"
+            class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">›</button>
 
         <!-- Puntos indicadores abajo -->
         <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-            <button onclick="irASlidePortada(0)" class="dot-portada w-2.5 h-2.5 rounded-full bg-[#C87D87] transition"></button>
-            <button onclick="irASlidePortada(1)" class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
-            <button onclick="irASlidePortada(2)" class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
+            <button onclick="irASlidePortada(0)"
+                class="dot-portada w-2.5 h-2.5 rounded-full bg-[#C87D87] transition"></button>
+            <button onclick="irASlidePortada(1)"
+                class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
+            <button onclick="irASlidePortada(2)"
+                class="dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition"></button>
         </div>
 
     </section>
@@ -218,19 +282,27 @@
 
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
             <div onclick="filtrarCategoria('Todos')" class="group cursor-pointer">
-                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">✨</div>
+                <div
+                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
+                    ✨</div>
                 <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Ver Todo</p>
             </div>
             <div onclick="filtrarCategoria('Maquillaje')" class="group cursor-pointer">
-                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">💄</div>
+                <div
+                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
+                    💄</div>
                 <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Maquillaje</p>
             </div>
             <div onclick="filtrarCategoria('Skincare')" class="group cursor-pointer">
-                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">🧴</div>
+                <div
+                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
+                    🧴</div>
                 <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Skincare</p>
             </div>
             <div onclick="filtrarCategoria('BASES')" class="group cursor-pointer">
-                <div class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">🌸</div>
+                <div
+                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
+                    🌸</div>
                 <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Bases</p>
             </div>
         </div>
@@ -246,10 +318,15 @@
             <div class="flex items-center gap-3 w-full sm:w-auto">
                 <!-- Botones para cambiar entre Vista Cuadrícula y Vista Tabla -->
                 <div class="flex bg-rose-50 p-1 rounded-full border border-rose-200/70">
-                    <button onclick="cambiarVistaCatalogo('tarjetas')" id="btn-vista-tarjetas" class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition">▦ Tarjetas</button>
-                    <button onclick="cambiarVistaCatalogo('tabla')" id="btn-vista-tabla" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition">☰ Tabla</button>
+                    <button onclick="cambiarVistaCatalogo('tarjetas')" id="btn-vista-tarjetas"
+                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition">▦
+                        Tarjetas</button>
+                    <button onclick="cambiarVistaCatalogo('tabla')" id="btn-vista-tabla"
+                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition">☰
+                        Tabla</button>
                 </div>
-                <input type="text" id="buscador-tienda" oninput="buscarProducto()" placeholder="🔍 Buscar producto..." class="w-full sm:w-60 px-4 py-2 bg-white border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="text" id="buscador-tienda" oninput="buscarProducto()" placeholder="🔍 Buscar producto..."
+                    class="w-full sm:w-60 px-4 py-2 bg-white border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
             </div>
         </div>
 
@@ -257,11 +334,13 @@
         <div id="grid-productos" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
 
         <!-- VISTA 2: TABLA ESTILO BOUTIQUE (Ideal para compras rápidas y mayoristas) -->
-        <div id="contenedor-tabla-productos" class="hidden bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
+        <div id="contenedor-tabla-productos"
+            class="hidden bg-white rounded-2xl border border-rose-100 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
                     <thead>
-                        <tr class="bg-[#EFE3E1] text-stone-700 text-[11px] uppercase tracking-wider border-b border-[#E3D1CC]">
+                        <tr
+                            class="bg-[#EFE3E1] text-stone-700 text-[11px] uppercase tracking-wider border-b border-[#E3D1CC]">
                             <th class="py-3.5 px-5">Producto</th>
                             <th class="py-3.5 px-4">Categoría</th>
                             <th class="py-3.5 px-4">Precio Detal</th>
@@ -280,7 +359,8 @@
         <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             <div>
                 <h3 class="font-editorial text-xl font-bold text-stone-800">Macalia Makeup Store</h3>
-                <p class="text-xs text-stone-600 mt-2 leading-relaxed">Resaltando tu belleza natural con productos seleccionados con amor.</p>
+                <p class="text-xs text-stone-600 mt-2 leading-relaxed">Resaltando tu belleza natural con productos
+                    seleccionados con amor.</p>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-3">Atención al Cliente</h4>
@@ -292,7 +372,8 @@
                 <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-4">Síguenos y Contáctanos</h4>
                 <div class="flex items-center justify-center md:justify-start gap-4">
                     <!-- Enlace a Instagram -->
-                    <a href="https://www.instagram.com/macaliamakeupstore/" target="_blank" title="Instagram Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                    <a href="https://www.instagram.com/macaliamakeupstore/" target="_blank" title="Instagram Macalia"
+                        class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
                             <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
                             <path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path>
@@ -301,21 +382,29 @@
                     </a>
 
                     <!-- Enlace a Facebook -->
-                    <a href="https://www.facebook.com/macaliamakeupstore?locale=es_LA" target="_blank" title="Facebook Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                    <a href="https://www.facebook.com/macaliamakeupstore?locale=es_LA" target="_blank"
+                        title="Facebook Macalia"
+                        class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z"></path>
+                            <path
+                                d="M14 13.5h2.5l1-4H14v-2c0-1.03 0-2 2-2h1.5V2.14c-.326-.043-1.557-.14-2.857-.14C11.928 2 10 3.657 10 6.7v2.8H7v4h3V22h4v-8.5z">
+                            </path>
                         </svg>
                     </a>
 
                     <!-- Enlace a WhatsApp -->
-                    <a href="https://wa.me/573106051359?text=♡%20Quisiera%20más%20información" target="_blank" title="WhatsApp Macalia" class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
+                    <a href="https://wa.me/573106051359?text=♡%20Quisiera%20más%20información" target="_blank"
+                        title="WhatsApp Macalia"
+                        class="w-10 h-10 rounded-full bg-white/80 hover:bg-[#C87D87] text-stone-700 hover:text-white flex items-center justify-center shadow-sm border border-[#dfd0cd] transition">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z"></path>
+                            <path
+                                d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z">
+                            </path>
                         </svg>
                     </a>
                 </div>
             </div>
-            
+
 
     </footer>
 
@@ -325,7 +414,8 @@
             <!-- Encabezado de la bolsa -->
             <div class="flex justify-between items-center border-b border-rose-100 pb-4">
                 <h3 class="font-editorial text-2xl text-stone-800">Tu Bolsa Macalia ♡</h3>
-                <button onclick="cerrarCarrito()" class="text-stone-400 hover:text-stone-800 text-2xl leading-none">&times;</button>
+                <button onclick="cerrarCarrito()"
+                    class="text-stone-400 hover:text-stone-800 text-2xl leading-none">&times;</button>
             </div>
 
             <!-- Lista de productos agregados -->
@@ -339,25 +429,31 @@
                     <span>Total a pagar:</span>
                     <span id="total-bolsa" class="text-[#C87D87]">$0</span>
                 </div>
-                <input type="text" id="cliente-nombre-web" placeholder="Tu nombre completo" class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="text" id="cliente-ciudad-web" placeholder="Ciudad y dirección de envío" class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                
+                <input type="text" id="cliente-nombre-web" placeholder="Tu nombre completo"
+                    class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="text" id="cliente-ciudad-web" placeholder="Ciudad y dirección de envío"
+                    class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+
                 <!-- Selector de Pago -->
                 <div class="pt-1">
-                    <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1">Método de Pago:</label>
-                    <select id="metodo-pago-web" onchange="cambiarBotonPago()" class="w-full px-3.5 py-2 bg-[#FDFBF9] border border-rose-200 rounded-xl text-xs font-semibold text-stone-700 focus:outline-none focus:border-[#C87D87]">
+                    <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1">Método de
+                        Pago:</label>
+                    <select id="metodo-pago-web" onchange="cambiarBotonPago()"
+                        class="w-full px-3.5 py-2 bg-[#FDFBF9] border border-rose-200 rounded-xl text-xs font-semibold text-stone-700 focus:outline-none focus:border-[#C87D87]">
                         <option value="wompi">💳 Pago en Línea (Wompi: Nequi, PSE, Tarjetas)</option>
                         <option value="whatsapp">💬 Coordinar por WhatsApp / Contraentrega</option>
                     </select>
                 </div>
 
                 <!-- Botón Principal Wompi -->
-                <button id="btn-pagar-wompi" onclick="pagarConWompi()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3.5 rounded-full shadow-md transition text-xs flex items-center justify-center gap-2">
+                <button id="btn-pagar-wompi" onclick="pagarConWompi()"
+                    class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3.5 rounded-full shadow-md transition text-xs flex items-center justify-center gap-2">
                     <span>🔒 Pagar Seguro con Wompi</span>
                 </button>
 
                 <!-- Botón Alternativo WhatsApp -->
-                <button id="btn-pagar-whatsapp" onclick="enviarPedidoWhatsApp()" class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs">
+                <button id="btn-pagar-whatsapp" onclick="enviarPedidoWhatsApp()"
+                    class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs">
                     Finalizar Pedido por WhatsApp 💬
                 </button>
             </div>
@@ -365,18 +461,23 @@
     </div>
 
     <!-- MODAL DE DETALLE DEL PRODUCTO (GALERÍA + DESCRIPCIÓN + CANTIDAD) -->
-    <div id="modal-detalle-producto" class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-rose-100 relative grid grid-cols-1 md:grid-cols-2">
-            
+    <div id="modal-detalle-producto"
+        class="fixed inset-0 bg-stone-900/60 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl max-w-2xl w-full overflow-hidden shadow-2xl border border-rose-100 relative grid grid-cols-1 md:grid-cols-2">
+
             <!-- Botón Cerrar -->
-            <button onclick="cerrarDetalleProducto()" class="absolute top-4 right-5 z-10 w-8 h-8 rounded-full bg-white/90 text-stone-500 hover:text-stone-900 flex items-center justify-center text-xl shadow-sm">&times;</button>
+            <button onclick="cerrarDetalleProducto()"
+                class="absolute top-4 right-5 z-10 w-8 h-8 rounded-full bg-white/90 text-stone-500 hover:text-stone-900 flex items-center justify-center text-xl shadow-sm">&times;</button>
 
             <!-- Columna Izquierda: Foto Principal y Miniaturas -->
-            <div class="bg-[#FDF6F7] p-6 flex flex-col justify-between items-center border-b md:border-b-0 md:border-r border-rose-100">
-                <div id="detalle-foto-principal" class="w-full h-64 rounded-2xl bg-white border border-rose-100 flex items-center justify-center overflow-hidden shadow-sm">
+            <div
+                class="bg-[#FDF6F7] p-6 flex flex-col justify-between items-center border-b md:border-b-0 md:border-r border-rose-100">
+                <div id="detalle-foto-principal"
+                    class="w-full h-64 rounded-2xl bg-white border border-rose-100 flex items-center justify-center overflow-hidden shadow-sm">
                     <!-- Aquí se carga la foto grande o emoji -->
                 </div>
-                
+
                 <!-- Tira de miniaturas para cambiar de foto -->
                 <div id="detalle-miniaturas" class="flex items-center gap-2.5 mt-4 overflow-x-auto max-w-full py-1">
                     <!-- Aquí JavaScript pondrá las miniaturas si hay varias fotos -->
@@ -386,14 +487,19 @@
             <!-- Columna Derecha: Información, Precios y Selector de Cantidad -->
             <div class="p-6 sm:p-8 flex flex-col justify-between">
                 <div>
-                    <span id="detalle-categoria" class="text-[10px] uppercase tracking-[0.25em] text-[#C87D87] font-bold">CATEGORÍA</span>
-                    <h3 id="detalle-nombre" class="font-editorial text-2xl sm:text-3xl text-stone-800 font-bold mt-1 leading-snug">Nombre del Producto</h3>
-                    
+                    <span id="detalle-categoria"
+                        class="text-[10px] uppercase tracking-[0.25em] text-[#C87D87] font-bold">CATEGORÍA</span>
+                    <h3 id="detalle-nombre"
+                        class="font-editorial text-2xl sm:text-3xl text-stone-800 font-bold mt-1 leading-snug">Nombre
+                        del Producto</h3>
+
                     <!-- Precios Detal / Mayorista -->
                     <div class="mt-3 flex items-baseline gap-3">
                         <span id="detalle-precio-final" class="text-2xl font-bold text-[#C87D87]">$0</span>
                         <span id="detalle-precio-tachado" class="hidden text-xs line-through text-stone-400">$0</span>
-                        <span id="detalle-badge-mayorista" class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full">👑 Tarifa Mayorista</span>
+                        <span id="detalle-badge-mayorista"
+                            class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full">👑
+                            Tarifa Mayorista</span>
                     </div>
 
 
@@ -409,7 +515,8 @@
 
 
                     <!-- Descripción detallada -->
-                    <p id="detalle-descripcion" class="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed border-t border-rose-50 pt-4">
+                    <p id="detalle-descripcion"
+                        class="text-xs sm:text-sm text-stone-600 mt-4 leading-relaxed border-t border-rose-50 pt-4">
                         Descripción del producto...
                     </p>
                 </div>
@@ -419,13 +526,17 @@
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-semibold text-stone-600">Cantidad:</span>
                         <div class="flex items-center border border-rose-200 rounded-full bg-[#FDFBF9]">
-                            <button type="button" onclick="cambiarCantidadDetalle(-1)" class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">-</button>
-                            <span id="detalle-cantidad" class="w-8 text-center text-xs font-bold text-stone-800">1</span>
-                            <button type="button" onclick="cambiarCantidadDetalle(1)" class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">+</button>
+                            <button type="button" onclick="cambiarCantidadDetalle(-1)"
+                                class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">-</button>
+                            <span id="detalle-cantidad"
+                                class="w-8 text-center text-xs font-bold text-stone-800">1</span>
+                            <button type="button" onclick="cambiarCantidadDetalle(1)"
+                                class="w-8 h-8 text-stone-600 hover:text-[#C87D87] font-bold">+</button>
                         </div>
                     </div>
 
-                    <button onclick="agregarDesdeDetalle()" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs tracking-wide">
+                    <button onclick="agregarDesdeDetalle()"
+                        class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs tracking-wide">
                         🛍️ Agregar a Mi Bolsa
                     </button>
                 </div>
@@ -436,10 +547,12 @@
 
 
     <!-- MODAL DE INGRESO Y REGISTRO MAYORISTA ANTI-BOTS -->
-    <div id="modal-mayorista" class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div id="modal-mayorista"
+        class="fixed inset-0 bg-stone-900/50 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-sm w-full p-7 shadow-2xl border border-rose-100 relative">
-            <button onclick="cerrarModalMayorista()" class="absolute top-4 right-5 text-stone-400 hover:text-stone-800 text-2xl">&times;</button>
-            
+            <button onclick="cerrarModalMayorista()"
+                class="absolute top-4 right-5 text-stone-400 hover:text-stone-800 text-2xl">&times;</button>
+
             <div class="text-center mb-5">
                 <span class="text-3xl">👑</span>
                 <h3 class="font-editorial text-2xl text-stone-800 mt-1">Portal Mayoristas</h3>
@@ -448,35 +561,49 @@
 
             <!-- Pestañas Ingresar / Crear Cuenta -->
             <div class="grid grid-cols-2 bg-rose-50 p-1 rounded-full border border-rose-100 mb-5 text-xs font-semibold">
-                <button type="button" id="tab-login-may" onclick="cambiarTabMayorista('login')" class="py-2 rounded-full bg-[#C87D87] text-white transition">Ingresar</button>
-                <button type="button" id="tab-reg-may" onclick="cambiarTabMayorista('registro')" class="py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition">Crear Cuenta</button>
+                <button type="button" id="tab-login-may" onclick="cambiarTabMayorista('login')"
+                    class="py-2 rounded-full bg-[#C87D87] text-white transition">Ingresar</button>
+                <button type="button" id="tab-reg-may" onclick="cambiarTabMayorista('registro')"
+                    class="py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition">Crear Cuenta</button>
             </div>
 
             <!-- FORMULARIO 1: INICIAR SESIÓN -->
-            <form id="form-login-mayorista" onsubmit="event.preventDefault(); iniciarSesionMayorista();" class="space-y-3.5">
-                <input type="text" id="login-may-usuario" required placeholder="Correo electrónico o # de celular" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="password" id="login-may-clave" required placeholder="Tu contraseña" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <button type="submit" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
+            <form id="form-login-mayorista" onsubmit="event.preventDefault(); iniciarSesionMayorista();"
+                class="space-y-3.5">
+                <input type="text" id="login-may-usuario" required placeholder="Correo electrónico o # de celular"
+                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="password" id="login-may-clave" required placeholder="Tu contraseña"
+                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <button type="submit"
+                    class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
                     Ingresar y Activar Precios
                 </button>
             </form>
 
             <!-- FORMULARIO 2: REGISTRO NUEVO CON ESCUDO ANTI-ROBOTS -->
-            <form id="form-registro-mayorista" onsubmit="event.preventDefault(); registrarMayorista();" class="hidden space-y-3">
+            <form id="form-registro-mayorista" onsubmit="event.preventDefault(); registrarMayorista();"
+                class="hidden space-y-3">
                 <!-- Campo trampa invisible (Honeypot) que solo llenan los robots -->
                 <input type="text" id="trampa-robot" class="hidden" tabindex="-1" autocomplete="off">
 
-                <input type="text" id="reg-may-nombre" required placeholder="Tu nombre o nombre de tu tienda" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="text" id="reg-may-contacto" required placeholder="Correo electrónico o # de celular" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="password" id="reg-may-clave" required minlength="6" placeholder="Crea una contraseña (mín. 6 caracteres)" class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                
+                <input type="text" id="reg-may-nombre" required placeholder="Tu nombre o nombre de tu tienda"
+                    class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="text" id="reg-may-contacto" required placeholder="Correo electrónico o # de celular"
+                    class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="password" id="reg-may-clave" required minlength="6"
+                    placeholder="Crea una contraseña (mín. 6 caracteres)"
+                    class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+
                 <!-- Verificación Humana Anti-Robots -->
                 <div class="bg-[#FDFBF9] border border-rose-200 rounded-xl p-3 flex items-center justify-between">
-                    <label class="text-[11px] font-semibold text-stone-600">🤖 Verificación: ¿Cuánto es <span id="pregunta-captcha" class="font-bold text-[#C87D87]"></span>?</label>
-                    <input type="number" id="respuesta-captcha" required placeholder="?" class="w-16 px-2.5 py-1.5 border border-rose-200 rounded-lg text-xs text-center font-bold focus:outline-none focus:border-[#C87D87]">
+                    <label class="text-[11px] font-semibold text-stone-600">🤖 Verificación: ¿Cuánto es <span
+                            id="pregunta-captcha" class="font-bold text-[#C87D87]"></span>?</label>
+                    <input type="number" id="respuesta-captcha" required placeholder="?"
+                        class="w-16 px-2.5 py-1.5 border border-rose-200 rounded-lg text-xs text-center font-bold focus:outline-none focus:border-[#C87D87]">
                 </div>
 
-                <button type="submit" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 rounded-full text-xs shadow transition">
+                <button type="submit"
+                    class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 rounded-full text-xs shadow transition">
                     Crear Cuenta Mayorista ✨
                 </button>
             </form>
@@ -485,14 +612,17 @@
 
     <!-- WIDGET DE CHAT FLOTANTE ESTILO MACALIA -->
     <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-        
+
         <!-- VENTANA DE CHAT DESPLEGABLE (Oculta al inicio) -->
-        <div id="caja-chat-macalia" class="hidden w-80 bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden mb-3 transition-all">
-            
+        <div id="caja-chat-macalia"
+            class="hidden w-80 bg-white rounded-2xl shadow-2xl border border-rose-100 overflow-hidden mb-3 transition-all">
+
             <!-- Encabezado con el color de la marca -->
             <div class="bg-[#C87D87] text-white p-4 flex justify-between items-center">
                 <div class="flex items-center gap-2.5">
-                    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-editorial font-bold text-lg">M</div>
+                    <div
+                        class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-editorial font-bold text-lg">
+                        M</div>
                     <div>
                         <h4 class="font-editorial text-sm font-bold leading-tight">Asesoría Macalia ♡</h4>
                         <p class="text-[10px] text-rose-100 flex items-center gap-1">
@@ -500,13 +630,15 @@
                         </p>
                     </div>
                 </div>
-                <button onclick="alternarChatMacalia()" class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
+                <button onclick="alternarChatMacalia()"
+                    class="text-white/80 hover:text-white text-xl leading-none">&times;</button>
             </div>
 
             <!-- Franja de acceso directo a Asesora Humana en WhatsApp -->
             <div class="bg-[#EFE3E1] px-4 py-2 flex justify-between items-center border-b border-[#E3D1CC]">
                 <span class="text-[10px] text-stone-600">¿Prefieres atención personalizada?</span>
-                <a href="https://wa.me" target="_blank" class="text-[10px] font-bold text-[#C87D87] hover:underline flex items-center gap-1">
+                <a href="https://wa.me" target="_blank"
+                    class="text-[10px] font-bold text-[#C87D87] hover:underline flex items-center gap-1">
                     <span>Ir a WhatsApp</span>
                     <span>↗</span>
                 </a>
@@ -522,16 +654,25 @@
 
                 <!-- Botones de preguntas rápidas -->
                 <div class="flex flex-wrap gap-1.5 pt-1">
-                    <button onclick="enviarDudaRapida('Hola, quiero saber sobre envíos y tiempos de entrega')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">🚚 Envíos</button>
-                    <button onclick="enviarDudaRapida('Hola, quisiera información para ser mayorista')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">👑 Mayoristas</button>
-                    <button onclick="enviarDudaRapida('Hola, necesito asesoría con tonos de maquillaje')" class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">💄 Asesoría</button>
+                    <button onclick="enviarDudaRapida('Hola, quiero saber sobre envíos y tiempos de entrega')"
+                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">🚚
+                        Envíos</button>
+                    <button onclick="enviarDudaRapida('Hola, quisiera información para ser mayorista')"
+                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">👑
+                        Mayoristas</button>
+                    <button onclick="enviarDudaRapida('Hola, necesito asesoría con tonos de maquillaje')"
+                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">💄
+                        Asesoría</button>
                 </div>
             </div>
 
             <!-- Caja para escribir y enviar a WhatsApp -->
-            <form onsubmit="event.preventDefault(); enviarMensajeChat();" class="p-3 bg-white border-t border-rose-100 flex items-center gap-2">
-                <input type="text" id="input-mensaje-chat" placeholder="Escribe tu pregunta aquí..." class="flex-1 px-3 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
-                <button type="submit" title="Enviar a WhatsApp" class="bg-[#C87D87] hover:bg-[#b56a74] text-white p-2 rounded-full transition shadow-sm">
+            <form onsubmit="event.preventDefault(); enviarMensajeChat();"
+                class="p-3 bg-white border-t border-rose-100 flex items-center gap-2">
+                <input type="text" id="input-mensaje-chat" placeholder="Escribe tu pregunta aquí..."
+                    class="flex-1 px-3 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
+                <button type="submit" title="Enviar a WhatsApp"
+                    class="bg-[#C87D87] hover:bg-[#b56a74] text-white p-2 rounded-full transition shadow-sm">
                     <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                         <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
                     </svg>
@@ -540,9 +681,12 @@
         </div>
 
         <!-- BOTÓN FLOTANTE ESTILO BOUTIQUE -->
-        <button onclick="alternarChatMacalia()" class="flex items-center gap-2.5 bg-[#C87D87] hover:bg-[#b56a74] text-white px-4 py-3.5 rounded-full shadow-xl hover:scale-105 transition duration-300 border border-white/30">
+        <button onclick="alternarChatMacalia()"
+            class="flex items-center gap-2.5 bg-[#C87D87] hover:bg-[#b56a74] text-white px-4 py-3.5 rounded-full shadow-xl hover:scale-105 transition duration-300 border border-white/30">
             <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
-                <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z"></path>
+                <path
+                    d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91C21.95 6.45 17.5 2 12.04 2zm5.82 14.01c-.24.68-1.41 1.3-1.95 1.38-.51.08-1.15.11-1.85-.11-.43-.14-.98-.32-1.68-.62-2.95-1.27-4.88-4.24-5.03-4.44-.15-.2-1.2-1.6-1.2-3.05 0-1.45.76-2.16 1.03-2.46.27-.3.59-.37.79-.37.2 0 .39 0 .56.01.18.01.42-.07.66.5.24.59.83 2.02.9 2.17.07.15.12.32.02.52-.1.2-.15.32-.3.5-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.3.76 1.25 1.63 2.02 1.12 1 2.06 1.31 2.36 1.46.3.15.47.12.64-.07.17-.2.74-.86.94-1.16.2-.3.39-.25.66-.15.27.1 1.72.81 2.02.96.3.15.49.22.56.34.08.13.08.73-.16 1.41z">
+                </path>
             </svg>
             <span class="hidden sm:inline text-xs font-bold tracking-wide">¿Ayuda?</span>
         </button>
@@ -552,60 +696,86 @@
 
 
     <script>
-        let TONO_SELECCIONADO = "";
 
-        // Ejemplo de estructura con tonos y foto de aplicación por cada tono
-        const productosMacalia = [
-            { 
-                id: 1, 
-                nombre: "Delineador & Gloss Rose Glow", 
-                categoria: "Maquillaje", 
-                precio: 28000, 
-                emoji: "💄",
-                descripcion: "Fórmula cremosa de larga duración con acabado hidratante. Selecciona cada tono para ver cómo luce aplicado.",
-                fotos: ["💄", "💋", "✨"],
-                tonos: [
-                    { nombre: "ROSE PETAL", color: "#D4848C", foto: "💄" },
-                    { nombre: "TRUFFLE BROWN", color: "#6E3B33", foto: "💋" },
-                    { nombre: "BERRY WINE", color: "#8B2232", foto: "🍷" },
-                    { nombre: "NUDE SILK", color: "#C68B77", foto: "✨" }
-                ]
-            },
-            { 
-                id: 2, 
-                nombre: "Rubor Líquido Pétalo Suave", 
-                categoria: "Maquillaje", 
-                precio: 35000, 
-                emoji: "🌸",
-                descripcion: "Aporta un rubor natural aterciopelado que dura hasta 12 horas en pieles secas o mixtas.",
-                fotos: ["🌸", "🌷", "✨"],
-                tonos: [
-                    { nombre: "PINK BLOSSOM", color: "#F29CA3", foto: "🌸" },
-                    { nombre: "CORAL SUNSET", color: "#E07A5F", foto: "🍑" },
-                    { nombre: "MAUVE DREAM", color: "#A45A68", foto: "🌷" }
-                ]
-            },
-            { 
-                id: 3, 
-                nombre: "Sérum Facial Ácido Hialurónico", 
-                categoria: "Skincare", 
-                precio: 54000, 
-                emoji: "🧴",
-                descripcion: "Hidratación profunda multicapa que prepara tu rostro antes del maquillaje.",
-                fotos: ["🧴", "💧"],
-                tonos: []
-            },
-            { 
-                id: 4, 
-                nombre: "Bruma Corporal Vainilla & Rosa", 
-                categoria: "Fragancias", 
-                precio: 45000, 
-                emoji: "✨",
-                descripcion: "Fragancia dulce y sofisticada con notas de pétalos de rosa y vainilla.",
-                fotos: ["✨", "🌹"],
-                tonos: []
+        const SUPABASE_URL = "https://qcuvuyvdbyzvtswriqws.supabase.co";
+        const SUPABASE_KEY = "sb_publishable_RdgPMIJRPh0dR6N_MdceGA_ABQ65-QZ";
+        const sbTienda = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+        let productosMacalia = [];
+
+        async function cargarCatalogoDesdeSupabase() {
+            const { data, error } = await sbTienda
+                .from("catalogo_web")
+                .select("*")
+                .eq("tienda", "macalia")
+                .eq("disponible", true)
+                .order("id", { ascending: false });
+
+            if (error) {
+                console.error("Error cargando catálogo:", error);
+                return;
             }
-        ];
+
+            // Convertimos cada producto de la nube al formato de la tienda
+            productosMacalia = data.map(p => ({
+                id: p.id,
+                nombre: p.nombre,
+                categoria: p.categoria,
+                precio: Number(p.precio),
+                precio_mayorista: Number(p.precio_mayorista) || Math.round(Number(p.precio) * 0.8),
+                stock: p.stock,
+                descripcion: p.descripcion || "",
+                fotos: (p.fotos && p.fotos.length > 0) ? p.fotos : ["hada.jpeg"],
+                emoji: (p.fotos && p.fotos.length > 0) ? p.fotos[0] : "✨",
+                tonos: p.tonos || []
+            }));
+
+            generarBotonesCategoriasDinamicas();
+            mostrarProductos(productosMacalia);
+        }
+
+        function generarBotonesCategoriasDinamicas() {
+            const categoriasUnicas = ["Todos", ...new Set(productosMacalia.map(p => p.categoria))];
+
+            // 1. Llenar botones de filtro si existen
+            const contenedorCats = document.getElementById("filtros-categorias");
+            if (contenedorCats) {
+                contenedorCats.innerHTML = categoriasUnicas.map(cat => `
+                    <button onclick="filtrarPorCategoria('${cat}')" class="px-5 py-2 rounded-full text-xs font-semibold border border-rose-200 bg-white hover:bg-[#C87D87] hover:text-white text-stone-700 transition shadow-sm">
+                        ${cat}
+                    </button>
+                `).join("");
+            }
+
+            // 2. Llenar menú desplegable de arriba (Productos ▼)
+            const menuHeader = document.getElementById("menu-categorias-dinamicas");
+            if (menuHeader) {
+                const soloCategorias = [...new Set(productosMacalia.map(p => p.categoria))];
+                menuHeader.innerHTML = `
+                    <button onclick="filtrarPorCategoria('Todos')" class="w-full text-left px-4 py-2.5 text-xs font-semibold text-[#C87D87] hover:bg-rose-50 transition border-b border-rose-50">✨ Ver Todo el Catálogo</button>
+                    ${soloCategorias.map(cat => `
+                        <button onclick="filtrarPorCategoria('${cat}')" class="w-full text-left px-4 py-2.5 text-xs text-stone-700 hover:bg-rose-50 hover:text-[#C87D87] transition capitalize">
+                            ${cat}
+                        </button>
+                    `).join("")}
+                `;
+            }
+        }
+
+
+        function filtrarPorCategoria(cat) {
+            if (cat === "Todos") {
+                mostrarProductos(productosMacalia);
+            } else {
+                mostrarProductos(productosMacalia.filter(p => p.categoria.toLowerCase() === cat.toLowerCase()));
+            }
+
+            const seccionCatalogo = document.getElementById("catalogo");
+            if (seccionCatalogo) {
+                seccionCatalogo.scrollIntoView({ behavior: "smooth" });
+            }
+        }
+
 
 
 
@@ -649,10 +819,17 @@
                 grid.innerHTML += `
                     <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
                         <div onclick="abrirDetalleProducto(${p.id})" class="cursor-pointer">
-                            <div class="h-44 bg-[#FDF6F7] rounded-xl flex items-center justify-center text-5xl mb-4 group-hover:scale-105 transition">${p.emoji}</div>
-                            <span class="text-[10px] uppercase tracking-widest text-[#C87D87] font-bold">${p.categoria}</span>
-                            <h3 class="font-editorial text-lg text-stone-800 font-semibold mt-1">${p.nombre}</h3>
-                        </div>
+                            <div class="h-52 bg-[#FDF6F7] rounded-xl overflow-hidden flex items-center justify-center mb-4">
+                                ${p.emoji.startsWith("http") || p.emoji.includes(".")
+                        ? `<img src="${p.emoji}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
+                        : `<span class="text-5xl group-hover:scale-105 transition">${p.emoji}</span>`}
+                                </div>    
+                                <span class="text-[10px] uppercase tracking-widest text-[#C87D87] font-bold">${p.categoria}</span>
+                                <h3 class="font-editorial text-lg text-stone-800 font-semibold mt-1">${p.nombre}</h3>
+
+
+                            </div>
+
                         <div class="mt-4 pt-3 border-t border-rose-50 flex justify-between items-center">
                             <div>
                                 ${ES_MAYORISTA ? `<span class="block text-[10px] line-through text-stone-400">$${p.precio.toLocaleString()}</span>` : ''}
@@ -668,7 +845,8 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-rose-50/40 transition">
                         <td onclick="abrirDetalleProducto(${p.id})" class="py-3.5 px-5 flex items-center gap-3 cursor-pointer hover:text-[#C87D87] transition">
-                            <span class="text-2xl bg-[#FDF6F7] w-10 h-10 flex items-center justify-center rounded-xl border border-rose-100">${p.emoji}</span>
+                            <img src="${p.emoji}" alt="${p.nombre}" class="w-10 h-10 object-cover rounded-xl border border-rose-100">
+
                             <span class="font-editorial font-semibold text-stone-800">${p.nombre}</span>
                         </td>
                         <td class="py-3.5 px-4"><span class="text-xs bg-rose-50 text-[#C87D87] font-semibold px-2.5 py-1 rounded-full">${p.categoria}</span></td>
@@ -701,7 +879,7 @@
             if (!nombre || !ciudad) return alert("⚠️ Por favor completa tu nombre y dirección de envío antes de pagar.");
 
             const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-            
+
             // Aquí conectaremos tu Llave Pública real de Wompi (pub_prod_...) cuando crees tu cuenta en comercios.wompi.co
             alert(`💳 Conectando con Pasarela Wompi Colombia...\n\nCliente: ${nombre}\nEnvío: ${ciudad}\nTotal a cobrar: $${total.toLocaleString()} COP\n\n(Listo para insertar tu Llave Pública de Wompi y abrir Nequi / PSE / Tarjetas).`);
         }
@@ -770,12 +948,12 @@
             if (existente) {
                 existente.cantidad += 1;
             } else {
-                bolsa.push({ 
-                    ...prod, 
+                bolsa.push({
+                    ...prod,
                     claveUnica,
                     tono: tonoFinal,
-                    precio: precioFinal, 
-                    cantidad: 1 
+                    precio: precioFinal,
+                    cantidad: 1
                 });
             }
 
@@ -797,7 +975,7 @@
             const lista = document.getElementById("lista-bolsa");
             const totalEl = document.getElementById("total-bolsa");
             const contadorEl = document.getElementById("contador-bolsa");
-            
+
             lista.innerHTML = "";
             let total = 0;
             let totalItems = 0;
@@ -846,11 +1024,11 @@
             if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
             const nombre = document.getElementById("cliente-nombre-web").value || "Cliente Web";
             const ciudad = document.getElementById("cliente-ciudad-web").value || "Sin dirección";
-            
+
             let resumen = `Hola Macalia ♡ Quiero hacer este pedido:\n\n`;
             bolsa.forEach(i => resumen += `• ${i.cantidad}x ${i.nombre} ($${(i.precio * i.cantidad).toLocaleString()})\n`);
             resumen += `\nTotal: ${document.getElementById("total-bolsa").innerText}\nNombre: ${nombre}\nEnvío: ${ciudad}`;
-            
+
             alert("✨ Pedido armado:\n\n" + resumen);
         }
 
@@ -873,7 +1051,7 @@
                 return;
             }
 
-            const coincidencias = productosMacalia.filter(p => 
+            const coincidencias = productosMacalia.filter(p =>
                 p.nombre.toLowerCase().includes(consulta) || p.categoria.toLowerCase().includes(consulta)
             );
 
@@ -976,7 +1154,7 @@
 
             // Guardamos temporalmente en el navegador mientras lo conectamos a Supabase
             localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto, clave }));
-            
+
             activarBeneficioMayorista(nombre);
             alert(`🎉 ¡Cuenta creada con éxito, ${nombre}! Ya tienes activos los precios mayoristas.`);
         }
@@ -1116,8 +1294,8 @@
         function seleccionarFotoDetalle(foto) {
             const visor = document.getElementById("detalle-foto-principal");
             const esUrl = foto.startsWith("http") || foto.includes(".");
-            visor.innerHTML = esUrl 
-                ? `<img src="${foto}" class="w-full h-full object-cover">` 
+            visor.innerHTML = esUrl
+                ? `<img src="${foto}" class="w-full h-full object-cover">`
                 : `<span class="text-7xl">${foto}</span>`;
         }
 
@@ -1174,7 +1352,7 @@
         function elegirTonoDetalle(nombreTono, fotoTono, boton) {
             TONO_SELECCIONADO = nombreTono;
             document.getElementById("detalle-nombre-tono").innerText = nombreTono;
-            
+
             // Si ese tono tiene una foto específica (ej. labios pintados), cambia la foto principal
             if (fotoTono) seleccionarFotoDetalle(fotoTono);
 
@@ -1205,8 +1383,8 @@
             });
 
             dots.forEach((d, i) => {
-                d.className = i === SLIDE_ACTUAL 
-                    ? "dot-portada w-6 h-2.5 rounded-full bg-[#C87D87] transition-all" 
+                d.className = i === SLIDE_ACTUAL
+                    ? "dot-portada w-6 h-2.5 rounded-full bg-[#C87D87] transition-all"
                     : "dot-portada w-2.5 h-2.5 rounded-full bg-white/70 hover:bg-[#C87D87] transition-all";
             });
         }
@@ -1221,8 +1399,10 @@
 
 
 
-        mostrarProductos(productosMacalia);
+        cargarCatalogoDesdeSupabase();
+
 
     </script>
 </body>
+
 </html>
