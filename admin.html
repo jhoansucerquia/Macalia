@@ -302,7 +302,10 @@
 
 
 
-        async function subirArchivoStorage(archivo) {
+        async function subirArchivoStorage(entrada) {
+            const archivo = (entrada && entrada.length !== undefined) ? entrada.item(0) : entrada;
+            if (!archivo || !archivo.name) return "";
+
             const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${archivo.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
             const { error } = await sb.storage.from("fotos-productos").upload(nombreUnico, archivo);
             if (error) throw error;
