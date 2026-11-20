@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,13 +15,24 @@
 
 
     <style>
-        .font-editorial { font-family: 'Playfair Display', serif; }
-        .font-cursiva { font-family: 'Great Vibes', cursive; }
-        .font-logo { font-family: 'Cedarville Cursive', cursive; }
+        .font-editorial {
+            font-family: 'Playfair Display', serif;
+        }
 
-        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-cursiva {
+            font-family: 'Great Vibes', cursive;
+        }
+
+        .font-logo {
+            font-family: 'Cedarville Cursive', cursive;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
     </style>
 </head>
+
 <body class="bg-[#FDFBF9] text-stone-800 min-h-screen">
 
     <!-- PANTALLA DE ACCESO PRIVADO PARA LA DUEÑA -->
@@ -29,88 +41,119 @@
             <img src="logo-macalia.svg" alt="Macalia" class="h-14 mx-auto mb-3">
             <h1 class="font-editorial text-2xl text-stone-800">Panel Administrativo</h1>
             <p class="text-xs text-stone-500 mt-1 mb-6">Ingresa la clave maestra para gestionar el catálogo</p>
-            <form onsubmit="event.preventDefault(); verificarAccesoAdmin();" class="space-y-4">
-                <input type="password" id="clave-admin-input" required placeholder="Contraseña de administradora" class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs text-center focus:outline-none focus:border-[#C87D87]">
-                <button type="submit" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
+
+            <form onsubmit="event.preventDefault(); verificarAccesoAdmin();" class="space-y-3">
+                <input type="email" id="email-admin-input" required placeholder="Correo de administradora"
+                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <input type="password" id="clave-admin-input" required placeholder="Contraseña"
+                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                <button type="submit" id="btn-login-admin"
+                    class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
                     Entrar al Panel ✨
                 </button>
             </form>
-            <a href="index.html" class="inline-block mt-5 text-[11px] text-stone-400 hover:text-[#C87D87]">← Volver a la tienda pública</a>
+
+            <a href="index.html" class="inline-block mt-5 text-[11px] text-stone-400 hover:text-[#C87D87]">← Volver a la
+                tienda pública</a>
         </div>
     </div>
     <!-- PANEL PRINCIPAL DE GESTIÓN -->
     <div id="contenido-admin" class="hidden">
-        <header class="bg-[#eddedb] border-b border-[#dfd0cd] px-6 py-4 flex justify-between items-center sticky top-0 z-30">
+        <header
+            class="bg-[#eddedb] border-b border-[#dfd0cd] px-6 py-4 flex justify-between items-center sticky top-0 z-30">
             <div class="flex items-center gap-3">
                 <img src="logo-macalia.svg" alt="Macalia" class="h-10">
-                <span class="text-xs font-bold uppercase tracking-widest text-[#C87D87] hidden sm:inline">| Catálogo en Vivo</span>
+                <span class="text-xs font-bold uppercase tracking-widest text-[#C87D87] hidden sm:inline">| Catálogo en
+                    Vivo</span>
             </div>
             <div class="flex items-center gap-3">
-                <a href="index.html" target="_blank" class="bg-white text-stone-700 hover:text-[#C87D87] text-xs font-semibold px-4 py-2 rounded-full border border-rose-200 transition">Ver Tienda ↗</a>
+                <a href="index.html" target="_blank"
+                    class="bg-white text-stone-700 hover:text-[#C87D87] text-xs font-semibold px-4 py-2 rounded-full border border-rose-200 transition">Ver
+                    Tienda ↗</a>
                 <button onclick="cerrarSesionAdmin()" class="text-xs text-stone-500 hover:text-stone-900">Salir</button>
             </div>
         </header>
 
         <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
-            
+
             <!-- FORMULARIO PARA SUBIR NUEVO PRODUCTO -->
             <section class="lg:col-span-5 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm h-fit">
                 <h2 class="font-editorial text-2xl text-stone-800 mb-1">Subir Nuevo Producto</h2>
                 <p class="text-xs text-stone-400 mb-5">Completa los datos y sube las fotos desde tu galería</p>
 
-                <form id="form-producto-macalia" onsubmit="event.preventDefault(); guardarProductoNube();" class="space-y-4 text-xs">
+                <form id="form-producto-macalia" onsubmit="event.preventDefault(); guardarProductoNube();"
+                    class="space-y-4 text-xs">
                     <div>
                         <label class="font-bold text-stone-600 block mb-1">Nombre del producto *</label>
-                        <input type="text" id="prod-nombre" required placeholder="Ej. Gloss Hidratante Rose Glow" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        <input type="text" id="prod-nombre" required placeholder="Ej. Gloss Hidratante Rose Glow"
+                            class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="font-bold text-stone-600 block mb-1">Categoría *</label>
-                            <input type="text" id="prod-categoria" required list="lista-categorias-sug" placeholder="Ej. Labios, Bases..." class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="text" id="prod-categoria" required list="lista-categorias-sug"
+                                placeholder="Ej. Labios, Bases..."
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
                             <datalist id="lista-categorias-sug">
-                                <option value="Labios"><option value="Rostro"><option value="Ojos"><option value="Brochas"><option value="Skincare"><option value="Cabello">
+                                <option value="Labios">
+                                <option value="Rostro">
+                                <option value="Ojos">
+                                <option value="Brochas">
+                                <option value="Skincare">
+                                <option value="Cabello">
                             </datalist>
                         </div>
                         <div>
                             <label class="font-bold text-stone-600 block mb-1">Inventario (Stock)</label>
-                            <input type="number" id="prod-stock" value="10" min="0" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="number" id="prod-stock" value="10" min="0"
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
                         <div>
                             <label class="font-bold text-stone-600 block mb-1">Precio Venta ($) *</label>
-                            <input type="number" id="prod-precio" required placeholder="28000" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="number" id="prod-precio" required placeholder="28000"
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
                         </div>
                         <div>
                             <label class="font-bold text-stone-600 block mb-1">Precio Mayorista ($)</label>
-                            <input type="number" id="prod-mayorista" placeholder="22000" class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="number" id="prod-mayorista" placeholder="22000"
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
                         </div>
                     </div>
 
                     <div>
                         <label class="font-bold text-stone-600 block mb-1">Descripción y beneficios</label>
-                        <textarea id="prod-descripcion" rows="2" placeholder="Describe su acabado, textura o modo de uso..." class="w-full px-3.5 py-2 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]"></textarea>
+                        <textarea id="prod-descripcion" rows="2"
+                            placeholder="Describe su acabado, textura o modo de uso..."
+                            class="w-full px-3.5 py-2 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]"></textarea>
                     </div>
 
                     <!-- SUBIDA DE FOTOS PRINCIPALES -->
                     <div class="bg-[#FDF6F7] p-3.5 rounded-2xl border border-rose-200/70">
-                        <label class="font-bold text-[#C87D87] block mb-1">📸 Fotos del Producto (puedes elegir varias)</label>
-                        <input type="file" id="prod-fotos" accept="image/*" multiple required class="w-full text-[11px] text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-[#C87D87] file:text-white file:font-semibold">
+                        <label class="font-bold text-[#C87D87] block mb-1">📸 Fotos del Producto (puedes elegir
+                            varias)</label>
+                        <input type="file" id="prod-fotos" accept="image/*" multiple required
+                            class="w-full text-[11px] text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-[#C87D87] file:text-white file:font-semibold">
                     </div>
 
                     <!-- SECCIÓN OPCIONAL DE TONOS CON GOTERO VISUAL -->
                     <div class="bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100">
                         <div class="flex justify-between items-center mb-2">
                             <label class="font-bold text-stone-700">🎨 Tonos disponibles (Opcional)</label>
-                            <button type="button" onclick="agregarFilaTono()" class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+ Agregar Tono</button>
+                            <button type="button" onclick="agregarFilaTono()"
+                                class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+
+                                Agregar Tono</button>
                         </div>
-                        <p class="text-[10px] text-stone-400 mb-2">Usa el gotero del cuadrito de color para capturar el tono exacto de tu foto.</p>
+                        <p class="text-[10px] text-stone-400 mb-2">Usa el gotero del cuadrito de color para capturar el
+                            tono exacto de tu foto.</p>
                         <div id="contenedor-filas-tonos" class="space-y-2"></div>
                     </div>
 
-                    <button type="submit" id="btn-guardar-prod" class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition">
+                    <button type="submit" id="btn-guardar-prod"
+                        class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition">
                         Publicar en la Tienda ✨
                     </button>
                 </form>
@@ -120,7 +163,8 @@
             <section class="lg:col-span-7 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="font-editorial text-2xl text-stone-800">Productos Publicados</h2>
-                    <span id="contador-admin-prod" class="text-xs bg-rose-50 text-[#C87D87] font-bold px-3 py-1 rounded-full">0 productos</span>
+                    <span id="contador-admin-prod"
+                        class="text-xs bg-rose-50 text-[#C87D87] font-bold px-3 py-1 rounded-full">0 productos</span>
                 </div>
                 <div id="lista-admin-productos" class="space-y-3 max-h-[650px] overflow-y-auto pr-1">
                     <p class="text-xs text-stone-400 text-center py-10">Cargando catálogo desde Supabase...</p>
@@ -129,6 +173,83 @@
 
         </main>
     </div>
+
+    <!-- MODAL COMPLETO PARA EDITAR TODO EL PRODUCTO -->
+    <div id="modal-editar-prod"
+        class="hidden fixed inset-0 z-50 bg-stone-900/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
+        <div
+            class="bg-white rounded-3xl p-6 max-w-lg w-full shadow-2xl border border-rose-100 space-y-4 text-xs my-8 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-rose-50 pb-3">
+                <h3 class="font-editorial text-xl text-stone-800">Editar Producto Completo</h3>
+                <button onclick="document.getElementById('modal-editar-prod').classList.add('hidden')"
+                    class="text-stone-400 hover:text-stone-800 text-lg">&times;</button>
+            </div>
+
+            <input type="hidden" id="edit-id">
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                    <label class="font-bold text-stone-600 block mb-1">Nombre</label>
+                    <input type="text" id="edit-nombre" class="w-full px-3.5 py-2 border border-rose-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="font-bold text-stone-600 block mb-1">Categoría</label>
+                    <input type="text" id="edit-categoria" list="lista-categorias-sug"
+                        class="w-full px-3.5 py-2 border border-rose-200 rounded-xl">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-3 gap-2">
+                <div>
+                    <label class="font-bold text-stone-600 block mb-1">Precio ($)</label>
+                    <input type="number" id="edit-precio" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="font-bold text-stone-600 block mb-1">Mayorista ($)</label>
+                    <input type="number" id="edit-mayorista" class="w-full px-3 py-2 border border-rose-200 rounded-xl">
+                </div>
+                <div>
+                    <label class="font-bold text-[#C87D87] block mb-1">Stock actual</label>
+                    <input type="number" id="edit-stock"
+                        class="w-full px-3 py-2 border border-rose-300 rounded-xl font-bold">
+                </div>
+            </div>
+
+            <div>
+                <label class="font-bold text-stone-600 block mb-1">Descripción</label>
+                <textarea id="edit-descripcion" rows="2"
+                    class="w-full px-3.5 py-2 border border-rose-200 rounded-xl"></textarea>
+            </div>
+
+            <!-- GESTIÓN DE FOTOS ACTUALES Y NUEVAS -->
+            <div class="bg-[#FDF6F7] p-3.5 rounded-2xl border border-rose-200/70 space-y-2">
+                <label class="font-bold text-[#C87D87] block">📸 Fotos actuales (toca × para quitar una)</label>
+                <div id="edit-lista-fotos-actuales" class="flex flex-wrap gap-2"></div>
+                <label class="font-bold text-stone-600 block pt-1">Agregar más fotos principales (opcional):</label>
+                <input type="file" id="edit-nuevas-fotos" accept="image/*" multiple
+                    class="w-full text-[11px] text-stone-600 file:mr-2 file:py-1 file:px-2.5 file:rounded-full file:border-0 file:bg-[#C87D87] file:text-white">
+            </div>
+
+            <!-- EDITOR DE TONOS Y COLORES -->
+            <div class="bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100 space-y-2">
+                <div class="flex justify-between items-center">
+                    <label class="font-bold text-stone-700">🎨 Tonos y Colores</label>
+                    <button type="button" onclick="agregarFilaTonoEdicion()"
+                        class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+
+                        Nuevo Tono</button>
+                </div>
+                <div id="edit-contenedor-tonos" class="space-y-2"></div>
+            </div>
+
+            <button type="button" id="btn-guardar-edicion" onclick="guardarEdicionProducto()"
+                class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full shadow transition">
+                Guardar Todos los Cambios ✨
+            </button>
+        </div>
+    </div>
+
+
+
     <script>
         // PEGA AQUÍ TUS CREDENCIALES REALES DE SUPABASE
         const SUPABASE_URL = "https://qcuvuyvdbyzvtswriqws.supabase.co";
@@ -137,20 +258,39 @@
 
         const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        function verificarAccesoAdmin() {
-            const clave = document.getElementById("clave-admin-input").value;
-            if (clave === CLAVE_MAESTRA) {
-                sessionStorage.setItem("macalia_admin_ok", "1");
-                mostrarPanelAdmin();
-            } else {
-                alert("❌ Contraseña incorrecta.");
+        async function verificarAccesoAdmin() {
+            const btn = document.getElementById("btn-login-admin");
+            const email = document.getElementById("email-admin-input").value.trim();
+            const password = document.getElementById("clave-admin-input").value;
+
+            btn.disabled = true;
+            btn.innerText = "Verificando credenciales... ⏳";
+
+            const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+            btn.disabled = false;
+            btn.innerText = "Entrar al Panel ✨";
+
+            if (error) {
+                alert("❌ Correo o contraseña incorrectos.");
+                return;
             }
+            mostrarPanelAdmin();
         }
 
-        function cerrarSesionAdmin() {
-            sessionStorage.removeItem("macalia_admin_ok");
+        async function cerrarSesionAdmin() {
+            await sb.auth.signOut();
             location.reload();
         }
+
+        async function revisarSesionActiva() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session) mostrarPanelAdmin();
+        }
+        revisarSesionActiva();
+
+
+
 
         function mostrarPanelAdmin() {
             document.getElementById("pantalla-login-admin").classList.add("hidden");
@@ -160,18 +300,7 @@
 
         if (sessionStorage.getItem("macalia_admin_ok") === "1") mostrarPanelAdmin();
 
-        function agregarFilaTono() {
-            const cont = document.getElementById("contenedor-filas-tonos");
-            const div = document.createElement("div");
-            div.className = "fila-tono flex items-center gap-2 bg-white p-2 rounded-xl border border-rose-100";
-            div.innerHTML = `
-                <input type="color" value="#C87D87" title="Toca para elegir color o usar gotero" class="tono-color w-8 h-8 rounded-lg cursor-pointer border-0">
-                <input type="text" placeholder="Nombre (ej. Rose Petal)" class="tono-nombre flex-1 px-2.5 py-1.5 border border-rose-100 rounded-lg text-[11px]">
-                <input type="file" accept="image/*" title="Foto de este tono aplicado" class="tono-foto w-28 text-[10px]">
-                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
-            `;
-            cont.appendChild(div);
-        }
+        
 
         async function subirArchivoStorage(archivo) {
             const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${archivo.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
@@ -179,6 +308,98 @@
             if (error) throw error;
             const { data } = sb.storage.from("fotos-productos").getPublicUrl(nombreUnico);
             return data.publicUrl;
+        }
+
+  
+
+        async function cargarProductosAdmin() {
+            const lista = document.getElementById("lista-admin-productos");
+            const { data, error } = await sb.from("catalogo_web").select("*").eq("tienda", "macalia").order("id", { ascending: false });
+
+            if (error) return lista.innerHTML = `<p class="text-xs text-red-500">Error de conexión: ${error.message}</p>`;
+
+            document.getElementById("contador-admin-prod").innerText = `${data.length} productos`;
+            if (data.length === 0) {
+                return lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Aún no has subido productos. Usa el formulario de la izquierda ✨</p>`;
+            }
+
+            lista.innerHTML = data.map(p => `
+                <div class="flex items-center justify-between p-3 bg-[#FDFBF9] rounded-2xl border border-rose-100">
+                    <div class="flex items-center gap-3">
+                        <img src="${(p.fotos && p.fotos[0]) || 'hada.jpeg'}" class="w-12 h-12 rounded-xl object-cover border border-rose-100">
+                        <div>
+                            <p class="font-editorial font-bold text-sm text-stone-800">${p.nombre}</p>
+                            <p class="text-[11px] text-stone-500">${p.categoria} • <b class="text-[#C87D87]">$${Number(p.precio).toLocaleString()}</b> • Stock: ${p.stock}</p>
+                        </div>
+                    <div class="flex items-center gap-2">
+                    <button onclick='abrirEditarProducto(${JSON.stringify(p)})' class="text-xs text-[#C87D87] hover:underline font-semibold px-2 py-1">Editar</button>
+                    <button onclick="eliminarProductoAdmin(${p.id})" class="text-xs text-red-400 hover:text-red-600 font-semibold px-2 py-1">Borrar</button>
+                </div>
+            `).join("");
+        }
+
+        async function eliminarProductoAdmin(id) {
+            if (!confirm("¿Seguro que deseas eliminar este producto de la tienda?")) return;
+            await sb.from("catalogo_web").delete().eq("id", id);
+            cargarProductosAdmin();
+        }
+
+
+        let FOTOS_EDITANDO = [];
+
+        function renderizarFotosEdicion() {
+            const cont = document.getElementById("edit-lista-fotos-actuales");
+            if (FOTOS_EDITANDO.length === 0) {
+                cont.innerHTML = `<span class="text-[11px] text-stone-400">Sin fotos principales</span>`;
+                return;
+            }
+            cont.innerHTML = FOTOS_EDITANDO.map((url, idx) => `
+                <div class="relative w-14 h-14 rounded-xl overflow-hidden border border-rose-200 group">
+                    <img src="${url}" class="w-full h-full object-cover">
+                    <button type="button" onclick="FOTOS_EDITANDO.splice(${idx}, 1); renderizarFotosEdicion();" class="absolute top-0.5 right-0.5 bg-red-500 text-white w-4 h-4 rounded-full text-[10px] flex items-center justify-center shadow">&times;</button>
+                </div>
+            `).join("");
+        }
+
+ 
+
+        function abrirEditarProducto(p) {
+            document.getElementById("edit-id").value = p.id;
+            document.getElementById("edit-nombre").value = p.nombre;
+            document.getElementById("edit-categoria").value = p.categoria || "";
+            document.getElementById("edit-precio").value = p.precio;
+            document.getElementById("edit-mayorista").value = p.precio_mayorista || 0;
+            document.getElementById("edit-stock").value = p.stock;
+            document.getElementById("edit-descripcion").value = p.descripcion || "";
+            document.getElementById("edit-nuevas-fotos").value = "";
+
+            FOTOS_EDITANDO = Array.isArray(p.fotos) ? [...p.fotos] : [];
+            renderizarFotosEdicion();
+
+            const contTonos = document.getElementById("edit-contenedor-tonos");
+            contTonos.innerHTML = "";
+            if (Array.isArray(p.tonos)) {
+                p.tonos.forEach(t => agregarFilaTonoEdicion(t));
+            }
+
+            document.getElementById("modal-editar-prod").classList.remove("hidden");
+        }
+
+
+
+
+        function agregarFilaTono() {
+            const cont = document.getElementById("contenedor-filas-tonos");
+            const div = document.createElement("div");
+            div.className = "fila-tono flex items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
+            div.innerHTML = `
+                <input type="color" value="#C87D87" title="Color o gotero" class="tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
+                <input type="text" placeholder="Tono (ej. Sweet)" class="tono-nombre flex-1 min-w-0 px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
+                <input type="number" value="10" min="0" title="Stock de este tono" class="tono-stock w-14 px-1.5 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
+                <input type="file" accept="image/*" title="Foto del tono" class="tono-foto w-20 text-[10px]">
+                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
+            `;
+            cont.appendChild(div);
         }
 
         async function guardarProductoNube() {
@@ -199,13 +420,14 @@
                 for (let fila of filasTonos) {
                     const nombreTono = fila.querySelector(".tono-nombre").value.trim();
                     const colorTono = fila.querySelector(".tono-color").value;
-                    const archivoFotoTono = fila.querySelector(".tono-foto").files[0];
+                    const stockTono = parseInt(fila.querySelector(".tono-stock").value) || 0;
+                    const archivoFotoTono = fila.querySelector(".tono-foto").files;
                     if (nombreTono) {
-                        let urlFotoTono = urlsFotos[0];
+                        let urlFotoTono = urlsFotos;
                         if (archivoFotoTono) {
                             urlFotoTono = await subirArchivoStorage(archivoFotoTono);
                         }
-                        listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, foto: urlFotoTono });
+                        listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, stock: stockTono, foto: urlFotoTono });
                     }
                 }
 
@@ -237,36 +459,80 @@
             }
         }
 
-        async function cargarProductosAdmin() {
-            const lista = document.getElementById("lista-admin-productos");
-            const { data, error } = await sb.from("catalogo_web").select("*").eq("tienda", "macalia").order("id", { ascending: false });
-            
-            if (error) return lista.innerHTML = `<p class="text-xs text-red-500">Error de conexión: ${error.message}</p>`;
+        function agregarFilaTonoEdicion(tono = { nombre: "", color: "#C87D87", stock: 10, foto: "" }) {
+            const cont = document.getElementById("edit-contenedor-tonos");
+            const div = document.createElement("div");
+            div.className = "edit-fila-tono flex items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
+            div.dataset.fotoActual = tono.foto || "";
+            div.innerHTML = `
+                <input type="color" value="${tono.color || '#C87D87'}" title="Color o gotero" class="edit-tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
+                <input type="text" value="${tono.nombre || ''}" placeholder="Tono" class="edit-tono-nombre flex-1 min-w-0 px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
+                <input type="number" value="${tono.stock !== undefined ? tono.stock : 10}" min="0" title="Stock de este tono" class="edit-tono-stock w-14 px-1.5 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
+                ${tono.foto ? `<img src="${tono.foto}" class="w-6 h-6 rounded-md object-cover border border-rose-100 shrink-0">` : ''}
+                <input type="file" accept="image/*" title="Cambiar foto" class="edit-tono-foto w-20 text-[10px]">
+                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
+            `;
+            cont.appendChild(div);
+        }
 
-            document.getElementById("contador-admin-prod").innerText = `${data.length} productos`;
-            if (data.length === 0) {
-                return lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Aún no has subido productos. Usa el formulario de la izquierda ✨</p>`;
+        async function guardarEdicionProducto() {
+            const btn = document.getElementById("btn-guardar-edicion");
+            btn.disabled = true;
+            btn.innerText = "Guardando cambios... ⏳";
+
+            try {
+                const id = document.getElementById("edit-id").value;
+                const archivosNuevos = document.getElementById("edit-nuevas-fotos").files;
+                for (let file of archivosNuevos) {
+                    const url = await subirArchivoStorage(file);
+                    FOTOS_EDITANDO.push(url);
+                }
+
+                const filas = document.querySelectorAll(".edit-fila-tono");
+                const tonosActualizados = [];
+                for (let fila of filas) {
+                    const nombre = fila.querySelector(".edit-tono-nombre").value.trim();
+                    const color = fila.querySelector(".edit-tono-color").value;
+                    const stockTono = parseInt(fila.querySelector(".edit-tono-stock").value) || 0;
+                    const inputArchivo = fila.querySelector(".edit-tono-foto").files;
+                    let fotoUrl = fila.dataset.fotoActual || (FOTOS_EDITANDO || "");
+
+                    if (inputArchivo) {
+                        fotoUrl = await subirArchivoStorage(inputArchivo);
+                    }
+                    if (nombre) {
+                        tonosActualizados.push({ nombre: nombre.toUpperCase(), color, stock: stockTono, foto: fotoUrl });
+                    }
+                }
+
+                const cambios = {
+                    nombre: document.getElementById("edit-nombre").value.trim(),
+                    categoria: document.getElementById("edit-categoria").value.trim(),
+                    precio: parseFloat(document.getElementById("edit-precio").value),
+                    precio_mayorista: parseFloat(document.getElementById("edit-mayorista").value) || 0,
+                    stock: parseInt(document.getElementById("edit-stock").value) || 0,
+                    descripcion: document.getElementById("edit-descripcion").value.trim(),
+                    fotos: FOTOS_EDITANDO,
+                    tonos: tonosActualizados
+                };
+
+                const { error } = await sb.from("catalogo_web").update(cambios).eq("id", id);
+                if (error) throw error;
+
+                document.getElementById("modal-editar-prod").classList.add("hidden");
+                cargarProductosAdmin();
+                alert("✅ ¡Producto, fotos y stock por tono actualizados!");
+            } catch (err) {
+                alert("❌ Error al actualizar: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerText = "Guardar Todos los Cambios ✨";
             }
-
-            lista.innerHTML = data.map(p => `
-                <div class="flex items-center justify-between p-3 bg-[#FDFBF9] rounded-2xl border border-rose-100">
-                    <div class="flex items-center gap-3">
-                        <img src="${(p.fotos && p.fotos[0]) || 'hada.jpeg'}" class="w-12 h-12 rounded-xl object-cover border border-rose-100">
-                        <div>
-                            <p class="font-editorial font-bold text-sm text-stone-800">${p.nombre}</p>
-                            <p class="text-[11px] text-stone-500">${p.categoria} • <b class="text-[#C87D87]">$${Number(p.precio).toLocaleString()}</b> • Stock: ${p.stock}</p>
-                        </div>
-                    </div>
-                    <button onclick="eliminarProductoAdmin(${p.id})" class="text-xs text-red-400 hover:text-red-600 font-semibold px-3 py-1">Borrar</button>
-                </div>
-            `).join("");
         }
 
-        async function eliminarProductoAdmin(id) {
-            if (!confirm("¿Seguro que deseas eliminar este producto de la tienda?")) return;
-            await sb.from("catalogo_web").delete().eq("id", id);
-            cargarProductosAdmin();
-        }
+
+
     </script>
 </body>
+
 </html>

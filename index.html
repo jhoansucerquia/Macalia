@@ -1317,52 +1317,8 @@
         }
 
 
-        function cargarTonosDetalle(prod) {
-            const contenedor = document.getElementById("contenedor-tonos-detalle");
-            const listaBolitas = document.getElementById("detalle-bolitas-tonos");
-            const labelNombre = document.getElementById("detalle-nombre-tono");
 
-            if (!prod.tonos || prod.tonos.length === 0) {
-                contenedor.classList.add("hidden");
-                TONO_SELECCIONADO = "";
-                return;
-            }
-
-            contenedor.classList.remove("hidden");
-            listaBolitas.innerHTML = "";
-
-            prod.tonos.forEach((t, index) => {
-                const activo = index === 0;
-                if (activo) {
-                    TONO_SELECCIONADO = t.nombre;
-                    labelNombre.innerText = t.nombre;
-                    if (t.foto) seleccionarFotoDetalle(t.foto);
-                }
-
-                listaBolitas.innerHTML += `
-                    <button type="button" 
-                        onclick="elegirTonoDetalle('${t.nombre}', '${t.foto || ''}', this)" 
-                        style="background-color: ${t.color};"
-                        title="${t.nombre}"
-                        class="bolita-tono w-7 h-7 rounded-full border-2 transition transform hover:scale-110 ${activo ? 'ring-2 ring-offset-2 ring-stone-800 border-white' : 'border-white shadow-sm'}">
-                    </button>`;
-            });
-        }
-
-        function elegirTonoDetalle(nombreTono, fotoTono, boton) {
-            TONO_SELECCIONADO = nombreTono;
-            document.getElementById("detalle-nombre-tono").innerText = nombreTono;
-
-            // Si ese tono tiene una foto específica (ej. labios pintados), cambia la foto principal
-            if (fotoTono) seleccionarFotoDetalle(fotoTono);
-
-            // Actualizar el anillo visual de selección en las bolitas
-            document.querySelectorAll(".bolita-tono").forEach(b => {
-                b.classList.remove("ring-2", "ring-offset-2", "ring-stone-800");
-            });
-            boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
-        }
-
+ 
         let SLIDE_ACTUAL = 0;
 
         function irASlidePortada(indice) {
@@ -1395,6 +1351,74 @@
 
         // Rotación automática cada 5 segundos
         setInterval(() => cambiarSlidePortada(1), 5000);
+
+
+        function validarEstadoBotonAgregar(stockDisponible) {
+            const btnAgregar = document.querySelector("#modal-detalle-producto button[onclick='agregarDesdeDetalle()']");
+            if (!btnAgregar) return;
+
+            if (stockDisponible <= 0) {
+                btnAgregar.disabled = true;
+                btnAgregar.innerText = "Tono Agotado 😔";
+                btnAgregar.className = "w-full mt-5 bg-stone-300 text-stone-500 font-bold py-3.5 rounded-full text-xs cursor-not-allowed";
+            } else {
+                btnAgregar.disabled = false;
+                btnAgregar.innerHTML = "🛍️ Agregar a Mi Bolsa";
+                btnAgregar.className = "w-full mt-5 bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full text-xs shadow-md transition";
+            }
+        }
+
+        function cargarTonosDetalle(prod) {
+            const contenedor = document.getElementById("contenedor-tonos-detalle");
+            const listaBolitas = document.getElementById("detalle-bolitas-tonos");
+            const labelNombre = document.getElementById("detalle-nombre-tono");
+
+            if (!prod.tonos || prod.tonos.length === 0) {
+                contenedor.classList.add("hidden");
+                TONO_SELECCIONADO = "";
+                validarEstadoBotonAgregar(prod.stock !== undefined ? prod.stock : 10);
+                return;
+            }
+
+            contenedor.classList.remove("hidden");
+            listaBolitas.innerHTML = "";
+
+            prod.tonos.forEach((t, index) => {
+                const activo = index === 0;
+                const stockTono = t.stock !== undefined ? t.stock : 10;
+                const agotado = stockTono <= 0;
+
+                if (activo) {
+                    TONO_SELECCIONADO = t.nombre;
+                    labelNombre.innerText = agotado ? `${t.nombre} (AGOTADO)` : t.nombre;
+                    if (t.foto) seleccionarFotoDetalle(t.foto);
+                    validarEstadoBotonAgregar(stockTono);
+                }
+
+                listaBolitas.innerHTML += `
+                    <button type="button" 
+                        onclick="elegirTonoDetalle('${t.nombre}', '${t.foto || ''}', ${stockTono}, this)" 
+                        style="background-color: ${t.color};"
+                        title="${t.nombre}${agotado ? ' (Agotado)' : ''}"
+                        class="bolita-tono relative w-7 h-7 rounded-full border-2 transition transform hover:scale-110 ${agotado ? 'opacity-45' : ''} ${activo ? 'ring-2 ring-offset-2 ring-stone-800 border-white' : 'border-white shadow-sm'}">
+                        ${agotado ? '<span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow">✕</span>' : ''}
+                    </button>`;
+            });
+        }
+
+        function elegirTonoDetalle(nombreTono, fotoTono, stockTono, boton) {
+            TONO_SELECCIONADO = nombreTono;
+            document.getElementById("detalle-nombre-tono").innerText = stockTono <= 0 ? `${nombreTono} (AGOTADO)` : nombreTono;
+
+            if (fotoTono) seleccionarFotoDetalle(fotoTono);
+            validarEstadoBotonAgregar(stockTono);
+
+            document.querySelectorAll(".bolita-tono").forEach(b => {
+                b.classList.remove("ring-2", "ring-offset-2", "ring-stone-800");
+            });
+            boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
+        }
+
 
 
 
