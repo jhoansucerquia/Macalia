@@ -300,7 +300,7 @@
 
         if (sessionStorage.getItem("macalia_admin_ok") === "1") mostrarPanelAdmin();
 
-        
+
 
         async function subirArchivoStorage(archivo) {
             const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${archivo.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
@@ -310,7 +310,7 @@
             return data.publicUrl;
         }
 
-  
+
 
         async function cargarProductosAdmin() {
             const lista = document.getElementById("lista-admin-productos");
@@ -361,7 +361,7 @@
             `).join("");
         }
 
- 
+
 
         function abrirEditarProducto(p) {
             document.getElementById("edit-id").value = p.id;
@@ -421,12 +421,15 @@
                     const nombreTono = fila.querySelector(".tono-nombre").value.trim();
                     const colorTono = fila.querySelector(".tono-color").value;
                     const stockTono = parseInt(fila.querySelector(".tono-stock").value) || 0;
-                    const archivoFotoTono = fila.querySelector(".tono-foto").files;
+                    const archivosFotoTono = fila.querySelector(".tono-foto").files;
                     if (nombreTono) {
-                        let urlFotoTono = urlsFotos;
-                        if (archivoFotoTono) {
-                            urlFotoTono = await subirArchivoStorage(archivoFotoTono);
+                        let urlFotoTono = urlsFotos || "";
+                        if (archivosFotoTono && archivosFotoTono.length > 0) {
+                            urlFotoTono = await subirArchivoStorage(archivosFotoTono);
                         }
+
+
+
                         listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, stock: stockTono, foto: urlFotoTono });
                     }
                 }
@@ -494,12 +497,13 @@
                     const nombre = fila.querySelector(".edit-tono-nombre").value.trim();
                     const color = fila.querySelector(".edit-tono-color").value;
                     const stockTono = parseInt(fila.querySelector(".edit-tono-stock").value) || 0;
-                    const inputArchivo = fila.querySelector(".edit-tono-foto").files;
+                    const archivosTono = fila.querySelector(".edit-tono-foto").files;
                     let fotoUrl = fila.dataset.fotoActual || (FOTOS_EDITANDO || "");
 
-                    if (inputArchivo) {
-                        fotoUrl = await subirArchivoStorage(inputArchivo);
+                    if (archivosTono && archivosTono.length > 0) {
+                        fotoUrl = await subirArchivoStorage(archivosTono);
                     }
+
                     if (nombre) {
                         tonosActualizados.push({ nombre: nombre.toUpperCase(), color, stock: stockTono, foto: fotoUrl });
                     }
