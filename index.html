@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MACALÍA | Belleza y Más</title>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
@@ -158,11 +159,10 @@
     </div>
 
     <!-- PORTADA PRINCIPAL EN CARRUSEL AUTOMÁTICO -->
-    <section
-        class="relative overflow-hidden bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8] to-[#F3D1D8] border-b border-rose-100">
+    <section class="relative overflow-hidden bg-[#eddedb] border-b border-[#dfd0cd]">
 
         <!-- Contenedor de diapositivas -->
-        <div id="carrusel-portada" class="max-w-6xl mx-auto px-6 py-14 md:py-20 transition-all duration-500">
+        <div id="carrusel-portada" class="w-full transition-all duration-500">
 
             <!-- DIAPOSITIVA 1 (Imagen integrada de arriba a abajo con difuminado hacia el texto) -->
             <div class="slide-portada relative w-full min-h-[420px] md:min-h-[460px] flex items-center overflow-hidden">
@@ -171,7 +171,7 @@
                 <div class="absolute inset-y-0 right-0 w-full md:w-3/5">
                     <img src="hada.jpeg" alt="Macalia Belleza" class="w-full h-full object-cover object-top">
                     <!-- Degradado que aclara y funde la foto hacia las letras de la izquierda -->
-                    <div class="absolute inset-0 bg-gradient-to-r from-[#FDF2F4] via-[#F9E4E8]/85 to-transparent"></div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#eddedb] via-[#eddedb]/85 to-transparent"></div>
                 </div>
 
                 <!-- Texto limpio a la izquierda -->
@@ -201,7 +201,9 @@
 
 
             <!-- DIAPOSITIVA 2 (Nueva Colección / Tonos) -->
-            <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
+            <div
+                class="slide-portada hidden max-w-6xl mx-auto px-6 md:px-16 py-12 flex-col md:flex-row items-center justify-between gap-10">
+
                 <div class="max-w-lg text-center md:text-left">
                     <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Nueva Colección
                         2026</span>
@@ -227,7 +229,9 @@
             </div>
 
             <!-- DIAPOSITIVA 3 (Envíos y Promociones) -->
-            <div class="slide-portada hidden flex-col md:flex-row items-center justify-between gap-10">
+            <div
+                class="slide-portada hidden max-w-6xl mx-auto px-6 md:px-16 py-12 flex-col md:flex-row items-center justify-between gap-10">
+
                 <div class="max-w-lg text-center md:text-left">
                     <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Beneficio
                         Exclusivo</span>
@@ -280,32 +284,9 @@
             <h2 class="font-editorial text-3xl text-stone-800 mt-1">Nuestras Categorías</h2>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-            <div onclick="filtrarCategoria('Todos')" class="group cursor-pointer">
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
-                    ✨</div>
-                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Ver Todo</p>
-            </div>
-            <div onclick="filtrarCategoria('Maquillaje')" class="group cursor-pointer">
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
-                    💄</div>
-                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Maquillaje</p>
-            </div>
-            <div onclick="filtrarCategoria('Skincare')" class="group cursor-pointer">
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
-                    🧴</div>
-                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Skincare</p>
-            </div>
-            <div onclick="filtrarCategoria('BASES')" class="group cursor-pointer">
-                <div
-                    class="w-28 h-28 mx-auto rounded-full bg-rose-100 border-2 border-rose-200 flex items-center justify-center text-4xl group-hover:scale-105 group-hover:border-[#C87D87] transition shadow-sm">
-                    🌸</div>
-                <p class="font-semibold text-sm text-stone-700 mt-3 group-hover:text-[#C87D87]">Bases</p>
-            </div>
+        <div id="grid-categorias-circulares" class="grid grid-cols-2 sm:grid-cols-4 gap-8 max-w-4xl mx-auto">
         </div>
+
     </section>
 
     <!-- VITRINA DE PRODUCTOS (CATÁLOGO) -->
@@ -444,6 +425,10 @@
                         <option value="whatsapp">💬 Coordinar por WhatsApp / Contraentrega</option>
                     </select>
                 </div>
+
+                <div class="cf-turnstile flex justify-center my-1" data-sitekey="0x4AAAAAAGLz6iGQlQ0s2ioL"
+                    data-theme="light"></div>
+
 
                 <!-- Botón Principal Wompi -->
                 <button id="btn-pagar-wompi" onclick="pagarConWompi()"
@@ -595,12 +580,9 @@
                     class="w-full px-4 py-2.5 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
 
                 <!-- Verificación Humana Anti-Robots -->
-                <div class="bg-[#FDFBF9] border border-rose-200 rounded-xl p-3 flex items-center justify-between">
-                    <label class="text-[11px] font-semibold text-stone-600">🤖 Verificación: ¿Cuánto es <span
-                            id="pregunta-captcha" class="font-bold text-[#C87D87]"></span>?</label>
-                    <input type="number" id="respuesta-captcha" required placeholder="?"
-                        class="w-16 px-2.5 py-1.5 border border-rose-200 rounded-lg text-xs text-center font-bold focus:outline-none focus:border-[#C87D87]">
-                </div>
+                <div class="cf-turnstile flex justify-center my-2" data-sitekey="0x4AAAAAAGLz6iGQlQ0s2ioL"
+                    data-theme="light"></div>
+
 
                 <button type="submit"
                     class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 rounded-full text-xs shadow transition">
@@ -703,21 +685,8 @@
 
         let productosMacalia = [];
 
-        async function cargarCatalogoDesdeSupabase() {
-            const { data, error } = await sbTienda
-                .from("catalogo_web")
-                .select("*")
-                .eq("tienda", "macalia")
-                .eq("disponible", true)
-                .order("id", { ascending: false });
-
-            if (error) {
-                console.error("Error cargando catálogo:", error);
-                return;
-            }
-
-            // Convertimos cada producto de la nube al formato de la tienda
-            productosMacalia = data.map(p => ({
+        function pintarCatalogoYVisual(prodsData, bannersData, catsData) {
+            productosMacalia = (prodsData || []).map(p => ({
                 id: p.id,
                 nombre: p.nombre,
                 categoria: p.categoria,
@@ -725,14 +694,103 @@
                 precio_mayorista: Number(p.precio_mayorista) || Math.round(Number(p.precio) * 0.8),
                 stock: p.stock,
                 descripcion: p.descripcion || "",
-                fotos: (p.fotos && p.fotos.length > 0) ? p.fotos : ["hada.jpeg"],
-                emoji: (p.fotos && p.fotos.length > 0) ? p.fotos[0] : "✨",
+                fotos: (p.fotos && p.fotos.length > 0) ? p.fotos : [],
+                emoji: (p.fotos && p.fotos.length > 0) ? p.fotos.at(0) : "✨",
                 tonos: p.tonos || []
             }));
 
             generarBotonesCategoriasDinamicas();
             mostrarProductos(productosMacalia);
+            aplicarConfigVisual(bannersData, catsData);
         }
+
+        function aplicarConfigVisual(bannersData, fotosCats) {
+            const contenedorCarrusel = document.getElementById("carrusel-portada");
+            if (Array.isArray(bannersData) && contenedorCarrusel) {
+                contenedorCarrusel.innerHTML = bannersData.map((b, idx) => `
+                    <div class="slide-portada ${idx === 0 ? 'flex' : 'hidden'} max-w-6xl mx-auto px-6 md:px-16 py-12 flex-col md:flex-row items-center justify-between gap-10">
+                        <div class="flex-1 space-y-4 text-left">
+                            <span class="text-[11px] font-bold tracking-[0.2em] uppercase text-[#C87D87] block">${b.tag || 'MACALIA MAKEUP STORE'}</span>
+                            <h1 class="font-editorial text-4xl md:text-5xl text-stone-800 leading-tight">
+                                ${b.titulo1 || ''} <br>
+                                <span class="italic font-normal text-[#C87D87]">${b.cursiva || ''}</span>
+                            </h1>
+                            <p class="text-xs md:text-sm text-stone-600 leading-relaxed max-w-md">${b.desc || ''}</p>
+                            <div class="pt-2">
+                                <a href="#catalogo" class="inline-block bg-stone-900 hover:bg-[#C87D87] text-white text-xs font-bold uppercase tracking-wider px-7 py-3.5 rounded-full shadow-md transition">
+                                    ${b.boton || 'Explorar Catálogo →'}
+                                </a>
+                            </div>
+                        </div>
+                         ${b.foto ? `
+                            <div class="w-full md:w-1/2 flex justify-center relative">
+                                <img src="${b.foto}" alt="${b.titulo1}" 
+                                     style="-webkit-mask-image: radial-gradient(circle, black 55%, transparent 98%); mask-image: radial-gradient(circle, black 55%, transparent 98%);"
+                                     class="w-full max-w-md h-80 md:h-96 object-cover mix-blend-multiply">
+                            </div>
+                        ` : ''}
+
+                    </div>
+                `).join("");
+            }
+
+
+            const gridCats = document.getElementById("grid-categorias-circulares");
+            if (gridCats) {
+                const categoriasReales = [...new Set(productosMacalia.map(p => p.categoria).filter(Boolean))];
+                const bolitaVerTodo = `
+                    <button onclick="filtrarPorCategoria('Todos')" class="group flex flex-col items-center gap-3">
+                        <div class="w-28 h-28 rounded-full bg-[#FADADD]/60 border-2 border-[#C87D87]/30 group-hover:border-[#C87D87] overflow-hidden flex items-center justify-center shadow-sm transition transform group-hover:scale-105">
+                            <span class="text-3xl">✨</span>
+                        </div>
+                        <span class="text-xs font-semibold text-stone-700 group-hover:text-[#C87D87] transition">Ver Todo</span>
+                    </button>
+                `;
+                const bolitasDinamicas = categoriasReales.map(cat => `
+                    <button onclick="filtrarPorCategoria('${cat}')" class="group flex flex-col items-center gap-3">
+                        <div class="w-28 h-28 rounded-full bg-[#FADADD]/60 border-2 border-[#C87D87]/30 group-hover:border-[#C87D87] overflow-hidden flex items-center justify-center shadow-sm transition transform group-hover:scale-105">
+                            ${(fotosCats && fotosCats[cat])
+                        ? `<img src="${fotosCats[cat]}" alt="${cat}" loading="lazy" class="w-full h-full object-cover">`
+                        : `<span class="font-editorial text-2xl text-[#C87D87]">${cat.charAt(0).toUpperCase()}</span>`}
+                        </div>
+                        <span class="text-xs font-semibold text-stone-700 group-hover:text-[#C87D87] transition capitalize">${cat}</span>
+                    </button>
+                `).join("");
+                gridCats.innerHTML = bolitaVerTodo + bolitasDinamicas;
+            }
+        }
+
+        async function cargarCatalogoDesdeSupabase() {
+            // 1. Mostrar caché instantáneo si existe (0 segundos de espera)
+            const cacheGuardado = localStorage.getItem("macalia_cache_v1");
+            if (cacheGuardado) {
+                try {
+                    const c = JSON.parse(cacheGuardado);
+                    pintarCatalogoYVisual(c.prods, c.banners, c.cats);
+                } catch (e) { }
+            }
+
+            // 2. Descargar las 3 consultas AL MISMO TIEMPO en paralelo
+            const [resProds, resConfig] = await Promise.all([
+                sbTienda.from("catalogo_web").select("*").eq("tienda", "macalia").eq("disponible", true).order("id", { ascending: false }),
+                sbTienda.from("config_macalia").select("clave, datos")
+            ]);
+
+            if (resProds.error) return console.error(resProds.error);
+
+            const cfgMapa = {};
+            (resConfig.data || []).forEach(item => { cfgMapa[item.clave] = item.datos; });
+
+            pintarCatalogoYVisual(resProds.data, cfgMapa.banners_portada, cfgMapa.fotos_categorias);
+
+            // 3. Guardar caché actualizado para la próxima visita
+            localStorage.setItem("macalia_cache_v1", JSON.stringify({
+                prods: resProds.data,
+                banners: cfgMapa.banners_portada,
+                cats: cfgMapa.fotos_categorias
+            }));
+        }
+
 
         function generarBotonesCategoriasDinamicas() {
             const categoriasUnicas = ["Todos", ...new Set(productosMacalia.map(p => p.categoria))];
@@ -821,7 +879,7 @@
                         <div onclick="abrirDetalleProducto(${p.id})" class="cursor-pointer">
                             <div class="h-52 bg-[#FDF6F7] rounded-xl overflow-hidden flex items-center justify-center mb-4">
                                 ${p.emoji.startsWith("http") || p.emoji.includes(".")
-                        ? `<img src="${p.emoji}" alt="${p.nombre}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
+                        ? `<img src="${p.emoji}" alt="${p.nombre}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
                         : `<span class="text-5xl group-hover:scale-105 transition">${p.emoji}</span>`}
                                 </div>    
                                 <span class="text-[10px] uppercase tracking-widest text-[#C87D87] font-bold">${p.categoria}</span>
@@ -845,7 +903,7 @@
                 tbody.innerHTML += `
                     <tr class="hover:bg-rose-50/40 transition">
                         <td onclick="abrirDetalleProducto(${p.id})" class="py-3.5 px-5 flex items-center gap-3 cursor-pointer hover:text-[#C87D87] transition">
-                            <img src="${p.emoji}" alt="${p.nombre}" class="w-10 h-10 object-cover rounded-xl border border-rose-100">
+                            <img src="${p.emoji}" alt="${p.nombre}" loading="lazy" class="w-10 h-10 object-cover rounded-xl border border-rose-100">
 
                             <span class="font-editorial font-semibold text-stone-800">${p.nombre}</span>
                         </td>
@@ -872,17 +930,62 @@
             }
         }
 
-        function pagarConWompi() {
+        const WHATSAPP_MACALIA = "573106051359"; // <-- Reemplaza por el WhatsApp real de Macalia
+        const WOMPI_LLAVE_PUBLICA = ""; // <-- Pega aquí tu pub_prod_... de Wompi cuando la tengas
+
+        async function registrarPedidoEnSupabase(nombre, ciudad, metodoPago, total) {
+            const { error } = await sbTienda.from("pedidos_web").insert([{
+                cliente_nombre: nombre,
+                cliente_direccion: ciudad,
+                metodo_pago: metodoPago,
+                productos: bolsa,
+                total: total,
+                estado: metodoPago === "Wompi" ? "Iniciado Wompi" : "Pendiente WhatsApp"
+            }]);
+            if (error) console.error("Error guardando pedido:", error);
+        }
+
+        async function pagarConWompi() {
+            if (!verificarHumanoTurnstile()) return;
             if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
             const nombre = document.getElementById("cliente-nombre-web").value.trim();
             const ciudad = document.getElementById("cliente-ciudad-web").value.trim();
-            if (!nombre || !ciudad) return alert("⚠️ Por favor completa tu nombre y dirección de envío antes de pagar.");
+            if (!nombre || !ciudad) return alert("⚠️ Por favor completa tu nombre y dirección de envío.");
 
             const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            await registrarPedidoEnSupabase(nombre, ciudad, "Wompi", total);
 
-            // Aquí conectaremos tu Llave Pública real de Wompi (pub_prod_...) cuando crees tu cuenta en comercios.wompi.co
-            alert(`💳 Conectando con Pasarela Wompi Colombia...\n\nCliente: ${nombre}\nEnvío: ${ciudad}\nTotal a cobrar: $${total.toLocaleString()} COP\n\n(Listo para insertar tu Llave Pública de Wompi y abrir Nequi / PSE / Tarjetas).`);
+            if (!WOMPI_LLAVE_PUBLICA) {
+                return alert(`💳 Pedido registrado por $${total.toLocaleString("es-CO")}.\n\nPara abrir el checkout real de Nequi/PSE/Tarjetas, pega tu Llave Pública de Wompi en WOMPI_LLAVE_PUBLICA.`);
+            }
+
+            const referencia = `MACALIA-${Date.now()}`;
+            const montoCentavos = total * 100;
+            const urlCheckout = `https://wompi.co{WOMPI_LLAVE_PUBLICA}&currency=COP&amount-in-cents=${montoCentavos}&reference=${referencia}`;
+            window.open(urlCheckout, "_blank");
         }
+
+        async function enviarPedidoWhatsApp() {
+            if (!verificarHumanoTurnstile()) return;
+            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
+            const nombre = document.getElementById("cliente-nombre-web").value.trim() || "Cliente Web";
+            const ciudad = document.getElementById("cliente-ciudad-web").value.trim() || "Por confirmar";
+            const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+
+            await registrarPedidoEnSupabase(nombre, ciudad, "WhatsApp", total);
+
+            let resumen = `Hola Macalia ♡ Quiero confirmar este pedido:\n\n`;
+            bolsa.forEach(i => {
+                const tonoTxt = i.tono ? ` (${i.tono})` : "";
+                resumen += `• ${i.cantidad}x ${i.nombre}${tonoTxt} — $${(i.precio * i.cantidad).toLocaleString("es-CO")}\n`;
+            });
+            resumen += `\n*Total:* $${total.toLocaleString("es-CO")}\n*Nombre:* ${nombre}\n*Envío:* ${ciudad}`;
+
+            window.open(`https://wa.me{WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank");
+        }
+
+
+
 
 
         function filtrarCategoria(cat) {
@@ -1020,17 +1123,6 @@
             modal.classList.remove("flex");
         }
 
-        function enviarPedidoWhatsApp() {
-            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
-            const nombre = document.getElementById("cliente-nombre-web").value || "Cliente Web";
-            const ciudad = document.getElementById("cliente-ciudad-web").value || "Sin dirección";
-
-            let resumen = `Hola Macalia ♡ Quiero hacer este pedido:\n\n`;
-            bolsa.forEach(i => resumen += `• ${i.cantidad}x ${i.nombre} ($${(i.precio * i.cantidad).toLocaleString()})\n`);
-            resumen += `\nTotal: ${document.getElementById("total-bolsa").innerText}\nNombre: ${nombre}\nEnvío: ${ciudad}`;
-
-            alert("✨ Pedido armado:\n\n" + resumen);
-        }
 
         let ES_MAYORISTA = false;
 
@@ -1106,15 +1198,6 @@
 
         let RESPUESTA_HUMANA = 0;
 
-        function generarCaptcha() {
-            const num1 = Math.floor(Math.random() * 9) + 1;
-            const num2 = Math.floor(Math.random() * 9) + 1;
-            RESPUESTA_HUMANA = num1 + num2;
-            const label = document.getElementById("pregunta-captcha");
-            if (label) label.innerText = `${num1} + ${num2}`;
-            const input = document.getElementById("respuesta-captcha");
-            if (input) input.value = "";
-        }
 
         function cambiarTabMayorista(tab) {
             const formLogin = document.getElementById("form-login-mayorista");
@@ -1127,7 +1210,7 @@
                 formReg.classList.remove("hidden");
                 tabReg.className = "py-2 rounded-full bg-[#C87D87] text-white transition";
                 tabLogin.className = "py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition";
-                generarCaptcha();
+
             } else {
                 formReg.classList.add("hidden");
                 formLogin.classList.remove("hidden");
@@ -1141,12 +1224,9 @@
             const trampa = document.getElementById("trampa-robot").value;
             if (trampa !== "") return;
 
-            // 2. Filtro de Verificación Humana
-            const respuestaUsuario = parseInt(document.getElementById("respuesta-captcha").value);
-            if (respuestaUsuario !== RESPUESTA_HUMANA) {
-                generarCaptcha();
-                return alert("⚠️ Respuesta de verificación incorrecta. Intenta de nuevo para confirmar que eres humano.");
-            }
+            // 2. Filtro de Verificación Humana Cloudflare Turnstile
+            if (!verificarHumanoTurnstile()) return;
+
 
             const nombre = document.getElementById("reg-may-nombre").value.trim();
             const contacto = document.getElementById("reg-may-contacto").value.trim();
@@ -1395,10 +1475,15 @@
                     validarEstadoBotonAgregar(stockTono);
                 }
 
+                const estiloBolita = (t.usarTextura && t.foto && t.foto.startsWith("http"))
+                    ? `background-image: url('${t.foto}'); background-size: 540%; background-position: 50% 74.5%;`
+                    : `background-color: ${t.color};`;
+
+
                 listaBolitas.innerHTML += `
                     <button type="button" 
                         onclick="elegirTonoDetalle('${t.nombre}', '${t.foto || ''}', ${stockTono}, this)" 
-                        style="background-color: ${t.color};"
+                        style="${estiloBolita}"
                         title="${t.nombre}${agotado ? ' (Agotado)' : ''}"
                         class="bolita-tono relative w-7 h-7 rounded-full border-2 transition transform hover:scale-110 ${agotado ? 'opacity-45' : ''} ${activo ? 'ring-2 ring-offset-2 ring-stone-800 border-white' : 'border-white shadow-sm'}">
                         ${agotado ? '<span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-white drop-shadow">✕</span>' : ''}
@@ -1419,7 +1504,17 @@
             boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
         }
 
+        function verificarHumanoTurnstile() {
+            // Si aún estamos abriendo el archivo local desde el PC (file://), permite probar sin bloqueo
+            if (window.location.protocol === "file:") return true;
 
+            const respuestas = document.querySelectorAll("[name='cf-turnstile-response']");
+            for (let input of respuestas) {
+                if (input.value && input.value.trim() !== "") return true;
+            }
+            alert("Por favor espera un segundo a que complete la verificación de seguridad (No soy un robot).");
+            return false;
+        }
 
 
 

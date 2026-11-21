@@ -7,6 +7,7 @@
     <title>MACALÍA | Belleza y Más</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Great+Vibes">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
@@ -75,6 +76,58 @@
         </header>
 
         <main class="max-w-5xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- BARRA DE HERRAMIENTAS MASIVAS Y DISEÑO (EXCEL + PORTADA + CATEGORÍAS) -->
+            <section class="lg:col-span-12 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-6">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-rose-50 pb-4">
+                    <div>
+                        <h2 class="font-editorial text-2xl text-stone-800">Carga Masiva por Excel & Diseño Visual</h2>
+                        <p class="text-xs text-stone-400">Sube 100+ productos de golpe o cambia los banners de portada y
+                            fotos de categorías</p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button type="button" onclick="descargarPlantillaExcel()"
+                            class="bg-rose-50 hover:bg-rose-100 text-[#C87D87] text-xs font-bold px-4 py-2.5 rounded-full transition">
+                            📥 Descargar Plantilla Excel
+                        </button>
+                        <label
+                            class="bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow cursor-pointer transition">
+                            📤 Subir Archivo Excel (.xlsx)
+                            <input type="file" accept=".xlsx,.xls,.csv" onchange="procesarExcelMasivo(this)"
+                                class="hidden">
+                        </label>
+                    </div>
+                </div>
+
+                <!-- EDITOR DE PORTADA Y FOTOS DE CATEGORÍAS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+                    <!-- BANNERS DE PORTADA -->
+                    <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-stone-700">🖼️ Banners de Portada (Carrusel)</h3>
+                            <button type="button" onclick="guardarConfigPortada()"
+                                class="bg-stone-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-[#C87D87] transition">Guardar
+                                Portada</button>
+                        </div>
+                        <div id="admin-lista-banners" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <!-- FOTOS DE CATEGORÍAS -->
+                    <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-stone-700">🌸 Fotos de "Nuestras Categorías"</h3>
+                            <button type="button" onclick="guardarConfigCategorias()"
+                                class="bg-stone-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-[#C87D87] transition">Guardar
+                                Categorías</button>
+                        </div>
+                        <p class="text-[10px] text-stone-400">Se detectan automáticamente de tus productos. Súbeles una
+                            foto circular aquí:</p>
+                        <div id="admin-lista-categorias" class="space-y-2 max-h-52 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </section>
+
 
             <!-- FORMULARIO PARA SUBIR NUEVO PRODUCTO -->
             <section class="lg:col-span-5 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm h-fit">
@@ -296,22 +349,63 @@
             document.getElementById("pantalla-login-admin").classList.add("hidden");
             document.getElementById("contenido-admin").classList.remove("hidden");
             cargarProductosAdmin();
+            cargarConfigVisualAdmin();
+
         }
 
         if (sessionStorage.getItem("macalia_admin_ok") === "1") mostrarPanelAdmin();
 
 
 
+        function comprimirImagenWebP(archivo, maxLado = 900, calidad = 0.82) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                const urlTemp = URL.createObjectURL(archivo);
+                img.onload = () => {
+                    let ancho = img.width;
+                    let alto = img.height;
+                    if (ancho > maxLado || alto > maxLado) {
+                        if (ancho > alto) {
+                            alto = Math.round((alto * maxLado) / ancho);
+                            ancho = maxLado;
+                        } else {
+                            ancho = Math.round((ancho * maxLado) / alto);
+                            alto = maxLado;
+                        }
+                    }
+                    const canvas = document.createElement("canvas");
+                    canvas.width = ancho;
+                    canvas.height = alto;
+                    const ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, ancho, alto);
+                    URL.revokeObjectURL(urlTemp);
+
+                    canvas.toBlob((blob) => {
+                        resolve(blob || archivo);
+                    }, "image/webp", calidad);
+                };
+                img.onerror = () => resolve(archivo);
+                img.src = urlTemp;
+            });
+        }
+
         async function subirArchivoStorage(entrada) {
             const archivo = (entrada && entrada.length !== undefined) ? entrada.item(0) : entrada;
             if (!archivo || !archivo.name) return "";
 
-            const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${archivo.name.replace(/[^a-zA-Z0-9.]/g, '')}`;
-            const { error } = await sb.storage.from("fotos-productos").upload(nombreUnico, archivo);
+            // Comprime automáticamente la foto a formato WebP ligero antes de subirla
+            const archivoOptimizado = await comprimirImagenWebP(archivo);
+            const nombreBase = archivo.name.replace(/\.[^/.]+$/, "").replace(/[^a-zA-Z0-9]/g, '');
+            const nombreUnico = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}_${nombreBase}.webp`;
+
+            const { error } = await sb.storage.from("fotos-productos").upload(nombreUnico, archivoOptimizado, {
+                contentType: "image/webp"
+            });
             if (error) throw error;
             const { data } = sb.storage.from("fotos-productos").getPublicUrl(nombreUnico);
             return data.publicUrl;
         }
+
 
 
 
@@ -394,12 +488,17 @@
         function agregarFilaTono() {
             const cont = document.getElementById("contenedor-filas-tonos");
             const div = document.createElement("div");
-            div.className = "fila-tono flex items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
+            div.className = "fila-tono flex flex-wrap items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
             div.innerHTML = `
-                <input type="color" value="#C87D87" title="Color o gotero" class="tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
-                <input type="text" placeholder="Tono (ej. Sweet)" class="tono-nombre flex-1 min-w-0 px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
-                <input type="number" value="10" min="0" title="Stock de este tono" class="tono-stock w-14 px-1.5 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
-                <input type="file" accept="image/*" title="Foto del tono" class="tono-foto w-20 text-[10px]">
+                <input type="color" value="#C87D87" title="Color del círculo" class="tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
+                <button type="button" onclick="activarGoteroSobreFoto(this)" class="text-[10px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2 py-1 rounded-lg transition" title="Toca un punto de la foto para copiar su color exacto">🎯 Gotero</button>
+
+                <input type="text" placeholder="Nombre tono" class="tono-nombre flex-1 min-w-[90px] px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
+                <input type="number" value="10" min="0" title="Stock" class="tono-stock w-12 px-1 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
+                <label class="flex items-center gap-1 text-[10px] text-stone-500 cursor-pointer" title="Usar recorte de la foto en la bolita (ideal para rubores satinados)">
+                    <input type="checkbox" class="tono-usar-textura accent-[#C87D87]"> Textura
+                </label>
+                <input type="file" accept="image/*" onchange="mostrarVistaPreviaTono(this)" title="Foto del tono" class="tono-foto w-20 text-[10px]">
                 <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
             `;
             cont.appendChild(div);
@@ -433,9 +532,13 @@
 
 
 
-                        listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, stock: stockTono, foto: urlFotoTono });
+                        listaTonos.push({ nombre: nombreTono.toUpperCase(), color: colorTono, usarTextura: fila.querySelector(".tono-usar-textura").checked, stock: stockTono, foto: urlFotoTono });
                     }
                 }
+                const stockCalculado = listaTonos.length > 0
+                    ? listaTonos.reduce((suma, t) => suma + (Number(t.stock) || 0), 0)
+                    : (parseInt(document.getElementById("prod-stock").value) || 0);
+
 
                 const nuevoProducto = {
                     tienda: "macalia",
@@ -443,7 +546,7 @@
                     categoria: document.getElementById("prod-categoria").value.trim(),
                     precio: parseFloat(document.getElementById("prod-precio").value),
                     precio_mayorista: parseFloat(document.getElementById("prod-mayorista").value) || 0,
-                    stock: parseInt(document.getElementById("prod-stock").value) || 0,
+                    stock: stockCalculado,
                     descripcion: document.getElementById("prod-descripcion").value.trim(),
                     fotos: urlsFotos,
                     tonos: listaTonos,
@@ -465,21 +568,27 @@
             }
         }
 
-        function agregarFilaTonoEdicion(tono = { nombre: "", color: "#C87D87", stock: 10, foto: "" }) {
+        function agregarFilaTonoEdicion(tono = { nombre: "", color: "#C87D87", stock: 10, usarTextura: false, foto: "" }) {
             const cont = document.getElementById("edit-contenedor-tonos");
             const div = document.createElement("div");
-            div.className = "edit-fila-tono flex items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
+            div.className = "edit-fila-tono flex flex-wrap items-center gap-1.5 bg-white p-2 rounded-xl border border-rose-100";
             div.dataset.fotoActual = tono.foto || "";
             div.innerHTML = `
-                <input type="color" value="${tono.color || '#C87D87'}" title="Color o gotero" class="edit-tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
-                <input type="text" value="${tono.nombre || ''}" placeholder="Tono" class="edit-tono-nombre flex-1 min-w-0 px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
-                <input type="number" value="${tono.stock !== undefined ? tono.stock : 10}" min="0" title="Stock de este tono" class="edit-tono-stock w-14 px-1.5 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
+                <input type="color" value="${tono.color || '#C87D87'}" title="Color del círculo" class="edit-tono-color w-7 h-7 rounded-lg cursor-pointer border-0 shrink-0">
+                <button type="button" onclick="activarGoteroSobreFoto(this)" class="text-[10px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2 py-1 rounded-lg transition" title="Toca un punto de la foto para copiar su color exacto">🎯 Gotero</button>
+
+                <input type="text" value="${tono.nombre || ''}" placeholder="Tono" class="edit-tono-nombre flex-1 min-w-[90px] px-2 py-1.5 border border-rose-100 rounded-lg text-[11px]">
+                <input type="number" value="${tono.stock !== undefined ? tono.stock : 10}" min="0" title="Stock" class="edit-tono-stock w-12 px-1 py-1.5 border border-rose-200 rounded-lg text-[11px] text-center font-bold">
+                <label class="flex items-center gap-1 text-[10px] text-stone-500 cursor-pointer" title="Usar recorte de foto en la bolita">
+                    <input type="checkbox" ${tono.usarTextura ? 'checked' : ''} class="edit-tono-usar-textura accent-[#C87D87]"> Textura
+                </label>
                 ${tono.foto ? `<img src="${tono.foto}" class="w-6 h-6 rounded-md object-cover border border-rose-100 shrink-0">` : ''}
-                <input type="file" accept="image/*" title="Cambiar foto" class="edit-tono-foto w-20 text-[10px]">
+                <input type="file" accept="image/*" onchange="mostrarVistaPreviaTono(this)" title="Cambiar foto" class="edit-tono-foto w-20 text-[10px]">
                 <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-red-500 font-bold px-1">&times;</button>
             `;
             cont.appendChild(div);
         }
+
 
         async function guardarEdicionProducto() {
             const btn = document.getElementById("btn-guardar-edicion");
@@ -508,16 +617,22 @@
                     }
 
                     if (nombre) {
-                        tonosActualizados.push({ nombre: nombre.toUpperCase(), color, stock: stockTono, foto: fotoUrl });
+                        const usarTextura = fila.querySelector(".edit-tono-usar-textura").checked;
+                        tonosActualizados.push({ nombre: nombre.toUpperCase(), color, stock: stockTono, usarTextura, foto: fotoUrl });
                     }
                 }
+
+                const stockEditadoCalculado = tonosActualizados.length > 0
+                    ? tonosActualizados.reduce((suma, t) => suma + (Number(t.stock) || 0), 0)
+                    : (parseInt(document.getElementById("edit-stock").value) || 0);
+
 
                 const cambios = {
                     nombre: document.getElementById("edit-nombre").value.trim(),
                     categoria: document.getElementById("edit-categoria").value.trim(),
                     precio: parseFloat(document.getElementById("edit-precio").value),
                     precio_mayorista: parseFloat(document.getElementById("edit-mayorista").value) || 0,
-                    stock: parseInt(document.getElementById("edit-stock").value) || 0,
+                    stock: stockEditadoCalculado,
                     descripcion: document.getElementById("edit-descripcion").value.trim(),
                     fotos: FOTOS_EDITANDO,
                     tonos: tonosActualizados
@@ -536,6 +651,218 @@
                 btn.innerText = "Guardar Todos los Cambios ✨";
             }
         }
+
+        async function activarGoteroSobreFoto(boton) {
+            if (!window.EyeDropper) {
+                alert("Tu navegador no soporta el gotero directo. Toca el cuadrito de color a la izquierda para elegirlo.");
+                return;
+            }
+            try {
+                const gotero = new EyeDropper();
+                const resultado = await gotero.open();
+                // Busca el cuadrito <input type="color"> de esa misma fila y le pone el color exacto
+                const cuadritoColor = boton.parentElement.querySelector("input[type='color']");
+                if (cuadritoColor) {
+                    cuadritoColor.value = resultado.sRGBHex;
+                }
+            } catch (e) {
+                // El usuario canceló con Esc
+            }
+        }
+
+        function mostrarVistaPreviaTono(input) {
+            const archivo = input.files.item(0);
+            if (!archivo) return;
+
+            const urlLocal = URL.createObjectURL(archivo);
+            let imgPrev = input.parentElement.querySelector(".preview-tono-local");
+            if (!imgPrev) {
+                imgPrev = document.createElement("img");
+                imgPrev.className = "preview-tono-local w-12 h-12 rounded-lg object-cover border border-rose-200 shadow-xs shrink-0";
+                input.parentElement.insertBefore(imgPrev, input);
+            }
+            imgPrev.src = urlLocal;
+        }
+
+        // 1. DESCARGAR PLANTILLA EXCEL
+        function descargarPlantillaExcel() {
+            const filasEjemplo = [
+                {
+                    nombre: "Labial Matte Velvet",
+                    categoria: "Labios",
+                    precio: 25000,
+                    precio_mayorista: 19000,
+                    stock: 30,
+                    descripcion: "Acabado aterciopelado de larga duración",
+                    tonos: "Rojo Cereza:10, Nude Cálido:10, Vino:10"
+                },
+                {
+                    nombre: "Sérum Vitamina C Glow",
+                    categoria: "Skincare",
+                    precio: 42000,
+                    precio_mayorista: 34000,
+                    stock: 15,
+                    descripcion: "Ilumina e hidrata profundamente",
+                    tonos: ""
+                }
+            ];
+            const hoja = XLSX.utils.json_to_sheet(filasEjemplo);
+            const libro = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(libro, hoja, "Catalogo_Macalia");
+            XLSX.writeFile(libro, "Plantilla_Productos_Macalia.xlsx");
+        }
+
+        // 2. IMPORTAR EXCEL MASIVO A SUPABASE
+        async function procesarExcelMasivo(input) {
+            const archivo = input.files.item(0);
+            if (!archivo) return;
+
+            try {
+                const buffer = await archivo.arrayBuffer();
+                const libro = XLSX.read(buffer);
+                const hoja = libro.Sheets[libro.SheetNames.at(0)];
+                const filas = XLSX.utils.sheet_to_json(hoja);
+
+                if (filas.length === 0) return alert("El archivo Excel está vacío.");
+
+                const productosParaSubir = filas.map(f => {
+                    // Convertir texto "Rojo:10, Nude:5" a lista de tonos
+                    let tonosParsed = [];
+                    if (f.tonos && String(f.tonos).trim() !== "") {
+                        tonosParsed = String(f.tonos).split(",").map(item => {
+                            const partes = item.split(":");
+                            return {
+                                nombre: (partes.at(0) || "").trim().toUpperCase(),
+                                color: "#C87D87",
+                                stock: parseInt(partes.at(1)) || 10,
+                                usarTextura: false,
+                                foto: ""
+                            };
+                        }).filter(t => t.nombre !== "");
+                    }
+
+                    const stockFinal = tonosParsed.length > 0
+                        ? tonosParsed.reduce((s, t) => s + t.stock, 0)
+                        : (parseInt(f.stock) || 10);
+
+                    return {
+                        tienda: "macalia",
+                        nombre: String(f.nombre || "Producto Sin Nombre").trim(),
+                        categoria: String(f.categoria || "General").trim(),
+                        precio: parseFloat(f.precio) || 0,
+                        precio_mayorista: parseFloat(f.precio_mayorista) || 0,
+                        stock: stockFinal,
+                        descripcion: String(f.descripcion || "").trim(),
+                        fotos: [],
+                        tonos: tonosParsed,
+                        disponible: true
+                    };
+                });
+
+                const { error } = await sb.from("catalogo_web").insert(productosParaSubir);
+                if (error) throw error;
+
+                alert(`🎉 ¡Se importaron ${productosParaSubir.length} productos desde Excel al instante!`);
+                input.value = "";
+                cargarProductosAdmin();
+                cargarConfigVisualAdmin();
+            } catch (err) {
+                alert("❌ Error al importar Excel: " + err.message);
+            }
+        }
+
+        // 3. GESTIONAR BANNERS DE PORTADA Y FOTOS DE CATEGORÍAS
+        let BANNERS_ADMIN = [
+            { tag: "BELLEZA • CUIDADO • ESENCIA", titulo1: "Tu Belleza es", cursiva: "Nuestra Prioridad ♡", desc: "Descubre productos exclusivos, maquillaje y skincare diseñados para resaltar tu esencia todos los días.", boton: "Explorar Catálogo →", foto: "hada.jpeg" },
+            { tag: "NUEVA COLECCIÓN 2026", titulo1: "Brillo y Color", cursiva: "Para Tus Labios", desc: "Prueba nuestros nuevos delineadores y gloss hidratantes con tonos pensados para cada tipo de piel.", boton: "Ver Tonos Nuevos →", foto: "" },
+            { tag: "BENEFICIO EXCLUSIVO", titulo1: "Envíos Gratis", cursiva: "A Toda Colombia", desc: "Por compras superiores a $150.000 recibe tu pedido en la puerta de tu casa con empaque de regalo.", boton: "Comprar Ahora →", foto: "" }
+        ];
+        let FOTOS_CATEGORIAS_ADMIN = {};
+
+        async function cargarConfigVisualAdmin() {
+            // Cargar banners guardados
+            const { data: cfgBanners } = await sb.from("config_macalia").select("datos").eq("clave", "banners_portada").maybeSingle();
+            if (cfgBanners && Array.isArray(cfgBanners.datos)) BANNERS_ADMIN = cfgBanners.datos;
+
+            const contBanners = document.getElementById("admin-lista-banners");
+            contBanners.innerHTML = BANNERS_ADMIN.map((b, idx) => `
+                <div class="bg-white p-2.5 rounded-xl border border-rose-100 space-y-1.5">
+                    <div class="flex justify-between items-center">
+                        <span class="font-bold text-[#C87D87]">Banner ${idx + 1}</span>
+                        <input type="file" accept="image/*" onchange="subirFotoBannerAdmin(${idx}, this)" class="w-44 text-[10px]">
+                    </div>
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <input type="text" value="${b.titulo1}" onchange="BANNERS_ADMIN[${idx}].titulo1=this.value" placeholder="Título principal" class="px-2 py-1 border border-rose-100 rounded-lg">
+                        <input type="text" value="${b.cursiva}" onchange="BANNERS_ADMIN[${idx}].cursiva=this.value" placeholder="Texto en cursiva" class="px-2 py-1 border border-rose-100 rounded-lg">
+                    </div>
+                    <input type="text" value="${b.desc}" onchange="BANNERS_ADMIN[${idx}].desc=this.value" placeholder="Descripción corta" class="w-full px-2 py-1 border border-rose-100 rounded-lg">
+                </div>
+            `).join("");
+
+            // Cargar categorías únicas desde los productos reales
+            const { data: prods } = await sb.from("catalogo_web").select("categoria").eq("tienda", "macalia");
+            const { data: cfgCats } = await sb.from("config_macalia").select("datos").eq("clave", "fotos_categorias").maybeSingle();
+            if (cfgCats && cfgCats.datos) FOTOS_CATEGORIAS_ADMIN = cfgCats.datos;
+
+            const categoriasUnicas = [...new Set((prods || []).map(p => p.categoria).filter(Boolean))];
+            const contCats = document.getElementById("admin-lista-categorias");
+            if (categoriasUnicas.length === 0) {
+                contCats.innerHTML = `<p class="text-stone-400">Sube productos para ver sus categorías aquí.</p>`;
+                return;
+            }
+            contCats.innerHTML = categoriasUnicas.map(cat => `
+                <div class="flex items-center justify-between bg-white p-2 rounded-xl border border-rose-100">
+                    <div class="flex items-center gap-2">
+                ${FOTOS_CATEGORIAS_ADMIN[cat]
+                    ? `<img src="${FOTOS_CATEGORIAS_ADMIN[cat]}" class="w-8 h-8 rounded-full object-cover border border-rose-200">`
+                    : `<div class="w-8 h-8 rounded-full bg-rose-100 text-[#C87D87] font-bold flex items-center justify-center">${cat.charAt(0).toUpperCase()}</div>`}
+
+                        <span class="font-bold text-stone-700">${cat}</span>
+                    </div>
+                    <input type="file" accept="image/*" onchange="subirFotoCategoriaAdmin('${cat}', this)" class="w-40 text-[10px]">
+                </div>
+            `).join("");
+        }
+
+        async function subirFotoBannerAdmin(idx, input) {
+            const url = await subirArchivoStorage(input.files);
+            if (url) { BANNERS_ADMIN[idx].foto = url; alert("✅ Foto del Banner " + (idx + 1) + " lista. Dale a 'Guardar Portada'."); }
+        }
+
+        async function subirFotoCategoriaAdmin(cat, input) {
+            const url = await subirArchivoStorage(input.files);
+            if (url) { FOTOS_CATEGORIAS_ADMIN[cat] = url; cargarConfigVisualAdmin(); }
+        }
+
+        async function guardarEnConfigMacalia(claveTexto, datosJson) {
+            const { data: existe } = await sb.from("config_macalia").select("id").eq("clave", claveTexto).maybeSingle();
+            if (existe) {
+                const { error } = await sb.from("config_macalia").update({ datos: datosJson }).eq("clave", claveTexto);
+                if (error) throw error;
+            } else {
+                const { error } = await sb.from("config_macalia").insert([{ clave: claveTexto, datos: datosJson }]);
+                if (error) throw error;
+            }
+        }
+
+        async function guardarConfigPortada() {
+            try {
+                await guardarEnConfigMacalia("banners_portada", BANNERS_ADMIN);
+                alert("🎉 ¡Banners de portada actualizados en la tienda!");
+            } catch (error) {
+                alert("❌ Error: " + error.message);
+            }
+        }
+
+        async function guardarConfigCategorias() {
+            try {
+                await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
+                alert("🎉 ¡Fotos de categorías actualizadas en la tienda!");
+            } catch (error) {
+                alert("❌ Error: " + error.message);
+            }
+        }
+
 
 
 
