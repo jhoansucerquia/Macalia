@@ -39,7 +39,7 @@
 
     <!-- CINTA SUPERIOR DE ANUNCIOS -->
     <div class="bg-[#C87D87] text-white text-xs text-center py-2 tracking-wider font-medium">
-        ✨ Envío GRATIS por compras superiores a $150.000 | Pagos 100% Seguros ✨
+        ✨ Envío GRATIS por compras superiores a $160.000 | Pagos 100% Seguros ✨
     </div>
 
     <!-- BARRA DE NAVEGACIÓN CON EL COLOR EXACTO DEL LOGO -->
@@ -112,6 +112,7 @@
                                     de búsqueda</span>
                                 <button onclick="cerrarSugerencias()"
                                     class="text-xs text-stone-400 hover:text-stone-700">✕</button>
+
                             </div>
                             <div id="lista-sugerencias" class="space-y-2.5 max-h-72 overflow-y-auto"></div>
                         </div>
@@ -169,7 +170,7 @@
 
                 <!-- Foto en toda la mitad derecha (sin borde ni marco blanco) -->
                 <div class="absolute inset-y-0 right-0 w-full md:w-3/5">
-                    <img src="hada.jpeg" alt="Macalia Belleza" class="w-full h-full object-cover object-top">
+                    <img src=" " alt="Macalia Belleza" class="w-full h-full object-cover object-top">
                     <!-- Degradado que aclara y funde la foto hacia las letras de la izquierda -->
                     <div class="absolute inset-0 bg-gradient-to-r from-[#eddedb] via-[#eddedb]/85 to-transparent"></div>
                 </div>
@@ -265,7 +266,7 @@
             class="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/80 hover:bg-white text-stone-700 hover:text-[#C87D87] shadow-md flex items-center justify-center font-bold transition">›</button>
 
         <!-- Puntos indicadores abajo -->
-        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
+        <div id="contenedor-dots-portada" class="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-2 z-20">
             <button onclick="irASlidePortada(0)"
                 class="dot-portada w-2.5 h-2.5 rounded-full bg-[#C87D87] transition"></button>
             <button onclick="irASlidePortada(1)"
@@ -404,46 +405,332 @@
                 <p class="text-center text-stone-400 text-sm py-10">Tu bolsa está vacía ✨</p>
             </div>
 
-            <!-- Total, Datos de Envío y Pasarela de Pagos -->
-            <div class="border-t border-rose-100 pt-4 space-y-2.5">
+            <!-- Pie compacto de la Bolsa -->
+            <div class="border-t border-rose-100 pt-4 space-y-3 bg-white">
+                <div class="bg-[#FDFBF9] p-3 rounded-2xl border border-rose-100 space-y-1.5">
+                    <p id="texto-envio-gratis" class="text-[11px] font-medium text-stone-600 text-center">
+                        ¡Agrega <span class="font-bold text-[#C87D87]">$160.000</span> más y consigue envío gratuito!
+                    </p>
+                    <div class="w-full h-1.5 bg-rose-100 rounded-full overflow-hidden">
+                        <div id="barra-envio-gratis" class="h-full bg-[#C87D87] transition-all duration-300"
+                            style="width: 0%;"></div>
+                    </div>
+                </div>
+
                 <div class="flex justify-between text-lg font-bold text-stone-800">
-                    <span>Total a pagar:</span>
+                    <span>Subtotal:</span>
                     <span id="total-bolsa" class="text-[#C87D87]">$0</span>
                 </div>
-                <input type="text" id="cliente-nombre-web" placeholder="Tu nombre completo"
-                    class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="text" id="cliente-ciudad-web" placeholder="Ciudad y dirección de envío"
-                    class="w-full px-3.5 py-2 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
 
-                <!-- Selector de Pago -->
-                <div class="pt-1">
-                    <label class="block text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-1">Método de
-                        Pago:</label>
-                    <select id="metodo-pago-web" onchange="cambiarBotonPago()"
-                        class="w-full px-3.5 py-2 bg-[#FDFBF9] border border-rose-200 rounded-xl text-xs font-semibold text-stone-700 focus:outline-none focus:border-[#C87D87]">
-                        <option value="wompi">💳 Pago en Línea (Wompi: Nequi, PSE, Tarjetas)</option>
-                        <option value="whatsapp">💬 Coordinar por WhatsApp / Contraentrega</option>
-                    </select>
+                <button type="button" onclick="abrirModalCheckout()"
+                    class="w-full bg-stone-900 hover:bg-[#C87D87] text-white font-bold py-3.5 rounded-full text-xs uppercase tracking-widest shadow-md transition">
+                    Completar Pedido →
+                </button>
+                <p class="text-[10px] text-stone-400 text-center">Envío $14.000 o GRATIS desde $160.000 en el siguiente
+                    paso.</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MODAL CHECKOUT PROFESIONAL DE 2 COLUMNAS -->
+    <div id="modal-checkout-macalia" class="fixed inset-0 bg-black/60 backdrop-blur-xs z-50 hidden overflow-y-auto">
+        <div class="min-h-screen flex items-center justify-center p-0 md:p-6">
+            <div
+                class="bg-white w-full max-w-5xl md:rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+
+                <!-- COLUMNA IZQUIERDA: FORMULARIO DE ENTREGA Y PAGO (7 columnas) -->
+                <div class="lg:col-span-7 p-6 md:p-10 space-y-6">
+                    <div class="flex items-center justify-between border-b border-rose-100 pb-4">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#C87D87]">Macalia Makeup
+                                Store</span>
+                            <h2 class="font-editorial text-2xl text-stone-800">Finalizar Compra</h2>
+                        </div>
+                        <button type="button" onclick="volverALaBolsaDesdeCheckout()"
+                            class="text-xs font-bold text-stone-400 hover:text-stone-700 px-3 py-1.5 rounded-full border border-stone-200">
+                            ← Volver a la bolsa
+                        </button>
+                    </div>
+
+                    <!-- CONTACTO Y ENTREGA -->
+                    <div class="space-y-3 text-xs">
+                        <h3 class="font-bold text-stone-800 text-sm">Contacto y Entrega en Colombia</h3>
+                        <input type="email" id="chk-correo" onblur="guardarCarritoAbandonadoNube()"
+                            placeholder="Correo electrónico"
+                            class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="chk-nombre" placeholder="Nombre *" required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="text" id="chk-apellidos" placeholder="Apellidos *" required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="chk-cedula" placeholder="Cédula de ciudadanía *" required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="tel" id="chk-telefono" placeholder="Teléfono / WhatsApp *" required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+
+                        <input type="text" id="chk-direccion"
+                            placeholder="Dirección exacta (Ej. Calle 10 # 23-45, Barrio, Apto) *" required
+                            class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="chk-ciudad" placeholder="Ciudad / Municipio *" required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                            <input type="text" id="chk-departamento" placeholder="Departamento (Ej. Antioquia) *"
+                                required
+                                class="w-full px-3.5 py-2.5 border border-rose-200 rounded-xl focus:outline-none focus:border-[#C87D87]">
+                        </div>
+                    </div>
+
+                    <!-- MÉTODO DE PAGO -->
+                    <div class="space-y-3 text-xs pt-2 border-t border-rose-100">
+                        <div class="flex flex-wrap items-center justify-between gap-2">
+                            <h3 class="font-bold text-stone-800 text-sm">Método de Pago</h3>
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <!-- Mastercard (Cuadro negro) -->
+                                <span class="w-9 h-6 rounded bg-[#141414] flex items-center justify-center shadow-2xs"
+                                    title="Mastercard">
+                                    <svg class="w-5 h-3.5" viewBox="0 0 32 20">
+                                        <circle cx="11" cy="10" r="7.5" fill="#EB001B" />
+                                        <circle cx="21" cy="10" r="7.5" fill="#F79E1B" fill-opacity="0.9" />
+                                    </svg>
+                                </span>
+                                <!-- Bancolombia (Círculo negro con trazos blancos) -->
+                                <span
+                                    class="w-9 h-6 rounded bg-white border border-stone-200 flex items-center justify-center shadow-2xs"
+                                    title="Bancolombia">
+                                    <span class="w-4 h-4 rounded-full bg-stone-900 flex items-center justify-center">
+                                        <svg class="w-2.5 h-2.5" viewBox="0 0 24 24" fill="none">
+                                            <path d="M5 7.5C9 6.5 15 6.5 19 7.5" stroke="#FFFFFF" stroke-width="2.6"
+                                                stroke-linecap="round" />
+                                            <path d="M4 12C9 11 15 11 20 12" stroke="#FFFFFF" stroke-width="2.6"
+                                                stroke-linecap="round" />
+                                            <path d="M6 16.5C10 15.5 14 15.5 18 16.5" stroke="#FFFFFF"
+                                                stroke-width="2.6" stroke-linecap="round" />
+                                        </svg>
+                                    </span>
+                                </span>
+                                <!-- Nequi -->
+                                <span
+                                    class="h-6 px-2 rounded bg-white border border-stone-200 flex items-center gap-0.5 shadow-2xs"
+                                    title="Nequi">
+                                    <span class="w-1.5 h-1.5 rounded-xs bg-[#DA0081] -mt-1.5"></span>
+                                    <span class="text-[11px] font-black text-[#200020] tracking-tight">Nequi</span>
+                                </span>
+                                <!-- PSE -->
+                                <span
+                                    class="h-6 px-2 rounded bg-white border border-stone-200 flex items-center gap-1 shadow-2xs"
+                                    title="PSE">
+                                    <span
+                                        class="w-3.5 h-3.5 rounded-full bg-[#0033A0] text-white text-[6.5px] font-black flex items-center justify-center">pse</span>
+                                    <span class="text-[10px] font-extrabold text-[#0033A0]">PSE</span>
+                                </span>
+                                <!-- VISA -->
+                                <span
+                                    class="h-6 px-2 rounded bg-white border border-stone-200 flex items-center shadow-2xs"
+                                    title="VISA">
+                                    <span
+                                        class="text-[11px] font-black italic text-[#1A1F71] tracking-tighter">VISA</span>
+                                </span>
+
+                                <!-- Logo Oficial Bre-B (Llaves) -->
+                                <span class="h-6 px-2 rounded bg-[#230046] flex items-center justify-center shadow-2xs"
+                                    title="Bre-B Llaves Inmediatas">
+                                    <span
+                                        class="text-[11px] font-black tracking-tight bg-gradient-to-r from-[#00D2FF] to-[#00E676] bg-clip-text text-transparent">Bre-B</span>
+                                </span>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <!-- TARJETA DE LLAVE -->
+                        <div id="box-llave-directa"
+                            class="bg-[#FDF2F4] border border-[#C87D87]/40 rounded-2xl p-4 space-y-2">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center gap-2">
+                                    <span
+                                        class="px-2 py-0.5 rounded-md bg-[#230046] flex items-center justify-center shadow-2xs">
+                                        <span
+                                            class="text-[10px] font-black tracking-tight bg-gradient-to-r from-[#00D2FF] to-[#00E676] bg-clip-text text-transparent">Bre-B</span>
+                                    </span>
+                                    <span class="font-bold text-[#C87D87] uppercase tracking-wider text-[10px]">Pago
+                                        Inmediato por Llave</span>
+                                </div>
+                                <span
+                                    class="bg-white text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full text-[10px] border border-rose-100">0%
+                                    Recargo</span>
+                            </div>
+
+                            <div
+                                class="flex items-center justify-between bg-white px-3.5 py-2.5 rounded-xl border border-rose-100">
+                                <div>
+                                    <p class="text-[10px] text-stone-400">Llave Macalia (Bancos):</p>
+
+                                    <p class="text-[10px] text-stone-500">Titular: Macalia Makeup Store</p>
+                                </div>
+                                <button type="button" onclick="copiarLlavePago('3106051359')"
+                                    class="bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold text-[11px] px-3.5 py-2 rounded-xl shadow-xs transition">
+                                    📋 Copiar Llave
+                                </button>
+                            </div>
+                            <p class="text-[10px] text-stone-500 leading-relaxed">
+                                1. Copia nuestra llave y transfiere el total desde Nequi, Bancolombia o cualquier
+                                banco.<br>
+                                2. Toca el botón rosado para enviarnos tu pedido y adjuntar el comprobante.
+                            </p>
+                        </div>
+
+                        <!-- ESCUDO ANTI-BOTS TURNSTILE -->
+                        <div class="cf-turnstile flex justify-center pt-1" data-sitekey="0x4AAAAAA..."
+                            data-theme="light"></div>
+
+                        <!-- SELECTOR VISUAL DE MÉTODO DE PAGO (2 TARJETAS CON LOGOS) -->
+                        <input type="hidden" id="metodo-pago-web" value="llave_directa">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                            <!-- TARJETA 1: TRANSFERENCIA POR LLAVE BRE-B -->
+                            <button type="button" onclick="seleccionarMetodoVisual('llave_directa', this)"
+                                class="btn-metodo-pago flex flex-col justify-between p-3.5 rounded-2xl border-2 border-[#C87D87] bg-[#FDF2F4] text-left transition">
+                                <div class="flex items-center justify-between w-full mb-2">
+                                    <span class="text-xs font-bold text-stone-800 flex items-center gap-2">
+                                        <!-- Sello Oficial Bre-B -->
+                                        <span
+                                            class="px-2 py-1 rounded-lg bg-[#230046] flex items-center justify-center shadow-2xs shrink-0">
+                                            <span
+                                                class="text-[11px] font-black tracking-tight bg-gradient-to-r from-[#00D2FF] to-[#00E676] bg-clip-text text-transparent">Bre-B</span>
+                                        </span>
+                                        Transferencia Llave
+                                    </span>
+                                    <span
+                                        class="text-[9px] font-extrabold text-[#C87D87] bg-white px-2 py-0.5 rounded-full border border-rose-200">0%
+                                        Recargo</span>
+                                </div>
+                                <div class="flex items-center gap-1.5 flex-wrap">
+                                    <span class="text-[10px] text-stone-500 font-medium">Inmediato desde Nequi o
+                                        cualquier banco</span>
+                                </div>
+                            </button>
+
+
+                            <!-- TARJETA 2: PAGO ONLINE CON WOMPI + LOGOS -->
+                            <button type="button" onclick="seleccionarMetodoVisual('wompi', this)"
+                                class="btn-metodo-pago flex flex-col justify-between p-3.5 rounded-2xl border border-rose-200 bg-white hover:border-[#C87D87]/60 text-left transition">
+                                <div class="flex items-center justify-between w-full mb-2">
+                                    <span class="text-xs font-bold text-stone-800 flex items-center gap-2">
+                                        <!-- Logo Wompi Oficial (Verde menta / oscuro) -->
+                                        <span
+                                            class="px-2 py-0.5 rounded-md bg-[#002C2F] text-[#00E599] font-black text-[11px] tracking-tight flex items-center gap-1">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-[#00E599]"></span>wompi
+                                        </span>
+                                        Pago Online
+                                    </span>
+                                </div>
+                                <!-- Mini Logos Reales de PSE, Nequi, Bancolombia y Tarjetas -->
+                                <div class="flex items-center gap-1 flex-wrap">
+                                    <span
+                                        class="h-5 px-1.5 rounded bg-white border border-stone-200 flex items-center gap-0.5">
+                                        <span
+                                            class="w-2.5 h-2.5 rounded-full bg-[#0033A0] text-white text-[5px] font-black flex items-center justify-center">pse</span>
+                                        <span class="text-[8.5px] font-extrabold text-[#0033A0]">PSE</span>
+                                    </span>
+                                    <span
+                                        class="h-5 px-1.5 rounded bg-white border border-stone-200 flex items-center gap-0.5">
+                                        <span class="w-1 h-1 rounded-xs bg-[#DA0081] -mt-1"></span>
+                                        <span class="text-[8.5px] font-black text-[#200020]">Nequi</span>
+                                    </span>
+                                    <span
+                                        class="w-6 h-5 rounded bg-white border border-stone-200 flex items-center justify-center"
+                                        title="Bancolombia">
+                                        <span
+                                            class="w-3 h-3 rounded-full bg-stone-900 flex items-center justify-center">
+                                            <svg class="w-2 h-2" viewBox="0 0 24 24" fill="none">
+                                                <path d="M5 7.5C9 6.5 15 6.5 19 7.5" stroke="#FFF" stroke-width="2.8"
+                                                    stroke-linecap="round" />
+                                                <path d="M4 12C9 11 15 11 20 12" stroke="#FFF" stroke-width="2.8"
+                                                    stroke-linecap="round" />
+                                                <path d="M6 16.5C10 15.5 14 15.5 18 16.5" stroke="#FFF"
+                                                    stroke-width="2.8" stroke-linecap="round" />
+                                            </svg>
+                                        </span>
+                                    </span>
+                                    <span class="w-6 h-5 rounded bg-[#141414] flex items-center justify-center"
+                                        title="Mastercard">
+                                        <svg class="w-3.5 h-2.5" viewBox="0 0 32 20">
+                                            <circle cx="11" cy="10" r="7.5" fill="#EB001B" />
+                                            <circle cx="21" cy="10" r="7.5" fill="#F79E1B" fill-opacity="0.9" />
+                                        </svg>
+                                    </span>
+                                    <span class="h-5 px-1.5 rounded bg-white border border-stone-200 flex items-center">
+                                        <span class="text-[8.5px] font-black italic text-[#1A1F71]">VISA</span>
+                                    </span>
+                                </div>
+                            </button>
+
+                        </div>
+
+                        <button id="btn-pagar-wompi" type="button" onclick="procesarCheckoutMacalia('Wompi')"
+                            class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest shadow-lg transition flex items-center justify-center gap-2">
+                            🔒 Pagar de Forma Segura con Wompi
+                        </button>
+
+
+
+                        <button id="btn-pagar-whatsapp" type="button" onclick="procesarCheckoutMacalia('WhatsApp')"
+                            class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-4 rounded-full text-xs uppercase tracking-wider shadow-lg transition">
+                            📲 Ya transferí — Enviar Pedido y Comprobante
+                        </button>
+                    </div>
                 </div>
 
-                <div class="cf-turnstile flex justify-center my-1" data-sitekey="0x4AAAAAAGLz6iGQlQ0s2ioL"
-                    data-theme="light"></div>
+                <!-- COLUMNA DERECHA: RESUMEN DEL PEDIDO (5 columnas) -->
+                <div
+                    class="lg:col-span-5 bg-[#FAF6F4] p-6 md:p-10 border-t lg:border-t-0 lg:border-l border-rose-100 flex flex-col justify-between">
+                    <div class="space-y-5">
+                        <div class="flex items-center justify-between border-b border-rose-200/60 pb-3">
+                            <h3 class="font-editorial text-xl text-stone-800">Resumen de tu Pedido</h3>
+                            <button type="button" onclick="cerrarModalCheckout()" title="Cerrar y volver a la tienda"
+                                class="w-8 h-8 rounded-full bg-white hover:bg-rose-100 text-stone-500 hover:text-[#C87D87] font-bold flex items-center justify-center border border-rose-200 transition">
+                                ✕
+                            </button>
+                        </div>
 
+                        <div id="chk-lista-productos" class="space-y-3 max-h-72 overflow-y-auto pr-1"></div>
 
-                <!-- Botón Principal Wompi -->
-                <button id="btn-pagar-wompi" onclick="pagarConWompi()"
-                    class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3.5 rounded-full shadow-md transition text-xs flex items-center justify-center gap-2">
-                    <span>🔒 Pagar Seguro con Wompi</span>
-                </button>
+                        <div class="border-t border-rose-200/60 pt-4 space-y-2 text-xs">
+                            <div class="flex justify-between text-stone-600">
+                                <span>Subtotal</span>
+                                <span id="chk-subtotal" class="font-semibold">$0</span>
+                            </div>
+                            <div class="flex justify-between text-stone-600">
+                                <span>Envío Nacional (Tarifa única)</span>
+                                <span id="chk-envio" class="font-semibold">$14.000</span>
+                            </div>
+                            <div
+                                class="flex justify-between items-center text-base font-bold text-stone-900 border-t border-rose-200/60 pt-3">
+                                <span>Total a Pagar</span>
+                                <span id="chk-total-final" class="font-editorial text-2xl text-[#C87D87]">$0</span>
+                            </div>
+                        </div>
+                    </div>
 
-                <!-- Botón Alternativo WhatsApp -->
-                <button id="btn-pagar-whatsapp" onclick="enviarPedidoWhatsApp()"
-                    class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs">
-                    Finalizar Pedido por WhatsApp 💬
-                </button>
+                    <div
+                        class="mt-6 bg-white/80 p-3.5 rounded-2xl border border-rose-100 text-[11px] text-stone-500 text-center">
+                        🔒 Compra protegida • Envíos seguros a toda Colombia desde Antioquia.
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+
 
     <!-- MODAL DE DETALLE DEL PRODUCTO (GALERÍA + DESCRIPCIÓN + CANTIDAD) -->
     <div id="modal-detalle-producto"
@@ -544,26 +831,51 @@
                 <p class="text-xs text-stone-500 mt-1">Accede a precios especiales para tu negocio</p>
             </div>
 
-            <!-- Pestañas Ingresar / Crear Cuenta -->
-            <div class="grid grid-cols-2 bg-rose-50 p-1 rounded-full border border-rose-100 mb-5 text-xs font-semibold">
-                <button type="button" id="tab-login-may" onclick="cambiarTabMayorista('login')"
-                    class="py-2 rounded-full bg-[#C87D87] text-white transition">Ingresar</button>
-                <button type="button" id="tab-reg-may" onclick="cambiarTabMayorista('registro')"
-                    class="py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition">Crear Cuenta</button>
+            <div id="vista-mayorista-formularios">
+
+                <!-- Pestañas Ingresar / Crear Cuenta -->
+                <div
+                    class="grid grid-cols-2 bg-rose-50 p-1 rounded-full border border-rose-100 mb-5 text-xs font-semibold">
+
+                    <button type="button" id="tab-login-may" onclick="cambiarTabMayorista('login')"
+                        class="py-2 rounded-full bg-[#C87D87] text-white transition">Ingresar</button>
+
+                    <button type="button" id="tab-reg-may" onclick="cambiarTabMayorista('registro')"
+                        class="py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition">Crear Cuenta</button>
+                </div>
+
+                <!-- FORMULARIO 1: INICIAR SESIÓN -->
+                <form id="form-login-mayorista" onsubmit="event.preventDefault(); iniciarSesionMayorista();"
+                    class="space-y-3.5">
+                    <input type="text" id="login-may-usuario" required placeholder="Correo electrónico o # de celular"
+                        class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                    <input type="password" id="login-may-clave" required placeholder="Tu contraseña"
+                        class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
+                    <div class="cf-turnstile flex justify-center my-2" data-sitekey="0x4AAAAAAGLz6iGQlQ0s2ioL"
+                        data-theme="light"></div>
+
+                    <button type="submit"
+                        class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
+                        Ingresar y Activar Precios
+                    </button>
+                </form>
             </div>
 
-            <!-- FORMULARIO 1: INICIAR SESIÓN -->
-            <form id="form-login-mayorista" onsubmit="event.preventDefault(); iniciarSesionMayorista();"
-                class="space-y-3.5">
-                <input type="text" id="login-may-usuario" required placeholder="Correo electrónico o # de celular"
-                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <input type="password" id="login-may-clave" required placeholder="Tu contraseña"
-                    class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
-                <button type="submit"
-                    class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
-                    Ingresar y Activar Precios
+            <!-- VISTA CUANDO YA INICIÓ SESIÓN MAYORISTA -->
+            <div id="vista-mayorista-activa" class="hidden text-center space-y-4 py-2">
+                <div class="bg-[#FDF2F4] border border-[#C87D87]/40 rounded-2xl p-4 space-y-1">
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-[#C87D87]">Cuenta Mayorista Activa ✓
+                    </p>
+                    <p id="nombre-mayorista-activo" class="font-editorial text-xl text-stone-800 font-bold">Mayorista
+                    </p>
+                    <p class="text-xs text-stone-500">Todos los precios del catálogo ya muestran tu tarifa especial.</p>
+                </div>
+                <button type="button" onclick="cerrarSesionMayorista()"
+                    class="w-full bg-stone-900 hover:bg-red-600 text-white font-bold py-3 rounded-full text-xs uppercase tracking-wider transition">
+                    Cerrar Sesión Mayorista
                 </button>
-            </form>
+            </div>
+
 
             <!-- FORMULARIO 2: REGISTRO NUEVO CON ESCUDO ANTI-ROBOTS -->
             <form id="form-registro-mayorista" onsubmit="event.preventDefault(); registrarMayorista();"
@@ -678,6 +990,40 @@
 
 
     <script>
+        // SISTEMA DE NOTIFICACIONES FLOTANTES ESTILO MACALIA (Reemplaza los alert() grises)
+        window.alert = function (mensaje) {
+            let contenedor = document.getElementById("macalia-toast-container");
+            if (!contenedor) {
+                contenedor = document.createElement("div");
+                contenedor.id = "macalia-toast-container";
+                contenedor.className = "fixed bottom-5 right-5 z-[9999] flex flex-col gap-2.5 max-w-sm w-[92%] sm:w-auto pointer-events-none";
+                document.body.appendChild(contenedor);
+            }
+
+            const texto = String(mensaje || "");
+            const esError = texto.includes("⚠️") || texto.includes("❌") || texto.toLowerCase().includes("error") || texto.toLowerCase().includes("vacía") || texto.toLowerCase().includes("agotado");
+
+            const toast = document.createElement("div");
+            toast.className = `pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 ${esError
+                    ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
+                    : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
+                }`;
+
+            toast.innerHTML = `
+                <span class="w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${esError ? "bg-[#C87D87]" : "bg-emerald-500"}"></span>
+                <p class="text-xs font-medium leading-relaxed flex-1">${texto.replace(/^[⚠️✅❌🎉🔒]+\s*/, "")}</p>
+                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-stone-700 text-xs font-bold pl-1">✕</button>
+            `;
+
+            contenedor.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove("translate-y-2", "opacity-0"));
+
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3800);
+        };
+
 
         const SUPABASE_URL = "https://qcuvuyvdbyzvtswriqws.supabase.co";
         const SUPABASE_KEY = "sb_publishable_RdgPMIJRPh0dR6N_MdceGA_ABQ65-QZ";
@@ -732,6 +1078,14 @@
 
                     </div>
                 `).join("");
+
+                const contDots = document.getElementById("contenedor-dots-portada");
+                if (contDots) {
+                    contDots.innerHTML = bannersData.map((_, idx) => `
+        <button onclick="irASlidePortada(${idx})" class="dot-portada ${idx === 0 ? 'w-6 h-2 rounded-full bg-[#C87D87]' : 'w-2 h-2 rounded-full bg-stone-400/50'} transition-all"></button>
+    `).join("");
+                }
+
             }
 
 
@@ -759,6 +1113,16 @@
                 gridCats.innerHTML = bolitaVerTodo + bolitasDinamicas;
             }
         }
+
+        try {
+            const mayGuardado = JSON.parse(localStorage.getItem("macalia_mayorista") || "null");
+            if (mayGuardado && mayGuardado.nombre) {
+                ES_MAYORISTA_ACTIVO = true;
+                const etq = document.getElementById("etiqueta-mayorista");
+                if (etq) etq.innerText = "👑 " + mayGuardado.nombre;
+            }
+        } catch (e) { }
+
 
         async function cargarCatalogoDesdeSupabase() {
             // 1. Mostrar caché instantáneo si existe (0 segundos de espera)
@@ -917,18 +1281,44 @@
             });
         }
 
+        function copiarLlavePago(llave) {
+            navigator.clipboard.writeText(llave);
+            alert("✅ Llave (" + llave + ") copiada. Pégala en tu app bancaria o Nequi para transferir.");
+        }
+
+        function seleccionarMetodoVisual(metodo, botonClic) {
+            document.getElementById("metodo-pago-web").value = metodo;
+            document.querySelectorAll(".btn-metodo-pago").forEach(btn => {
+                btn.classList.remove("border-2", "border-[#C87D87]", "bg-[#FDF2F4]");
+                btn.classList.add("border", "border-rose-200", "bg-white");
+            });
+            if (botonClic) {
+                botonClic.classList.remove("border", "border-rose-200", "bg-white");
+                botonClic.classList.add("border-2", "border-[#C87D87]", "bg-[#FDF2F4]");
+            }
+            cambiarBotonPago();
+        }
+
         function cambiarBotonPago() {
             const metodo = document.getElementById("metodo-pago-web").value;
+            const boxLlave = document.getElementById("box-llave-directa");
             const btnWompi = document.getElementById("btn-pagar-wompi");
             const btnWa = document.getElementById("btn-pagar-whatsapp");
+
+            if (boxLlave) boxLlave.classList.toggle("hidden", metodo !== "llave_directa");
+
             if (metodo === "wompi") {
                 btnWompi.classList.remove("hidden");
                 btnWa.classList.add("hidden");
             } else {
                 btnWompi.classList.add("hidden");
                 btnWa.classList.remove("hidden");
+                btnWa.innerHTML = metodo === "llave_directa"
+                    ? "📲 Ya transferí — Enviar Pedido y Comprobante"
+                    : "Finalizar Pedido por WhatsApp 💬";
             }
         }
+
 
         const WHATSAPP_MACALIA = "573106051359"; // <-- Reemplaza por el WhatsApp real de Macalia
         const WOMPI_LLAVE_PUBLICA = ""; // <-- Pega aquí tu pub_prod_... de Wompi cuando la tengas
@@ -945,46 +1335,145 @@
             if (error) console.error("Error guardando pedido:", error);
         }
 
-        async function pagarConWompi() {
+        function abrirModalCheckout() {
+            if (bolsa.length === 0) return alert("⚠️ Tu bolsa está vacía. Agrega al menos un producto.");
+            document.getElementById("modal-bolsa").classList.add("hidden");
+
+
+            const subtotal = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            const costoEnvio = subtotal >= 160000 ? 0 : 14000;
+            const totalFinal = subtotal + costoEnvio;
+
+            document.getElementById("chk-subtotal").innerText = "$" + subtotal.toLocaleString("es-CO");
+            document.getElementById("chk-envio").innerHTML = costoEnvio === 0
+                ? `<span class="text-emerald-600 font-bold">GRATIS 🎉</span>`
+                : "$" + costoEnvio.toLocaleString("es-CO");
+            document.getElementById("chk-total-final").innerText = "$" + totalFinal.toLocaleString("es-CO");
+
+            document.getElementById("chk-lista-productos").innerHTML = bolsa.map(i => `
+             <div class="flex items-center justify-between gap-3 bg-white p-2.5 rounded-2xl border border-rose-100">
+                 <div class="flex items-center gap-2.5">
+                     <span class="bg-stone-800 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center shrink-0">${i.cantidad}</span>
+                     <div>
+                         <p class="text-xs font-bold text-stone-800 leading-tight">${i.nombre}</p>
+                         ${i.tono ? `<p class="text-[10px] text-[#C87D87] font-semibold">Tono: ${i.tono}</p>` : ''}
+                     </div>
+                 </div>
+                 <span class="text-xs font-bold text-stone-700">$${(i.precio * i.cantidad).toLocaleString("es-CO")}</span>
+             </div>
+         `).join("");
+
+            document.getElementById("modal-checkout-macalia").classList.remove("hidden");
+        }
+
+        function cerrarModalCheckout() {
+            document.getElementById("modal-checkout-macalia").classList.add("hidden");
+        }
+
+        function volverALaBolsaDesdeCheckout() {
+            document.getElementById("modal-checkout-macalia").classList.add("hidden");
+            document.getElementById("modal-bolsa").classList.remove("hidden");
+        }
+
+
+        async function procesarCheckoutMacalia(canal) {
             if (!verificarHumanoTurnstile()) return;
-            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
-            const nombre = document.getElementById("cliente-nombre-web").value.trim();
-            const ciudad = document.getElementById("cliente-ciudad-web").value.trim();
-            if (!nombre || !ciudad) return alert("⚠️ Por favor completa tu nombre y dirección de envío.");
+            const nombre = document.getElementById("chk-nombre").value.trim();
+            const apellidos = document.getElementById("chk-apellidos").value.trim();
+            const cedula = document.getElementById("chk-cedula").value.trim();
+            const telefono = document.getElementById("chk-telefono").value.trim();
+            const direccion = document.getElementById("chk-direccion").value.trim();
+            const ciudad = document.getElementById("chk-ciudad").value.trim();
+            const depto = document.getElementById("chk-departamento").value.trim();
 
-            const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-            await registrarPedidoEnSupabase(nombre, ciudad, "Wompi", total);
-
-            if (!WOMPI_LLAVE_PUBLICA) {
-                return alert(`💳 Pedido registrado por $${total.toLocaleString("es-CO")}.\n\nPara abrir el checkout real de Nequi/PSE/Tarjetas, pega tu Llave Pública de Wompi en WOMPI_LLAVE_PUBLICA.`);
+            if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
+                return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
             }
 
-            const referencia = `MACALIA-${Date.now()}`;
-            const montoCentavos = total * 100;
-            const urlCheckout = `https://wompi.co{WOMPI_LLAVE_PUBLICA}&currency=COP&amount-in-cents=${montoCentavos}&reference=${referencia}`;
-            window.open(urlCheckout, "_blank");
-        }
+            // 1. VERIFICAR STOCK EN TIEMPO REAL ANTES DE COBRAR (Evita sobreventas)
+            for (const item of bolsa) {
+                const { data: prodActual } = await sbTienda.from("catalogo_web").select("nombre, stock, tonos").eq("id", item.id).maybeSingle();
+                if (!prodActual) return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
 
-        async function enviarPedidoWhatsApp() {
-            if (!verificarHumanoTurnstile()) return;
-            if (bolsa.length === 0) return alert("⚠️ Agrega al menos un producto a tu bolsa.");
-            const nombre = document.getElementById("cliente-nombre-web").value.trim() || "Cliente Web";
-            const ciudad = document.getElementById("cliente-ciudad-web").value.trim() || "Por confirmar";
-            const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+                if (item.tono && Array.isArray(prodActual.tonos) && prodActual.tonos.length > 0) {
+                    const tonoObj = prodActual.tonos.find(t => t.nombre.toUpperCase() === item.tono.toUpperCase());
+                    const dispTono = tonoObj ? (Number(tonoObj.stock) || 0) : 0;
+                    if (dispTono < item.cantidad) {
+                        return alert(`😔 Lo sentimos, acaban de llevarse las últimas unidades de "${item.nombre}" en tono ${item.tono}. Disponibles ahora: ${dispTono}.`);
+                    }
+                } else {
+                    const dispGen = Number(prodActual.stock) || 0;
+                    if (dispGen < item.cantidad) {
+                        return alert(`😔 Lo sentimos, de "${item.nombre}" solo quedan ${dispGen} unidades disponibles en este momento.`);
+                    }
+                }
+            }
 
-            await registrarPedidoEnSupabase(nombre, ciudad, "WhatsApp", total);
+            // 2. DESCONTAR Y RESERVAR INVENTARIO AL INSTANTE EN SUPABASE
+            for (const item of bolsa) {
+                const { data: prod } = await sbTienda.from("catalogo_web").select("stock, tonos").eq("id", item.id).maybeSingle();
+                if (!prod) continue;
 
-            let resumen = `Hola Macalia ♡ Quiero confirmar este pedido:\n\n`;
+                let tonosActualizados = Array.isArray(prod.tonos) ? [...prod.tonos] : [];
+                let nuevoStockGeneral = Math.max(0, (Number(prod.stock) || 0) - Number(item.cantidad));
+
+                if (item.tono && tonosActualizados.length > 0) {
+                    tonosActualizados = tonosActualizados.map(t => {
+                        if (t.nombre.toUpperCase() === item.tono.toUpperCase()) {
+                            return { ...t, stock: Math.max(0, (Number(t.stock) || 0) - Number(item.cantidad)) };
+                        }
+                        return t;
+                    });
+                    nuevoStockGeneral = tonosActualizados.reduce((sum, t) => sum + (Number(t.stock) || 0), 0);
+                }
+
+                await sbTienda.from("catalogo_web").update({
+                    stock: nuevoStockGeneral,
+                    tonos: tonosActualizados
+                }).eq("id", item.id);
+            }
+
+            // 3. REGISTRAR PEDIDO Y MARCAR CARRITO COMO COMPRADO
+            const subtotal = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+            const costoEnvio = subtotal >= 160000 ? 0 : 14000;
+            const totalFinal = subtotal + costoEnvio;
+            const metodoSelect = document.getElementById("metodo-pago-web").value;
+            const nombreCompleto = `${nombre} ${apellidos} (CC: ${cedula} | Tel: ${telefono})`;
+            const ubicacionCompleta = `${direccion}, ${ciudad} - ${depto}`;
+
+            await registrarPedidoEnSupabase(nombreCompleto, ubicacionCompleta, canal === "Wompi" ? "Wompi" : metodoSelect, totalFinal);
+
+            const correoCompra = document.getElementById("chk-correo").value.trim().toLowerCase();
+            if (correoCompra) {
+                await sbTienda.from("carritos_abandonados").update({ estado: "Comprado" }).eq("correo", correoCompra);
+            }
+            localStorage.removeItem("macalia_bolsa_v1");
+
+            // 4. REDIRIGIR AL PAGO O WHATSAPP
+            if (canal === "Wompi") {
+                if (!WOMPI_LLAVE_PUBLICA) {
+                    return alert(`💳 Pedido registrado e inventario reservado por $${totalFinal.toLocaleString("es-CO")}.\n\nCuando pegues tu Llave Pública de Wompi, abrirá el checkout automático aquí.`);
+                }
+                const referencia = `MACALIA-${Date.now()}`;
+                window.open(`https://wompi.co/${WOMPI_LLAVE_PUBLICA}&currency=COP&amount-in-cents=${totalFinal * 100}&reference=${referencia}`, "_blank");
+                return;
+            }
+
+            let resumen = `Hola Macalia ♡ Quiero confirmar mi pedido:\n\n`;
             bolsa.forEach(i => {
-                const tonoTxt = i.tono ? ` (${i.tono})` : "";
-                resumen += `• ${i.cantidad}x ${i.nombre}${tonoTxt} — $${(i.precio * i.cantidad).toLocaleString("es-CO")}\n`;
+                resumen += `• ${i.cantidad}x ${i.nombre}${i.tono ? ` (${i.tono})` : ''} — $${(i.precio * i.cantidad).toLocaleString("es-CO")}\n`;
             });
-            resumen += `\n*Total:* $${total.toLocaleString("es-CO")}\n*Nombre:* ${nombre}\n*Envío:* ${ciudad}`;
+            resumen += `\n*Subtotal:* $${subtotal.toLocaleString("es-CO")}`;
+            resumen += `\n*Envío:* ${costoEnvio === 0 ? "GRATIS 🎉" : "$" + costoEnvio.toLocaleString("es-CO")}`;
+            resumen += `\n*TOTAL A PAGAR:* $${totalFinal.toLocaleString("es-CO")}`;
+            resumen += `\n\n*Datos de Entrega:*\n👤 ${nombre} ${apellidos}\n🪪 CC: ${cedula}\n📱 Tel: ${telefono}\n📍 ${ubicacionCompleta}`;
+            resumen += `\n💳 *Pago:* ${metodoSelect === "llave_directa" ? "Transferencia por Llave (Adjunto comprobante)" : "Coordinar por WhatsApp"}`;
 
-            window.open(`https://wa.me${WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank");
+            bolsa = [];
+            actualizarBolsa();
+            cerrarModalCheckout();
+            window.open(`https://wa.me/${WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank");
         }
-
-
 
 
 
@@ -1072,9 +1561,21 @@
             // No cerramos la ventana para que pueda elegir otro tono si quiere
         }
 
+        function cambiarCantidadBolsa(claveUnica, delta) {
+            const item = bolsa.find(i => i.claveUnica === claveUnica);
+            if (!item) return;
+            const nuevaCant = item.cantidad + delta;
+            if (nuevaCant <= 0) {
+                quitarDeBolsa(claveUnica);
+            } else {
+                item.cantidad = nuevaCant;
+                actualizarBolsa();
+            }
+        }
 
 
         function actualizarBolsa() {
+
             const lista = document.getElementById("lista-bolsa");
             const totalEl = document.getElementById("total-bolsa");
             const contadorEl = document.getElementById("contador-bolsa");
@@ -1091,7 +1592,13 @@
                         <div>
                             <p class="font-editorial font-semibold text-sm text-stone-800">${item.nombre}</p>
                             ${item.tono ? `<span class="inline-block text-[10px] uppercase tracking-wider bg-rose-100 text-[#C87D87] font-bold px-2 py-0.5 rounded-full mt-0.5">Tono: ${item.tono}</span>` : ''}
-                            <p class="text-xs text-stone-500 mt-1">${item.cantidad} x $${item.precio.toLocaleString()}</p>
+                            <div class="flex items-center gap-2 mt-2">
+    <button type="button" onclick="cambiarCantidadBolsa('${item.claveUnica}', -1)" class="w-6 h-6 rounded-full bg-rose-100 hover:bg-[#C87D87] text-stone-700 hover:text-white font-bold text-xs flex items-center justify-center transition">-</button>
+    <span class="text-xs font-bold text-stone-800 w-4 text-center">${item.cantidad}</span>
+    <button type="button" onclick="cambiarCantidadBolsa('${item.claveUnica}', 1)" class="w-6 h-6 rounded-full bg-rose-100 hover:bg-[#C87D87] text-stone-700 hover:text-white font-bold text-xs flex items-center justify-center transition">+</button>
+    <span class="text-xs font-semibold text-stone-500 ml-1">$${(item.precio * item.cantidad).toLocaleString('es-CO')}</span>
+</div>
+
                         </div>
                         <button onclick="quitarDeBolsa('${item.claveUnica}')" class="text-xs text-[#C87D87] hover:underline font-semibold">Quitar</button>
                     </div>`;
@@ -1103,7 +1610,24 @@
 
             totalEl.innerText = `$${total.toLocaleString()}`;
             contadorEl.innerText = totalItems;
+
+            const META_ENVIO_GRATIS = 160000;
+            const faltante = Math.max(0, META_ENVIO_GRATIS - total);
+            const porcentaje = Math.min(100, (total / META_ENVIO_GRATIS) * 100);
+            const txtEnvio = document.getElementById("texto-envio-gratis");
+            const barraEnvio = document.getElementById("barra-envio-gratis");
+            if (txtEnvio && barraEnvio) {
+                barraEnvio.style.width = porcentaje + "%";
+                txtEnvio.innerHTML = faltante === 0
+                    ? "🎉 ¡Felicidades! Tienes <strong>ENVÍO GRATIS</strong> en este pedido."
+                    : `¡Agrega <span class="font-bold text-[#C87D87]">$${faltante.toLocaleString("es-CO")}</span> más y consigue envío gratuito!`;
+            }
+
+            localStorage.setItem("macalia_bolsa_v1", JSON.stringify(bolsa));
+
         }
+
+
 
         function quitarDeBolsa(claveUnica) {
             bolsa = bolsa.filter(item => item.claveUnica !== claveUnica);
@@ -1158,9 +1682,9 @@
             coincidencias.forEach(p => {
                 const precioMostrar = ES_MAYORISTA ? (p.precioMayorista || Math.round(p.precio * 0.8)) : p.precio;
                 lista.innerHTML += `
-                    <div onclick="irAProducto(${p.id})" class="flex items-center justify-between p-2 hover:bg-rose-50 rounded-xl cursor-pointer transition">
+                    <div onclick="irAProducto(${p.id}); cerrarSugerencias();" class="flex items-center justify-between gap-3 p-2 rounded-2xl hover:bg-rose-50/70 cursor-pointer transition">
                         <div class="flex items-center gap-3">
-                            <span class="text-2xl bg-[#FDF6F7] w-10 h-10 flex items-center justify-center rounded-lg">${p.emoji}</span>
+                            <img src="${(p.fotos && p.fotos.length > 0) ? p.fotos[0] : (p.imagen || ' ')}" alt="${p.nombre}" class="w-11 h-11 rounded-xl object-cover border border-rose-100 shrink-0">
                             <div>
                                 <p class="text-xs font-semibold text-stone-800">${p.nombre}</p>
                                 <p class="text-[10px] text-[#C87D87]">en ${p.categoria}</p>
@@ -1188,13 +1712,41 @@
             const modal = document.getElementById("modal-mayorista");
             modal.classList.remove("hidden");
             modal.classList.add("flex");
+
+            const guardado = JSON.parse(localStorage.getItem("macalia_mayorista") || "null");
+            const boxActiva = document.getElementById("vista-mayorista-activa");
+            const boxForms = document.getElementById("vista-mayorista-formularios");
+
+            if (guardado && boxActiva && boxForms) {
+                document.getElementById("nombre-mayorista-activo").innerText = guardado.nombre;
+                boxActiva.classList.remove("hidden");
+                boxForms.classList.add("hidden");
+            } else if (boxActiva && boxForms) {
+                boxActiva.classList.add("hidden");
+                boxForms.classList.remove("hidden");
+            }
+
+            if (window.turnstile) {
+                document.querySelectorAll("#modal-mayorista .cf-turnstile").forEach(el => {
+                    if (!el.hasChildNodes()) turnstile.render(el);
+                });
+            }
         }
+
+        function cerrarSesionMayorista() {
+            localStorage.removeItem("macalia_mayorista");
+            location.reload();
+        }
+
 
         function cerrarModalMayorista() {
             const modal = document.getElementById("modal-mayorista");
             modal.classList.add("hidden");
             modal.classList.remove("flex");
+
+
         }
+
 
         let RESPUESTA_HUMANA = 0;
 
@@ -1217,6 +1769,12 @@
                 tabLogin.className = "py-2 rounded-full bg-[#C87D87] text-white transition";
                 tabReg.className = "py-2 rounded-full text-stone-600 hover:text-[#C87D87] transition";
             }
+            if (window.turnstile) {
+                document.querySelectorAll("#modal-mayorista .cf-turnstile").forEach(el => {
+                    if (!el.hasChildNodes()) turnstile.render(el);
+                });
+            }
+
         }
 
         function registrarMayorista() {
@@ -1232,6 +1790,12 @@
             const contacto = document.getElementById("reg-may-contacto").value.trim();
             const clave = document.getElementById("reg-may-clave").value;
 
+            const esCorreoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto);
+            const esCelularValido = /^[0-9]{10}$/.test(contacto.replace(/\s+/g, ""));
+            if (!esCorreoValido && !esCelularValido) {
+                return alert("⚠️ Por favor ingresa un correo electrónico válido o un número de celular de 10 dígitos.");
+            }
+
             // Guardamos temporalmente en el navegador mientras lo conectamos a Supabase
             localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto, clave }));
 
@@ -1240,6 +1804,7 @@
         }
 
         function iniciarSesionMayorista() {
+            if (!verificarHumanoTurnstile()) return;
             const usuario = document.getElementById("login-may-usuario").value.trim();
             const clave = document.getElementById("login-may-clave").value;
             const guardado = JSON.parse(localStorage.getItem("macalia_mayorista") || "null");
@@ -1516,10 +2081,42 @@
             return false;
         }
 
+        // Recuperar bolsa guardada si la clienta recarga la página
+        try {
+            const bolsaGuardada = JSON.parse(localStorage.getItem("macalia_bolsa_v1") || "[]");
+            if (Array.isArray(bolsaGuardada) && bolsaGuardada.length > 0) {
+                bolsa = bolsaGuardada;
+                actualizarBolsa();
+            }
+        } catch (e) { }
 
+        // Guardar correo + productos en Supabase por si abandona el carrito
+        async function guardarCarritoAbandonadoNube() {
+            const correo = document.getElementById("chk-correo").value.trim().toLowerCase();
+            if (!correo || !correo.includes("@") || bolsa.length === 0) return;
 
+            const nombre = document.getElementById("chk-nombre").value.trim() || "Clienta Macalia";
+            const total = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
+
+            // Revisar si ya existe un carrito abandonado de este correo para actualizarlo
+            const { data: previo } = await sbTienda.from("carritos_abandonados")
+                .select("id").eq("correo", correo).eq("estado", "Abandonado").maybeSingle();
+
+            if (previo) {
+                await sbTienda.from("carritos_abandonados").update({
+                    nombre, productos: bolsa, total
+                }).eq("id", previo.id);
+            } else {
+                await sbTienda.from("carritos_abandonados").insert([{
+                    correo, nombre, productos: bolsa, total, estado: "Abandonado"
+                }]);
+            }
+        }
 
         cargarCatalogoDesdeSupabase();
+
+        document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModalCheckout(); });
+
 
 
     </script>

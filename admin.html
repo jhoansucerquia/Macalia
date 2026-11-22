@@ -104,14 +104,23 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
                     <!-- BANNERS DE PORTADA -->
                     <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
-                        <div class="flex justify-between items-center">
+                        <div class="flex flex-wrap justify-between items-center gap-2">
                             <h3 class="font-bold text-stone-700">🖼️ Banners de Portada (Carrusel)</h3>
-                            <button type="button" onclick="guardarConfigPortada()"
-                                class="bg-stone-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-[#C87D87] transition">Guardar
-                                Portada</button>
+                            <div class="flex items-center gap-2">
+                                <button type="button" onclick="agregarBannerAdmin()"
+                                    class="bg-rose-50 hover:bg-rose-100 text-[#C87D87] text-[11px] font-bold px-3 py-1.5 rounded-full transition">
+                                    + Agregar Banner
+                                </button>
+                                <button type="button" onclick="guardarConfigPortada()"
+                                    class="bg-stone-900 hover:bg-[#C87D87] text-white text-[11px] font-bold px-3.5 py-1.5 rounded-full transition">
+                                    Guardar Portada
+                                </button>
+                            </div>
                         </div>
-                        <div id="admin-lista-banners" class="space-y-2.5 max-h-60 overflow-y-auto pr-1"></div>
+                        <div id="admin-lista-banners" class="space-y-3 max-h-72 overflow-y-auto pr-1"></div>
                     </div>
+
+
 
                     <!-- FOTOS DE CATEGORÍAS -->
                     <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
@@ -219,10 +228,55 @@
                     <span id="contador-admin-prod"
                         class="text-xs bg-rose-50 text-[#C87D87] font-bold px-3 py-1 rounded-full">0 productos</span>
                 </div>
-                <div id="lista-admin-productos" class="space-y-3 max-h-[650px] overflow-y-auto pr-1">
+                <div id="lista-admin-productos" class="space-y-3 max-h-[650px] overflow-y-auto pr-2">
                     <p class="text-xs text-stone-400 text-center py-10">Cargando catálogo desde Supabase...</p>
                 </div>
             </section>
+
+            <!-- SECCIÓN: PEDIDOS WEB Y CARRITOS ABANDONADOS (BASE DE CORREOS) -->
+            <section class="lg:col-span-12 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-6">
+                <div
+                    class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-rose-50 pb-4">
+                    <div>
+                        <h2 class="font-editorial text-2xl text-stone-800">Pedidos Web & Recuperación de Carritos ♡</h2>
+                        <p class="text-xs text-stone-400">Gestiona los pedidos que entran por la tienda y recupera
+                            ventas de clientas que dejaron su correo</p>
+                    </div>
+                    <button type="button" onclick="exportarCorreosExcel()"
+                        class="bg-stone-800 hover:bg-[#C87D87] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition">
+                        📥 Descargar Base de Correos (Excel)
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 text-xs">
+                    <!-- COLUMNA 1: PEDIDOS WEB RECIENTES -->
+                    <div class="bg-[#FDFBF9] p-5 rounded-2xl border border-rose-100 space-y-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-stone-700">🛍️ Pedidos Recibidos en la Web</h3>
+                            <div class="flex items-center gap-3">
+                                <button type="button" onclick="limpiarHistorialPedidosWeb()"
+                                    class="text-[11px] text-stone-400 hover:text-red-500 font-bold transition">🗑️
+                                    Limpiar historial</button>
+                                <button type="button" onclick="cargarPedidosYCarritosAdmin()"
+                                    class="text-[11px] text-[#C87D87] font-bold hover:underline">↻ Actualizar</button>
+                            </div>
+                        </div>
+
+                        <div id="admin-lista-pedidos-web" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+                    </div>
+
+                    <!-- COLUMNA 2: CARRITOS ABANDONADOS / CORREOS -->
+                    <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-stone-700">💌 Carritos Abandonados & Correos</h3>
+                            <span id="contador-abandonados"
+                                class="bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full text-[10px]">0</span>
+                        </div>
+                        <div id="admin-lista-abandonados" class="space-y-2.5 max-h-80 overflow-y-auto pr-1"></div>
+                    </div>
+                </div>
+            </section>
+
 
         </main>
     </div>
@@ -304,6 +358,41 @@
 
 
     <script>
+
+        // SISTEMA DE NOTIFICACIONES FLOTANTES ESTILO MACALIA (Reemplaza los alert() grises)
+        window.alert = function (mensaje) {
+            let contenedor = document.getElementById("macalia-toast-container");
+            if (!contenedor) {
+                contenedor = document.createElement("div");
+                contenedor.id = "macalia-toast-container";
+                contenedor.className = "fixed bottom-5 right-5 z-[9999] flex flex-col gap-2.5 max-w-sm w-[92%] sm:w-auto pointer-events-none";
+                document.body.appendChild(contenedor);
+            }
+
+            const texto = String(mensaje || "");
+            const esError = texto.includes("⚠️") || texto.includes("❌") || texto.toLowerCase().includes("error") || texto.toLowerCase().includes("vacía") || texto.toLowerCase().includes("agotado");
+
+            const toast = document.createElement("div");
+            toast.className = `pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 ${esError
+                    ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
+                    : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
+                }`;
+
+            toast.innerHTML = `
+                <span class="w-2.5 h-2.5 rounded-full mt-1.5 shrink-0 ${esError ? "bg-[#C87D87]" : "bg-emerald-500"}"></span>
+                <p class="text-xs font-medium leading-relaxed flex-1">${texto.replace(/^[⚠️✅❌🎉🔒]+\s*/, "")}</p>
+                <button type="button" onclick="this.parentElement.remove()" class="text-stone-400 hover:text-stone-700 text-xs font-bold pl-1">✕</button>
+            `;
+
+            contenedor.appendChild(toast);
+            requestAnimationFrame(() => toast.classList.remove("translate-y-2", "opacity-0"));
+
+            setTimeout(() => {
+                toast.classList.add("translate-y-2", "opacity-0");
+                setTimeout(() => toast.remove(), 300);
+            }, 3800);
+        };
+
         // PEGA AQUÍ TUS CREDENCIALES REALES DE SUPABASE
         const SUPABASE_URL = "https://qcuvuyvdbyzvtswriqws.supabase.co";
         const SUPABASE_KEY = "sb_publishable_RdgPMIJRPh0dR6N_MdceGA_ABQ65-QZ";
@@ -342,16 +431,51 @@
         }
         revisarSesionActiva();
 
-
-
-
-        function mostrarPanelAdmin() {
+        async function mostrarPanelAdmin() {
             document.getElementById("pantalla-login-admin").classList.add("hidden");
             document.getElementById("contenido-admin").classList.remove("hidden");
-            cargarProductosAdmin();
-            cargarConfigVisualAdmin();
 
+            const idsPaneles = [
+                "lista-admin-productos",
+                "contador-admin-prod",
+                "admin-lista-banners",
+                "admin-lista-categorias",
+                "admin-lista-pedidos-web",
+                "admin-lista-abandonados"
+            ];
+
+
+            // 1. Restaurar toda la vista completa al instante (0 segundos de espera)
+            try {
+                const htmlCache = JSON.parse(localStorage.getItem("macalia_admin_html_v1") || "null");
+                if (htmlCache) {
+                    idsPaneles.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el && htmlCache[id]) el.innerHTML = htmlCache[id];
+                    });
+                }
+            } catch (e) { }
+
+            // 2. Traer datos frescos de Supabase en paralelo y actualizar silenciosamente
+            await Promise.all([
+                cargarProductosAdmin(),
+                cargarConfigVisualAdmin(),
+                cargarPedidosYCarritosAdmin()
+            ]);
+
+            // 3. Guardar la fotografía actualizada para la próxima vez que abras el panel
+            try {
+                const snapshot = {};
+                idsPaneles.forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) snapshot[id] = el.innerHTML;
+                });
+                localStorage.setItem("macalia_admin_html_v1", JSON.stringify(snapshot));
+            } catch (e) { }
         }
+
+
+
 
         if (sessionStorage.getItem("macalia_admin_ok") === "1") mostrarPanelAdmin();
 
@@ -421,18 +545,34 @@
             }
 
             lista.innerHTML = data.map(p => `
-                <div class="flex items-center justify-between p-3 bg-[#FDFBF9] rounded-2xl border border-rose-100">
-                    <div class="flex items-center gap-3">
-                        <img src="${(p.fotos && p.fotos[0]) || 'hada.jpeg'}" class="w-12 h-12 rounded-xl object-cover border border-rose-100">
-                        <div>
-                            <p class="font-editorial font-bold text-sm text-stone-800">${p.nombre}</p>
-                            <p class="text-[11px] text-stone-500">${p.categoria} • <b class="text-[#C87D87]">$${Number(p.precio).toLocaleString()}</b> • Stock: ${p.stock}</p>
-                        </div>
-                    <div class="flex items-center gap-2">
-                    <button onclick='abrirEditarProducto(${JSON.stringify(p)})' class="text-xs text-[#C87D87] hover:underline font-semibold px-2 py-1">Editar</button>
-                    <button onclick="eliminarProductoAdmin(${p.id})" class="text-xs text-red-400 hover:text-red-600 font-semibold px-2 py-1">Borrar</button>
-                </div>
-            `).join("");
+             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl border border-rose-100 bg-[#FDFBF9] hover:border-[#C87D87]/50 transition">
+                 <div class="flex items-center gap-4 min-w-0">
+                     <img src="${(p.fotos && p.fotos.length > 0) ? p.fotos.at(0) : 'hada.jpeg'}" 
+                          class="w-16 h-16 rounded-2xl object-cover border border-rose-100 shrink-0">
+                     <div class="min-w-0 space-y-1">
+                         <p class="font-bold text-stone-800 text-sm truncate">${p.nombre}</p>
+                         <p class="text-xs text-stone-500">
+                             <span class="font-medium text-[#C87D87]">${p.categoria}</span> • 
+                             <span class="font-bold text-stone-700">$${Number(p.precio).toLocaleString('es-CO')}</span> • 
+                             Stock: <span class="font-bold ${p.stock > 0 ? 'text-emerald-600' : 'text-red-500'}">${p.stock}</span>
+                         </p>
+                     </div>
+                 </div>
+                 <div class="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                     <button type="button" onclick='abrirEditarProducto(${JSON.stringify(p).replace(/'/g, "&apos;")})' 
+                         class="px-3.5 py-2 rounded-xl bg-white border border-rose-200 hover:bg-rose-50 text-xs font-bold text-stone-700 transition">
+                         Editar
+                     </button>
+                     <button type="button" onclick="eliminarProductoAdmin(${p.id})" 
+                         class="px-3.5 py-2 rounded-xl bg-rose-50 hover:bg-red-500 text-xs font-bold text-red-600 hover:text-white transition">
+                         Borrar
+                     </button>
+                 </div>
+             </div>
+         `).join("");
+
+            pintarCategoriasAdmin(data);
+
         }
 
         async function eliminarProductoAdmin(id) {
@@ -779,50 +919,127 @@
         ];
         let FOTOS_CATEGORIAS_ADMIN = {};
 
-        async function cargarConfigVisualAdmin() {
-            // Cargar banners guardados
-            const { data: cfgBanners } = await sb.from("config_macalia").select("datos").eq("clave", "banners_portada").maybeSingle();
-            if (cfgBanners && Array.isArray(cfgBanners.datos)) BANNERS_ADMIN = cfgBanners.datos;
-
+        function pintarListaBannersAdmin() {
             const contBanners = document.getElementById("admin-lista-banners");
+            if (!contBanners) return;
+
             contBanners.innerHTML = BANNERS_ADMIN.map((b, idx) => `
-                <div class="bg-white p-2.5 rounded-xl border border-rose-100 space-y-1.5">
-                    <div class="flex justify-between items-center">
-                        <span class="font-bold text-[#C87D87]">Banner ${idx + 1}</span>
-                        <input type="file" accept="image/*" onchange="subirFotoBannerAdmin(${idx}, this)" class="w-44 text-[10px]">
+                <div class="bg-white p-4 rounded-2xl border border-rose-100 space-y-3">
+                    <div class="flex justify-between items-center gap-3">
+                        <div class="flex items-center gap-3">
+                            ${b.foto
+                    ? `<img src="${b.foto}" class="w-12 h-12 rounded-xl object-cover border border-rose-200 shrink-0">`
+                    : `<div class="w-12 h-12 rounded-xl bg-rose-50 text-[#C87D87] text-[10px] font-bold flex items-center justify-center border border-rose-100 shrink-0">Sin foto</div>`}
+                            <span class="font-bold text-[#C87D87] text-xs uppercase tracking-wider">Banner ${idx + 1}</span>
+                        </div>
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <label class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-[#C87D87] text-[#C87D87] hover:text-white text-xs font-bold cursor-pointer transition">
+                                📷 ${b.foto ? 'Cambiar foto' : 'Subir foto'}
+                                <input type="file" accept="image/*" onchange="subirFotoBannerAdmin(${idx}, this)" class="hidden">
+                            </label>
+                            ${BANNERS_ADMIN.length > 1 ? `
+                                <button type="button" onclick="eliminarBannerAdmin(${idx})" title="Eliminar banner" class="px-2.5 py-1.5 rounded-xl bg-stone-100 hover:bg-red-500 text-stone-500 hover:text-white text-xs font-bold transition">✕</button>
+                            ` : ''}
+                        </div>
                     </div>
-                    <div class="grid grid-cols-2 gap-1.5">
-                        <input type="text" value="${b.titulo1}" onchange="BANNERS_ADMIN[${idx}].titulo1=this.value" placeholder="Título principal" class="px-2 py-1 border border-rose-100 rounded-lg">
-                        <input type="text" value="${b.cursiva}" onchange="BANNERS_ADMIN[${idx}].cursiva=this.value" placeholder="Texto en cursiva" class="px-2 py-1 border border-rose-100 rounded-lg">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                        <input type="text" value="${b.titulo1}" onchange="BANNERS_ADMIN[${idx}].titulo1=this.value" placeholder="Título principal" class="px-3 py-2 border border-rose-100 rounded-xl text-xs text-stone-700 focus:outline-none focus:border-[#C87D87]">
+                        <input type="text" value="${b.cursiva}" onchange="BANNERS_ADMIN[${idx}].cursiva=this.value" placeholder="Texto en cursiva" class="px-3 py-2 border border-rose-100 rounded-xl text-xs text-stone-700 focus:outline-none focus:border-[#C87D87]">
                     </div>
-                    <input type="text" value="${b.desc}" onchange="BANNERS_ADMIN[${idx}].desc=this.value" placeholder="Descripción corta" class="w-full px-2 py-1 border border-rose-100 rounded-lg">
+                    <textarea rows="2" onchange="BANNERS_ADMIN[${idx}].desc=this.value" placeholder="Descripción corta" class="w-full px-3 py-2 border border-rose-100 rounded-xl text-xs text-stone-700 focus:outline-none focus:border-[#C87D87] resize-none">${b.desc}</textarea>
                 </div>
             `).join("");
+        }
 
-            // Cargar categorías únicas desde los productos reales
-            const { data: prods } = await sb.from("catalogo_web").select("categoria").eq("tienda", "macalia");
-            const { data: cfgCats } = await sb.from("config_macalia").select("datos").eq("clave", "fotos_categorias").maybeSingle();
+        function agregarBannerAdmin() {
+            if (BANNERS_ADMIN.length >= 5) return alert("⚠️ Puedes tener un máximo de 5 banners en la portada.");
+            BANNERS_ADMIN.push({
+                tag: "MACALIA MAKEUP STORE",
+                titulo1: "Nueva Colección",
+                cursiva: "Exclusiva ♡",
+                desc: "Descubre nuestros lanzamientos favoritos para resaltar tu belleza.",
+                boton: "Ver Colección →",
+                foto: ""
+            });
+            pintarListaBannersAdmin();
+        }
+
+        function eliminarBannerAdmin(idx) {
+            if (BANNERS_ADMIN.length <= 1) return;
+            BANNERS_ADMIN.splice(idx, 1);
+            pintarListaBannersAdmin();
+        }
+
+        async function cargarConfigVisualAdmin() {
+            const [{ data: cfgBanners }, { data: cfgCats }] = await Promise.all([
+                sb.from("config_macalia").select("datos").eq("clave", "banners_portada").maybeSingle(),
+                sb.from("config_macalia").select("datos").eq("clave", "fotos_categorias").maybeSingle()
+            ]);
+
+            if (cfgBanners && Array.isArray(cfgBanners.datos) && cfgBanners.datos.length > 0) {
+                BANNERS_ADMIN = cfgBanners.datos;
+            }
             if (cfgCats && cfgCats.datos) FOTOS_CATEGORIAS_ADMIN = cfgCats.datos;
 
-            const categoriasUnicas = [...new Set((prods || []).map(p => p.categoria).filter(Boolean))];
+            pintarListaBannersAdmin();
+        }
+
+
+
+
+
+        function pintarCategoriasAdmin(productos) {
+            const categoriasUnicas = [...new Set((productos || []).map(p => p.categoria).filter(Boolean))];
             const contCats = document.getElementById("admin-lista-categorias");
+            if (!contCats) return;
             if (categoriasUnicas.length === 0) {
                 contCats.innerHTML = `<p class="text-stone-400">Sube productos para ver sus categorías aquí.</p>`;
                 return;
             }
             contCats.innerHTML = categoriasUnicas.map(cat => `
-                <div class="flex items-center justify-between bg-white p-2 rounded-xl border border-rose-100">
-                    <div class="flex items-center gap-2">
-                ${FOTOS_CATEGORIAS_ADMIN[cat]
-                    ? `<img src="${FOTOS_CATEGORIAS_ADMIN[cat]}" class="w-8 h-8 rounded-full object-cover border border-rose-200">`
-                    : `<div class="w-8 h-8 rounded-full bg-rose-100 text-[#C87D87] font-bold flex items-center justify-center">${cat.charAt(0).toUpperCase()}</div>`}
-
-                        <span class="font-bold text-stone-700">${cat}</span>
+                <div class="flex items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-rose-100 hover:border-[#C87D87]/40 transition">
+                    <div class="flex items-center gap-3 min-w-0">
+                        ${FOTOS_CATEGORIAS_ADMIN[cat]
+                    ? `<img src="${FOTOS_CATEGORIAS_ADMIN[cat]}" class="w-11 h-11 rounded-full object-cover border border-rose-200 shrink-0">`
+                    : `<div class="w-11 h-11 rounded-full bg-rose-100 text-[#C87D87] font-bold text-sm flex items-center justify-center shrink-0">${cat.charAt(0).toUpperCase()}</div>`}
+                        <span class="font-bold text-stone-800 text-sm truncate">${cat}</span>
+                        <button type="button" onclick="renombrarCategoriaAdmin('${cat}')" title="Renombrar categoría" class="text-xs text-stone-400 hover:text-[#C87D87] transition">✏️</button>
                     </div>
-                    <input type="file" accept="image/*" onchange="subirFotoCategoriaAdmin('${cat}', this)" class="w-40 text-[10px]">
+                    <div class="flex items-center gap-1.5 shrink-0">
+                        <label class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-[#C87D87] text-[#C87D87] hover:text-white text-xs font-bold cursor-pointer transition">
+                            📷 ${FOTOS_CATEGORIAS_ADMIN[cat] ? 'Cambiar' : 'Subir foto'}
+                            <input type="file" accept="image/*" onchange="subirFotoCategoriaAdmin('${cat}', this)" class="hidden">
+                        </label>
+                        ${FOTOS_CATEGORIAS_ADMIN[cat] ? `
+                            <button type="button" onclick="quitarFotoCategoriaAdmin('${cat}')" title="Quitar foto" class="px-2.5 py-2 rounded-xl bg-stone-100 hover:bg-red-500 text-stone-500 hover:text-white text-xs font-bold transition">✕</button>
+                        ` : ''}
+                    </div>
                 </div>
             `).join("");
         }
+
+        async function renombrarCategoriaAdmin(catVieja) {
+            const catNueva = prompt(`Escribe el nuevo nombre para la categoría "${catVieja}":`, catVieja);
+            if (!catNueva || catNueva.trim() === "" || catNueva.trim() === catVieja) return;
+            const nombreLimpio = catNueva.trim();
+
+            await sb.from("catalogo_web").update({ categoria: nombreLimpio }).eq("tienda", "macalia").eq("categoria", catVieja);
+            if (FOTOS_CATEGORIAS_ADMIN[catVieja]) {
+                FOTOS_CATEGORIAS_ADMIN[nombreLimpio] = FOTOS_CATEGORIAS_ADMIN[catVieja];
+                delete FOTOS_CATEGORIAS_ADMIN[catVieja];
+                await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
+            }
+            cargarProductosAdmin();
+        }
+
+        async function quitarFotoCategoriaAdmin(cat) {
+            if (!confirm(`¿Quitar la foto circular de "${cat}"?`)) return;
+            delete FOTOS_CATEGORIAS_ADMIN[cat];
+            await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
+            cargarProductosAdmin();
+        }
+
+
 
         async function subirFotoBannerAdmin(idx, input) {
             const url = await subirArchivoStorage(input.files);
@@ -861,6 +1078,154 @@
             } catch (error) {
                 alert("❌ Error: " + error.message);
             }
+        }
+
+        let LISTA_CARRITOS_ADMIN = [];
+
+        async function cargarPedidosYCarritosAdmin() {
+            // 1. Cargar Pedidos Web
+            const [{ data: pedidos }, { data: carritos }] = await Promise.all([
+                sb.from("pedidos_web").select("*").order("id", { ascending: false }).limit(30),
+                sb.from("carritos_abandonados").select("*").order("id", { ascending: false }).limit(50)
+            ]);
+
+            const contPedidos = document.getElementById("admin-lista-pedidos-web");
+            if (contPedidos) {
+                if (!pedidos || pedidos.length === 0) {
+                    contPedidos.innerHTML = `<p class="text-stone-400">Aún no hay pedidos web registrados.</p>`;
+                } else {
+                    contPedidos.innerHTML = pedidos.map(p => {
+                        const resumenProds = (p.productos || []).map(i => `${i.cantidad}x ${i.nombre}${i.tono ? ` (${i.tono})` : ''}`).join(", ");
+                        return `
+                            <div class="bg-white p-3 rounded-xl border border-rose-100 space-y-1.5">
+                                <div class="flex justify-between items-start gap-2">
+                                    <p class="font-bold text-stone-800">${p.cliente_nombre}</p>
+                                    <span class="font-bold text-[#C87D87] shrink-0">$${Number(p.total).toLocaleString("es-CO")}</span>
+                                </div>
+                                <p class="text-[11px] text-stone-500">📍 ${p.cliente_direccion}</p>
+                                <p class="text-[11px] text-stone-600 bg-rose-50/50 p-1.5 rounded-lg">${resumenProds}</p>
+                                <div class="flex justify-between items-center pt-1">
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${p.estado === 'Despachado' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+                                        ${p.metodo_pago} • ${p.estado}
+                                    </span>
+                                                                        ${p.estado !== 'Despachado' && p.estado !== 'Cancelado' ? `
+                                        <div class="flex gap-1.5">
+                                            <button type="button" onclick="cancelarPedidoYDevolverStock(${p.id})" class="text-[10px] bg-rose-50 hover:bg-red-500 text-red-600 hover:text-white font-bold px-2 py-1 rounded-lg transition">
+                                                ✕ Cancelar
+                                            </button>
+                                            <button type="button" onclick="marcarPedidoDespachado(${p.id})" class="text-[10px] bg-stone-800 hover:bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg transition">
+                                                ✓ Despachar
+                                            </button>
+                                        </div>
+                                    ` : ''}
+
+                                </div>
+                            </div>
+                        `;
+                    }).join("");
+                }
+            }
+
+            // 2. Cargar Carritos Abandonados / Correos
+            LISTA_CARRITOS_ADMIN = carritos || [];
+            const contAband = document.getElementById("admin-lista-abandonados");
+            const badgeAband = document.getElementById("contador-abandonados");
+
+            const soloAbandonados = LISTA_CARRITOS_ADMIN.filter(c => c.estado === "Abandonado");
+            if (badgeAband) badgeAband.innerText = soloAbandonados.length + " pendientes";
+
+            if (contAband) {
+                if (LISTA_CARRITOS_ADMIN.length === 0) {
+                    contAband.innerHTML = `<p class="text-stone-400">Cuando una clienta escriba su correo en el Checkout aparecerá aquí.</p>`;
+                } else {
+                    contAband.innerHTML = LISTA_CARRITOS_ADMIN.map(c => {
+                        const resumenProds = (c.productos || []).map(i => `${i.cantidad}x ${i.nombre}${i.tono ? ` (${i.tono})` : ''}`).join(", ");
+                        const asunto = encodeURIComponent("♡ ¡Tu bolsa de Macalia Makeup Store te está esperando!");
+                        const cuerpo = encodeURIComponent(`Hola ${c.nombre || 'hermosa'} ♡\n\nNotamos que dejaste estos productos listos en tu bolsa de Macalia Makeup Store:\n• ${resumenProds}\n\nVuelve a nuestra tienda para completar tu pedido antes de que se agoten los tonos:\nhttps://github.io\n\nCon cariño,\nEquipo Macalia ♡`);
+
+                        return `
+                            <div class="bg-white p-3 rounded-xl border border-rose-100 space-y-1.5">
+                                <div class="flex justify-between items-center">
+                                    <span class="font-bold text-stone-800">${c.correo}</span>
+                                    <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${c.estado === 'Comprado' ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-100 text-[#C87D87]'}">
+                                        ${c.estado}
+                                    </span>
+                                </div>
+                                <p class="text-[11px] text-stone-500">${c.nombre || 'Clienta'} • Total: <strong>$${Number(c.total || 0).toLocaleString("es-CO")}</strong></p>
+                                <p class="text-[11px] text-stone-600 truncate">${resumenProds}</p>
+                                ${c.estado === 'Abandonado' ? `
+                                    <div class="pt-1 flex justify-end">
+                                        <a href="mailto:${c.correo}?subject=${asunto}&body=${cuerpo}" class="bg-[#C87D87] hover:bg-[#b56a74] text-white text-[10px] font-bold px-3 py-1 rounded-lg transition">
+                                            ✉️ Enviar Recordatorio por Correo
+                                        </a>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        `;
+                    }).join("");
+                }
+            }
+        }
+
+        async function marcarPedidoDespachado(idPedido) {
+            if (!confirm("¿Confirmas que ya recibiste el pago y vas a despachar este pedido?")) return;
+            await sb.from("pedidos_web").update({ estado: "Despachado" }).eq("id", idPedido);
+            cargarPedidosYCarritosAdmin();
+        }
+
+        async function cancelarPedidoYDevolverStock(idPedido) {
+            if (!confirm("⚠️ ¿Cancelar este pedido y devolver sus productos al inventario disponible?")) return;
+            const { data: pedido } = await sb.from("pedidos_web").select("*").eq("id", idPedido).single();
+            if (!pedido || pedido.estado === "Cancelado") return;
+
+            for (const item of (pedido.productos || [])) {
+                const { data: prod } = await sb.from("catalogo_web").select("stock, tonos").eq("id", item.id).maybeSingle();
+                if (!prod) continue;
+
+                let tonosActualizados = Array.isArray(prod.tonos) ? [...prod.tonos] : [];
+                let nuevoStockGeneral = (Number(prod.stock) || 0) + Number(item.cantidad);
+
+                if (item.tono && tonosActualizados.length > 0) {
+                    tonosActualizados = tonosActualizados.map(t => {
+                        if (t.nombre.toUpperCase() === item.tono.toUpperCase()) {
+                            return { ...t, stock: (Number(t.stock) || 0) + Number(item.cantidad) };
+                        }
+                        return t;
+                    });
+                    nuevoStockGeneral = tonosActualizados.reduce((sum, t) => sum + (Number(t.stock) || 0), 0);
+                }
+
+                await sb.from("catalogo_web").update({ stock: nuevoStockGeneral, tonos: tonosActualizados }).eq("id", item.id);
+            }
+
+            await sb.from("pedidos_web").update({ estado: "Cancelado" }).eq("id", idPedido);
+            alert("🔄 Pedido cancelado y unidades devueltas al inventario.");
+            cargarPedidosYCarritosAdmin();
+            cargarProductosAdmin();
+        }
+
+
+
+        function exportarCorreosExcel() {
+            if (LISTA_CARRITOS_ADMIN.length === 0) return alert("Aún no hay correos registrados.");
+            const filas = LISTA_CARRITOS_ADMIN.map(c => ({
+                Correo: c.correo,
+                Nombre: c.nombre,
+                Estado: c.estado,
+                Total_Bolsa: c.total,
+                Productos: (c.productos || []).map(i => `${i.cantidad}x ${i.nombre}`).join(", ")
+            }));
+            const hoja = XLSX.utils.json_to_sheet(filas);
+            const libro = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(libro, hoja, "Correos_Macalia");
+            XLSX.writeFile(libro, "Base_Correos_Macalia.xlsx");
+        }
+
+        async function limpiarHistorialPedidosWeb() {
+            if (!confirm("¿Eliminar de la lista todos los pedidos Despachados y Cancelados?")) return;
+            const { error } = await sb.from("pedidos_web").delete().in("estado", ["Despachado", "Cancelado"]);
+            if (error) return alert("❌ Error al limpiar: " + error.message);
+            cargarPedidosYCarritosAdmin();
         }
 
 
