@@ -32,6 +32,18 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
     </style>
+    <style>
+        /* Ajuste automático para celular: evita recortes y neutraliza el tono amarillento */
+        #grid-productos img,
+        #detalle-imagen-principal {
+            object-fit: contain !important;
+            padding: 8px;
+            background-color: #FDFBF9;
+            filter: saturate(0.90) brightness(1.04) contrast(1.02);
+        }
+    </style>
+
+
 </head>
 
 <body class="bg-[#FDFBF9] text-stone-800">
@@ -775,7 +787,7 @@
                     </div>
 
 
-                    <!-- SELECTOR CIRCULAR DE TONOS (Estilo Atenea) -->
+                    <!-- SELECTOR CIRCULAR DE TONOS  -->
                     <div id="contenedor-tonos-detalle" class="mt-4 pt-3 border-t border-rose-50">
                         <p class="text-[11px] uppercase tracking-wider text-stone-500">
                             Tono: <span id="detalle-nombre-tono" class="font-bold text-stone-800">Único</span>
@@ -1005,8 +1017,8 @@
 
             const toast = document.createElement("div");
             toast.className = `pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 ${esError
-                    ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
-                    : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
+                ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
+                : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
                 }`;
 
             toast.innerHTML = `
@@ -2058,9 +2070,14 @@
 
         function elegirTonoDetalle(nombreTono, fotoTono, stockTono, boton) {
             TONO_SELECCIONADO = nombreTono;
-            document.getElementById("detalle-nombre-tono").innerText = stockTono <= 0 ? `${nombreTono} (AGOTADO)` : nombreTono;
+            document.getElementById("detalle-nombre-tone" in window ? "detalle-nombre-tone" : "detalle-nombre-tono").innerText = stockTono <= 0 ? `${nombreTono} (AGOTADO)` : nombreTono;
 
-            if (fotoTono) seleccionarFotoDetalle(fotoTono);
+            const fotoRespaldo = (PRODUCTO_DETALLE_ACTUAL && PRODUCTO_DETALLE_ACTUAL.fotos && PRODUCTO_DETALLE_ACTUAL.fotos.length > 0)
+                ? PRODUCTO_DETALLE_ACTUAL.fotos
+                : "";
+            const urlFinal = (fotoTono && fotoTono.startsWith("http")) ? fotoTono : fotoRespaldo;
+            if (urlFinal) seleccionarFotoDetalle(urlFinal);
+
             validarEstadoBotonAgregar(stockTono);
 
             document.querySelectorAll(".bolita-tono").forEach(b => {
@@ -2068,6 +2085,7 @@
             });
             boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
         }
+
 
         function verificarHumanoTurnstile() {
             // Si aún estamos abriendo el archivo local desde el PC (file://), permite probar sin bloqueo
