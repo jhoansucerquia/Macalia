@@ -374,8 +374,8 @@
 
             const toast = document.createElement("div");
             toast.className = `pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 ${esError
-                    ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
-                    : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
+                ? "bg-[#FFF5F6]/95 border-[#C87D87] text-stone-800"
+                : "bg-[#FDFBF9]/95 border-rose-200 text-stone-800"
                 }`;
 
             toast.innerHTML = `
@@ -1018,38 +1018,81 @@
             `).join("");
         }
 
+        function pedirTextoModalMacalia(titulo, valorInicial) {
+            return new Promise((resolve) => {
+                const overlay = document.createElement("div");
+                overlay.className = "fixed inset-0 z-[9999] bg-stone-900/40 backdrop-blur-sm flex items-center justify-center p-4";
+                overlay.innerHTML = `
+                    <div class="bg-[#FDFBF9] border border-rose-200 rounded-3xl shadow-2xl max-w-sm w-full p-6 space-y-4">
+                        <h3 class="font-serif text-lg font-bold text-stone-800">${titulo}</h3>
+                        <input type="text" id="input-modal-macalia" value="${valorInicial}"
+                            class="w-full px-4 py-3 rounded-2xl border border-rose-200 bg-white text-sm text-stone-800 focus:outline-none focus:border-[#C87D87]" />
+                        <div class="flex justify-end gap-2 pt-1">
+                            <button type="button" id="btn-cancelar-modal"
+                                class="px-4 py-2 rounded-full text-xs font-bold text-stone-500 hover:bg-stone-100">Cancelar</button>
+                            <button type="button" id="btn-aceptar-modal"
+                                class="px-5 py-2 rounded-full text-xs font-bold bg-stone-900 text-white hover:bg-[#C87D87] transition">Guardar</button>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(overlay);
+                const input = overlay.querySelector("#input-modal-macalia");
+                input.focus();
+                input.select();
+
+                const cerrar = (valor) => { overlay.remove(); resolve(valor); };
+                overlay.querySelector("#btn-cancelar-modal").onclick = () => cerrar(null);
+                overlay.querySelector("#btn-aceptar-modal").onclick = () => cerrar(input.value);
+                input.onkeydown = (e) => {
+                    if (e.key === "Enter") cerrar(input.value);
+                    if (e.key === "Escape") cerrar(null);
+                };
+            });
+        }
+
         async function renombrarCategoriaAdmin(catVieja) {
-            const catNueva = prompt(`Escribe el nuevo nombre para la categoría "${catVieja}":`, catVieja);
+            const catNueva = await pedirTextoModalMacalia(`Renombrar categoría "${catVieja}"`, catVieja);
             if (!catNueva || catNueva.trim() === "" || catNueva.trim() === catVieja) return;
             const nombreLimpio = catNueva.trim();
 
             await sb.from("catalogo_web").update({ categoria: nombreLimpio }).eq("tienda", "macalia").eq("categoria", catVieja);
-            if (FOTOS_CATEGORIAS_ADMIN[catVieja]) {
+            if (FOTOS_CATEGORIES_CHECK(catVieja)) {
                 FOTOS_CATEGORIAS_ADMIN[nombreLimpio] = FOTOS_CATEGORIAS_ADMIN[catVieja];
                 delete FOTOS_CATEGORIAS_ADMIN[catVieja];
                 await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
             }
+            alert(`✅ Categoría renombrada a "${nombreLimpio}"`);
             cargarProductosAdmin();
+        }
+
+        function FOTOS_CATEGORIES_CHECK(cat) {
+            return FOTOS_CATEGORIAS_ADMIN && FOTOS_CATEGORIAS_ADMIN[cat];
         }
 
         async function quitarFotoCategoriaAdmin(cat) {
-            if (!confirm(`¿Quitar la foto circular de "${cat}"?`)) return;
             delete FOTOS_CATEGORIAS_ADMIN[cat];
             await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
+            alert(`✅ Foto circular de "${cat}" eliminada`);
             cargarProductosAdmin();
         }
 
-
-
         async function subirFotoBannerAdmin(idx, input) {
             const url = await subirArchivoStorage(input.files);
-            if (url) { BANNERS_ADMIN[idx].foto = url; alert("✅ Foto del Banner " + (idx + 1) + " lista. Dale a 'Guardar Portada'."); }
+            if (url) { BANNERS_ADMIN[idx].foto = url; alert("✅ Foto del Banner " + (idx + 1) + " lista. Dale a Guardar Banners."); }
         }
 
         async function subirFotoCategoriaAdmin(cat, input) {
+            if (!input.files || input.files.length === 0) return;
+            alert("⏳ Subiendo foto de " + cat + "...");
             const url = await subirArchivoStorage(input.files);
-            if (url) { FOTOS_CATEGORIAS_ADMIN[cat] = url; cargarConfigVisualAdmin(); }
+            if (url) {
+                FOTOS_CATEGORIAS_ADMIN[cat] = url;
+                await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
+                alert(`✅ Foto de "${cat}" actualizada`);
+                cargarProductosAdmin();
+            }
         }
+
 
         async function guardarEnConfigMacalia(claveTexto, datosJson) {
             const { data: existe } = await sb.from("config_macalia").select("id").eq("clave", claveTexto).maybeSingle();
