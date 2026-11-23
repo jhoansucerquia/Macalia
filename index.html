@@ -1232,6 +1232,34 @@
             }
         }
 
+        function cambiarFotoTarjeta(idProd, paso) {
+            const prod = productosMacalia.find(item => item.id === idProd);
+            const img = document.getElementById(`img-card-${idProd}`);
+            if (!prod || !Array.isArray(prod.fotos) || prod.fotos.length <= 1 || !img) return;
+
+            let idxActual = parseInt(img.getAttribute("data-idx") || "0", 10);
+            let nuevoIdx = (idxActual + paso + prod.fotos.length) % prod.fotos.length;
+
+            img.src = prod.fotos.at(nuevoIdx);
+            img.setAttribute("data-idx", nuevoIdx);
+
+            const dots = document.querySelectorAll(`#dots-card-${idProd} span`);
+            dots.forEach((dot, i) => {
+                dot.className = `w-1.5 h-1.5 rounded-full transition ${i === nuevoIdx ? 'bg-[#C87D87]' : 'bg-stone-300'}`;
+            });
+            
+        }
+                setInterval(() => {
+            if (!Array.isArray(productosMacalia)) return;
+            productosMacalia.forEach(p => {
+                if (Array.isArray(p.fotos) && p.fotos.length > 1) {
+                    cambiarFotoTarjeta(p.id, 1);
+                }
+            });
+        }, 3500);
+
+
+
         function mostrarProductos(lista) {
             LISTA_FILTRADA = lista;
             const grid = document.getElementById("grid-productos");
@@ -1247,11 +1275,22 @@
                 grid.innerHTML += `
                     <div class="bg-white rounded-2xl p-4 border border-rose-100 shadow-sm hover:shadow-md transition flex flex-col justify-between group">
                         <div onclick="abrirDetalleProducto(${p.id})" class="cursor-pointer">
-                            <div class="h-52 bg-[#FDF6F7] rounded-xl overflow-hidden flex items-center justify-center mb-4">
+                            <div class="relative aspect-square bg-[#FDF6F7] rounded-xl overflow-hidden flex items-center justify-center group/img">
                                 ${p.emoji.startsWith("http") || p.emoji.includes(".")
-                        ? `<img src="${p.emoji}" alt="${p.nombre}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">`
-                        : `<span class="text-5xl group-hover:scale-105 transition">${p.emoji}</span>`}
-                                </div>    
+                        ? `<img id="img-card-${p.id}" data-idx="0" src="${p.emoji}" alt="${p.nombre}" loading="lazy" class="w-full h-full object-contain p-1 transition duration-300">`
+                        : `<span class="text-5xl group-hover:scale-105 transition">${p.emoji}</span>`
+                    }
+                                ${(Array.isArray(p.fotos) && p.fotos.length > 1) ? `
+                                    <button type="button" onclick="event.stopPropagation(); cambiarFotoTarjeta(${p.id}, -1)"
+                                        class="absolute left-1.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/85 text-stone-700 text-xs font-bold shadow hover:bg-white flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover/img:opacity-100 transition">‹</button>
+                                    <button type="button" onclick="event.stopPropagation(); cambiarFotoTarjeta(${p.id}, 1)"
+                                        class="absolute right-1.5 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white/85 text-stone-700 text-xs font-bold shadow hover:bg-white flex items-center justify-center opacity-90 sm:opacity-0 sm:group-hover/img:opacity-100 transition">›</button>
+                                    <div id="dots-card-${p.id}" class="absolute bottom-1.5 left-1/2 -translate-x-1/2 flex gap-1 bg-white/70 px-1.5 py-0.5 rounded-full">
+                                        ${p.fotos.map((_, i) => `<span class="w-1.5 h-1.5 rounded-full transition ${i === 0 ? 'bg-[#C87D87]' : 'bg-stone-300'}"></span>`).join("")}
+                                    </div>
+                                ` : ''}
+                            </div>
+                               
                                 <span class="text-[10px] uppercase tracking-widest text-[#C87D87] font-bold">${p.categoria}</span>
                                 <h3 class="font-editorial text-lg text-stone-800 font-semibold mt-1">${p.nombre}</h3>
 
