@@ -2037,7 +2037,7 @@
             const visor = document.getElementById("detalle-foto-principal");
             const esUrl = foto.startsWith("http") || foto.includes(".");
             visor.innerHTML = esUrl
-                ? `<img src="${foto}" class="w-full h-full object-cover">`
+                ? `<img src="${foto}" class="w-full h-full object-contain p-3">`
                 : `<span class="text-7xl">${foto}</span>`;
         }
 
