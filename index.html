@@ -1500,12 +1500,57 @@
             // 4. REDIRIGIR AL PAGO O WHATSAPP
             if (canal === "Wompi") {
                 if (!WOMPI_LLAVE_PUBLICA) {
-                    return alert(`💳 Pedido registrado e inventario reservado por $${totalFinal.toLocaleString("es-CO")}.\n\nCuando pegues tu Llave Pública de Wompi, abrirá el checkout automático aquí.`);
+                    return alert(`💳 Pedido registrado e inventario reservado por $${totalFinal.toLocaleString("es-CO")}.`);
                 }
                 const referencia = `MACALIA-${Date.now()}`;
-                window.open(`https://wompi.co/${WOMPI_LLAVE_PUBLICA}&currency=COP&amount-in-cents=${totalFinal * 100}&reference=${referencia}`, "_blank");
+                const montoCentavos = Math.round(totalFinal * 100);
+                const urlFirma = "https://" + "://onrender.com";
+
+                try {
+                    const resFirma = await fetch(urlFirma, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            referencia: referencia,
+                            monto_centavos: montoCentavos
+                        })
+                    });
+                    const dataFirma = await resFirma.json();
+                    if (!dataFirma.firma) throw new Error("No se pudo firmar el pago");
+
+                    bolsa = [];
+                    actualizarBolsa();
+                    cerrarModalCheckout();
+
+                    const checkout = new WidgetCheckout({
+                        currency: "COP",
+                        amountInCents: montoCentavos,
+                        reference: referencia,
+                        publicKey: WOMPI_LLAVE_PUBLICA,
+                        signature: { integrity: dataFirma.firma },
+                        customerData: {
+                            email: correoCompra || "cliente@macalia.co",
+                            fullName: `${nombre} ${apellidos}`,
+                            phoneNumber: telefono,
+                            phoneNumberPrefix: "+57",
+                            legalId: cedula,
+                            legalIdType: "CC"
+                        }
+                    });
+
+                    checkout.open(function (result) {
+                        const transaccion = result && result.transaction;
+                        if (transaccion && transaccion.status === "APPROVED") {
+                            alert(`🎉 ¡Pago aprobado por $${totalFinal.toLocaleString("es-CO")}! Referencia: ${referencia}`);
+                        }
+                    });
+                } catch (err) {
+                    console.error("Error iniciando Wompi:", err);
+                    alert("⚠️ No se pudo abrir la pasarela de pago en este momento. Intenta de nuevo en unos segundos.");
+                }
                 return;
             }
+
 
             let resumen = `Hola Macalia ♡ Quiero confirmar mi pedido:\n\n`;
             bolsa.forEach(i => {
