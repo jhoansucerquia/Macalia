@@ -1426,6 +1426,20 @@
 
         async function procesarCheckoutMacalia(canal) {
             if (!verificarHumanoTurnstile()) return;
+            const btnAccion = (typeof event !== "undefined" && event && event.currentTarget) ? event.currentTarget : null;
+            const textoOriginalBtn = btnAccion ? btnAccion.innerHTML : "";
+            const liberarBoton = () => {
+                if (btnAccion) {
+                    btnAccion.disabled = false;
+                    btnAccion.innerHTML = textoOriginalBtn;
+                }
+            };
+            if (btnAccion) {
+                if (btnAccion.disabled) return;
+                btnAccion.disabled = true;
+                btnAccion.innerHTML = canal === "Wompi" ? "⏳ Conectando con Wompi..." : "⏳ Registrando pedido...";
+            }
+
             const nombre = document.getElementById("chk-nombre").value.trim();
             const apellidos = document.getElementById("chk-apellidos").value.trim();
             const cedula = document.getElementById("chk-cedula").value.trim();
@@ -1435,13 +1449,17 @@
             const depto = document.getElementById("chk-departamento").value.trim();
 
             if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
-                return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
+            liberarBoton();   
+            return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
             }
 
             // 1. VERIFICAR STOCK EN TIEMPO REAL ANTES DE COBRAR (Evita sobreventas)
             for (const item of bolsa) {
-                const { data: prodActual } = await sbTienda.from("catalogo_web").select("nombre, stock, tonos").eq("id", item.id).maybeSingle();
-                if (!prodActual) return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
+                if (!prodActual) {
+                    liberarBoton();
+                    return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
+                }
+ 
 
                 if (item.tono && Array.isArray(prodActual.tonos) && prodActual.tonos.length > 0) {
                     const tonoObj = prodActual.tonos.find(t => t.nombre.toUpperCase() === item.tono.toUpperCase());
@@ -1521,6 +1539,7 @@
                     bolsa = [];
                     actualizarBolsa();
                     cerrarModalCheckout();
+                    liberarBoton();
 
                     const checkout = new WidgetCheckout({
                         currency: "COP",
@@ -1547,6 +1566,7 @@
                 } catch (err) {
                     console.error("Error iniciando Wompi:", err);
                     alert("⚠️ No se pudo abrir la pasarela de pago en este momento. Intenta de nuevo en unos segundos.");
+                    liberarBoton();
                 }
                 return;
             }
@@ -1565,6 +1585,7 @@
             bolsa = [];
             actualizarBolsa();
             cerrarModalCheckout();
+            liberarBoton();
             window.open(`https://wa.me/${WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank");
         }
 
