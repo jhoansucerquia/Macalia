@@ -1504,7 +1504,7 @@
                 }
                 const referencia = `MACALIA-${Date.now()}`;
                 const montoCentavos = Math.round(totalFinal * 100);
-                const urlFirma = "https://" + "://onrender.com";
+                const urlFirma = URL_BOT_MACALIA.replace("chat-macalia", "firmar-wompi");
 
                 try {
                     const resFirma = await fetch(urlFirma, {
