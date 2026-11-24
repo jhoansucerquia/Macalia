@@ -1455,6 +1455,7 @@
 
             // 1. VERIFICAR STOCK EN TIEMPO REAL ANTES DE COBRAR (Evita sobreventas)
             for (const item of bolsa) {
+                const { data: prodActual } = await sbTienda.from("catalogo_web").select("nombre, stock, tonos").eq("id", item.id).single();
                 if (!prodActual) {
                     liberarBoton();
                     return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
