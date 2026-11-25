@@ -33,7 +33,7 @@
         }
     </style>
 
-<script type="text/javascript" src="https://checkout.wompi.co/widget.js"></script>
+    <script type="text/javascript" src="https://checkout.wompi.co/widget.js"></script>
 
 
 </head>
@@ -390,6 +390,27 @@
                     </a>
                 </div>
             </div>
+        </div>
+
+            <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-[#E3D1CC] flex flex-col md:flex-row items-center justify-between gap-4 text-[11px] text-stone-600">
+                <div class="flex flex-wrap items-center justify-center gap-4 font-medium">
+                    <button type="button" onclick="abrirModalLegal('datos')"
+                        class="hover:text-[#C87D87] underline underline-offset-2 transition">Política de Privacidad y
+                        Datos</button>
+                    <button type="button" onclick="abrirModalLegal('envios')"
+                        class="hover:text-[#C87D87] underline underline-offset-2 transition">Envíos, Cambios y
+                        Garantías</button>
+                    <button type="button" onclick="abrirModalLegal('cookies')"
+                        class="hover:text-[#C87D87] underline underline-offset-2 transition">Uso de Cookies</button>
+                </div>
+                <div class="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full border border-[#E3D1CC]">
+                    <span>🔒 Pagos 100% seguros con</span>
+                    <strong class="text-stone-800">Wompi (Bancolombia)</strong>
+                </div>
+            </div>
+            <p class="text-center text-[10px] text-stone-500 mt-4">© 2026 Macalia Makeup Store · Bello, Antioquia,
+                Colombia.</p>
+
 
 
     </footer>
@@ -1250,9 +1271,9 @@
             dots.forEach((dot, i) => {
                 dot.className = `w-1.5 h-1.5 rounded-full transition ${i === nuevoIdx ? 'bg-[#C87D87]' : 'bg-stone-300'}`;
             });
-            
+
         }
-                setInterval(() => {
+        setInterval(() => {
             if (!Array.isArray(productosMacalia)) return;
             productosMacalia.forEach(p => {
                 if (Array.isArray(p.fotos) && p.fotos.length > 1) {
@@ -1449,8 +1470,8 @@
             const depto = document.getElementById("chk-departamento").value.trim();
 
             if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
-            liberarBoton();   
-            return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
+                liberarBoton();
+                return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
             }
 
             // 1. VERIFICAR STOCK EN TIEMPO REAL ANTES DE COBRAR (Evita sobreventas)
@@ -1460,7 +1481,7 @@
                     liberarBoton();
                     return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
                 }
- 
+
 
                 if (item.tono && Array.isArray(prodActual.tonos) && prodActual.tonos.length > 0) {
                     const tonoObj = prodActual.tonos.find(t => t.nombre.toUpperCase() === item.tono.toUpperCase());
@@ -2290,6 +2311,77 @@
 
         document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarModalCheckout(); });
 
+        // --- POLÍTICAS LEGALES Y AVISO DE COOKIES MACALIA ---
+        const TEXTOS_LEGALES_MACALIA = {
+            datos: {
+                titulo: "Política de Privacidad y Tratamiento de Datos",
+                html: `<p>En cumplimiento de la <strong>Ley 1581 de 2012</strong> de Protección de Datos Personales en Colombia, <strong>Macalia Makeup Store</strong> informa que los datos suministrados (nombre, cédula, teléfono, correo y dirección) se utilizan exclusivamente para procesar pedidos, coordinar envíos y brindar asesoría personalizada.</p>
+                       <p>Tus datos bancarios nunca son almacenados en nuestra tienda; todos los pagos en línea son procesados de forma cifrada a través de <strong>Wompi (Bancolombia)</strong>. Puedes solicitar actualización o eliminación de tus datos escribiendo a nuestro WhatsApp oficial.</p>`
+            },
+            envios: {
+                titulo: "Políticas de Envíos, Cambios y Garantías",
+                html: `<p><strong>Envíos:</strong> Despachamos a todo Colombia desde Bello, Antioquia. Los tiempos estimados de entrega son de 1 a 2 días hábiles en el Valle de Aburrá y de 2 a 5 días hábiles a otras ciudades principales.</p>
+                       <p><strong>Cambios y Garantías:</strong> Por normas de higiene y bioseguridad sanitaria, <strong>los productos de maquillaje y cuidado facial no tienen cambio una vez abiertos, destapados o usados</strong>. Únicamente aplican cambios o garantías por defectos de fábrica o daños ocurridos durante el transporte, reportados dentro de las primeras 48 horas tras recibir el paquete con foto/video de evidencia.</p>`
+            },
+            cookies: {
+                titulo: "Política de Uso de Cookies",
+                html: `<p>Utilizamos almacenamiento local y cookies técnicas esenciales para conservar los productos que agregas a tu bolsa de compras, mantener la seguridad anti-bots de <strong>Cloudflare</strong> y recordar tus preferencias de navegación.</p>
+                       <p>No vendemos ni compartimos información de navegación con terceros publicitarios.</p>`
+            }
+        };
+
+        function abrirModalLegal(tipo) {
+            const info = TEXTOS_LEGALES_MACALIA[tipo];
+            if (!info) return;
+            let modal = document.getElementById("modal-legal-macalia");
+            if (!modal) {
+                modal = document.createElement("div");
+                modal.id = "modal-legal-macalia";
+                modal.className = "fixed inset-0 bg-black/50 backdrop-blur-xs z-[9998] hidden items-center justify-center p-4";
+                modal.innerHTML = `
+                    <div class="bg-white border border-[#E3D1CC] rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+                        <div class="flex items-center justify-between border-b border-[#F3E6E3] pb-3">
+                            <h3 id="legal-titulo" class="font-bold text-stone-800 text-base"></h3>
+                            <button type="button" onclick="cerrarModalLegal()" class="w-8 h-8 rounded-full bg-[#FDF6F7] text-stone-500 hover:text-stone-800 font-bold">✕</button>
+                        </div>
+                        <div id="legal-cuerpo" class="text-xs text-stone-600 leading-relaxed space-y-3 max-h-[60vh] overflow-y-auto"></div>
+                        <button type="button" onclick="cerrarModalLegal()" class="w-full py-2.5 rounded-xl bg-[#C87D87] text-white text-xs font-bold hover:bg-[#b56a74] transition">Entendido</button>
+                    </div>`;
+                document.body.appendChild(modal);
+            }
+            document.getElementById("legal-titulo").textContent = info.titulo;
+            document.getElementById("legal-cuerpo").innerHTML = info.html;
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
+        }
+
+        function cerrarModalLegal() {
+            const modal = document.getElementById("modal-legal-macalia");
+            if (modal) {
+                modal.classList.add("hidden");
+                modal.classList.remove("flex");
+            }
+        }
+
+        (function iniciarBannerCookies() {
+            if (localStorage.getItem("macalia_cookies_ok") === "1") return;
+            const banner = document.createElement("div");
+            banner.id = "banner-cookies-macalia";
+            banner.className = "fixed bottom-4 left-4 right-4 md:left-auto md:right-6 md:max-w-md bg-white/95 backdrop-blur-md border border-[#E3D1CC] rounded-2xl p-4 shadow-xl z-[9990] flex flex-col gap-3";
+            banner.innerHTML = `
+                <p class="text-[11px] text-stone-600 leading-relaxed">
+                    🍪 Usamos cookies esenciales para guardar tu bolsa de compras y brindarte una experiencia segura. Conoce nuestra <button type="button" onclick="abrirModalLegal('datos')" class="text-[#C87D87] font-semibold underline">Política de Privacidad</button>.
+                </p>
+                <div class="flex justify-end gap-2">
+                    <button type="button" onclick="abrirModalLegal('cookies')" class="px-3 py-1.5 rounded-xl border border-stone-200 text-[11px] text-stone-600 hover:bg-stone-50">Detalles</button>
+                    <button type="button" id="btn-aceptar-cookies" class="px-4 py-1.5 rounded-xl bg-[#C87D87] text-white text-[11px] font-bold hover:bg-[#b56a74]">Aceptar</button>
+                </div>`;
+            document.body.appendChild(banner);
+            document.getElementById("btn-aceptar-cookies").onclick = () => {
+                localStorage.setItem("macalia_cookies_ok", "1");
+                banner.remove();
+            };
+        })();
 
 
     </script>
