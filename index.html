@@ -1919,60 +1919,47 @@
             const contacto = document.getElementById("reg-may-contacto").value.trim().toLowerCase();
             const clave = document.getElementById("reg-may-clave").value;
 
-            if (!nombre || !contacto || !clave) {
-                return alert("⚠️ Por favor completa tu nombre, correo/celular y contraseña.");
+            if (!nombre || !contacto || clave.length < 6) {
+                return alert("⚠️ Ingresa tu nombre, un correo válido y una contraseña de mínimo 6 caracteres.");
             }
-            const esCorreoValido = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contacto);
-            const esCelularValido = /^[0-9]{10}$/.test(contacto.replace(/\s+/g, ""));
-            if (!esCorreoValido && !esCelularValido) {
-                return alert("⚠️ Por favor ingresa un correo electrónico válido o un número celular de 10 dígitos.");
+            const emailAuth = contacto.includes("@") ? contacto : `${contacto.replace(/\D/g, "")}@clientes.macalia.co`;
+
+            const { data, error } = await sbTienda.auth.signUp({
+                email: emailAuth,
+                password: clave,
+                options: { data: { nombre_cliente: nombre, contacto_original: contacto } }
+            });
+
+            if (error) {
+                return alert(`⚠️ ${error.message.includes("already registered") ? "Esta cuenta ya existe. Selecciona 'Ingresar'." : error.message}`);
             }
 
-            try {
-                const clientes = await obtenerClientesWebSupabase();
-                if (clientes.some(c => c.contacto === contacto)) {
-                    return alert("⚠️ Este correo o celular ya tiene una cuenta registrada. Selecciona 'Ingresar'.");
-                }
-
-                const nuevoCliente = { nombre, contacto, clave, fecha: new Date().toISOString() };
-                clientes.push(nuevoCliente);
-
-                const { data: existe } = await sbTienda.from("config_macalia").select("id").eq("clave", "clientes_web").maybeSingle();
-                if (existe) {
-                    await sbTienda.from("config_macalia").update({ datos: clientes }).eq("clave", "clientes_web");
-                } else {
-                    await sbTienda.from("config_macalia").insert([{ clave: "clientes_web", datos: clientes }]);
-                }
-
-                localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto }));
-                activarBeneficioMayorista(nombre);
-                alert(`👑 ¡Cuenta creada con éxito, ${nombre}! Bienvenida a Macalia.`);
-            } catch (err) {
-                console.error("Error registrando cuenta:", err);
-                alert("⚠️ No se pudo guardar la cuenta en este momento. Intenta de nuevo.");
-            }
+            localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto }));
+            activarBeneficioMayorista(nombre);
+            alert(`👑 ¡Cuenta creada con éxito, ${nombre}! Bienvenida a Macalia.`);
         }
 
         async function iniciarSesionMayorista() {
             if (!verificarHumanoTurnstile()) return;
             const usuario = document.getElementById("login-may-usuario").value.trim().toLowerCase();
             const clave = document.getElementById("login-may-clave").value;
+            const emailAuth = usuario.includes("@") ? usuario : `${usuario.replace(/\D/g, "")}@clientes.macalia.co`;
 
-            try {
-                const clientes = await obtenerClientesWebSupabase();
-                const encontrado = clientes.find(c => c.contacto === usuario && c.clave === clave);
-                if (encontrado) {
-                    localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre: encontrado.nombre, contacto: encontrado.contacto }));
-                    activarBeneficioMayorista(encontrado.nombre);
-                    alert(`👑 ¡Bienvenida de nuevo, ${encontrado.nombre}!`);
-                } else {
-                    alert("❌ Usuario o contraseña incorrectos. Si aún no tienes cuenta, selecciona 'Crear Cuenta'.");
-                }
-            } catch (err) {
-                console.error("Error iniciando sesión:", err);
-                alert("⚠️ Error conectando con el servidor. Intenta de nuevo.");
+            const { data, error } = await sbTienda.auth.signInWithPassword({
+                email: emailAuth,
+                password: clave
+            });
+
+            if (error || !data?.user) {
+                return alert("❌ Usuario o contraseña incorrectos. Si aún no tienes cuenta, selecciona 'Crear Cuenta'.");
             }
+
+            const nombre = data.user.user_metadata?.nombre_cliente || usuario.split("@")[0];
+            localStorage.setItem("macalia_mayorista", JSON.stringify({ nombre, contacto: usuario }));
+            activarBeneficioMayorista(nombre);
+            alert(`👑 ¡Bienvenida de nuevo, ${nombre}!`);
         }
+
 
         function activarBeneficioMayorista(nombre) {
             ES_MAYORISTA = true;
