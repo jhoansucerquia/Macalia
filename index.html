@@ -43,7 +43,7 @@
 
     <!-- CINTA SUPERIOR DE ANUNCIOS -->
     <div class="bg-[#C87D87] text-white text-xs text-center py-2 tracking-wider font-medium">
-        ✨ Envío GRATIS por compras superiores a $160.000 | Pagos 100% Seguros ✨
+         Envío GRATIS por compras superiores a $160.000 | Pagos 100% Seguros 
     </div>
 
     <!-- BARRA DE NAVEGACIÓN CON EL COLOR EXACTO DEL LOGO -->
@@ -70,7 +70,7 @@
                 <a href="#" onclick="seleccionarMenu(this)"
                     class="menu-link text-[#C87D87] border-b-2 border-[#C87D87] pb-1 transition">Inicio</a>
 
-                <!-- Menú desplegable de Categorías (como imagen 1) -->
+                <!-- Menú desplegable de Categorías -->
                 <div class="relative group py-2">
                     <a id="link-productos" href="#catalogo" onclick="seleccionarMenu(this)"
                         class="menu-link flex items-center gap-1 hover:text-[#C87D87] pb-1 transition">
@@ -108,7 +108,7 @@
                             <path stroke-linecap="round" d="M20 20l-3.5-3.5"></path>
                         </svg>
 
-                        <!-- PANEL DESPLEGABLE DE SUGERENCIAS (Como imagen 3) -->
+                        <!-- PANEL DESPLEGABLE DE SUGERENCIAS  -->
                         <div id="panel-sugerencias"
                             class="hidden absolute right-0 top-12 w-[420px] bg-white rounded-2xl shadow-2xl border border-rose-100 p-4 z-50">
                             <div class="flex justify-between items-center border-b border-rose-50 pb-2 mb-3">
@@ -1389,8 +1389,7 @@
         }
 
 
-        const WHATSAPP_MACALIA = "573106051359"; // <-- Reemplaza por el WhatsApp real de Macalia
-        const WOMPI_LLAVE_PUBLICA = "pub_prod_m7Hn64qUlwpXbJbcb6bdeUpbUCtFCj4A"; // <-- Pega aquí tu pub_prod_... de Wompi cuando la tengas
+        const WHATSAPP_MACALIA = "573106051359"; // <-- WhatsApp real de Macalia
 
         async function registrarPedidoEnSupabase(nombre, ciudad, metodoPago, total) {
             const { error } = await sbTienda.from("pedidos_web").insert([{
@@ -1539,9 +1538,8 @@
 
             // 4. REDIRIGIR AL PAGO O WHATSAPP
             if (canal === "Wompi") {
-                if (!WOMPI_LLAVE_PUBLICA) {
-                    return alert(`💳 Pedido registrado e inventario reservado por $${totalFinal.toLocaleString("es-CO")}.`);
-                }
+
+
                 const referencia = `MACALIA-${Date.now()}`;
                 const montoCentavos = Math.round(totalFinal * 100);
                 const urlFirma = URL_BOT_MACALIA.replace("chat-macalia", "firmar-wompi");
@@ -1556,7 +1554,8 @@
                         })
                     });
                     const dataFirma = await resFirma.json();
-                    if (!dataFirma.firma) throw new Error("No se pudo firmar el pago");
+                    if (!dataFirma.firma || !dataFirma.llave_publica) throw new Error("No se pudo firmar el pago");
+
 
                     bolsa = [];
                     actualizarBolsa();
@@ -1567,7 +1566,7 @@
                         currency: "COP",
                         amountInCents: montoCentavos,
                         reference: referencia,
-                        publicKey: WOMPI_LLAVE_PUBLICA,
+                        publicKey: dataFirma.llave_publica,
                         signature: { integrity: dataFirma.firma },
                         customerData: {
                             email: correoCompra || "cliente@macalia.co",
