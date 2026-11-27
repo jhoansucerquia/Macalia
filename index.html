@@ -1444,172 +1444,119 @@
             document.getElementById("modal-bolsa").classList.remove("hidden");
         }
 
+async function procesarCheckoutMacalia(canal) {
+    if (!verificarHumanoTurnstile("modal-checkout-macalia")) return;
+    const btnAccion = (typeof event !== "undefined" && event && event.currentTarget) ? event.currentTarget : null;
+    const textoOriginalBtn = btnAccion ? btnAccion.innerHTML : "";
+    const liberarBoton = () => {
+        if (btnAccion) {
+            btnAccion.disabled = false;
+            btnAccion.innerHTML = textoOriginalBtn;
+        }
+    };
+    if (btnAccion) {
+        if (btnAccion.disabled) return;
+        btnAccion.disabled = true;
+        btnAccion.innerHTML = canal === "Wompi" ? "⏳ Reservando y conectando con Wompi..." : "⏳ Registrando pedido...";
+    }
 
-        async function procesarCheckoutMacalia(canal) {
-            if (!verificarHumanoTurnstile()) return;
-            const btnAccion = (typeof event !== "undefined" && event && event.currentTarget) ? event.currentTarget : null;
-            const textoOriginalBtn = btnAccion ? btnAccion.innerHTML : "";
-            const liberarBoton = () => {
-                if (btnAccion) {
-                    btnAccion.disabled = false;
-                    btnAccion.innerHTML = textoOriginalBtn;
-                }
-            };
-            if (btnAccion) {
-                if (btnAccion.disabled) return;
-                btnAccion.disabled = true;
-                btnAccion.innerHTML = canal === "Wompi" ? "⏳ Conectando con Wompi..." : "⏳ Registrando pedido...";
-            }
+    const nombre = document.getElementById("chk-nombre").value.trim();
+    const apellidos = document.getElementById("chk-apellidos").value.trim();
+    const cedula = document.getElementById("chk-cedula").value.trim();
+    const telefono = document.getElementById("chk-telefono").value.trim();
+    const direccion = document.getElementById("chk-direccion").value.trim();
+    const ciudad = document.getElementById("chk-ciudad").value.trim();
+    const depto = document.getElementById("chk-departamento").value.trim();
+    const correoCompra = document.getElementById("chk-correo").value.trim().toLowerCase();
 
-            const nombre = document.getElementById("chk-nombre").value.trim();
-            const apellidos = document.getElementById("chk-apellidos").value.trim();
-            const cedula = document.getElementById("chk-cedula").value.trim();
-            const telefono = document.getElementById("chk-telefono").value.trim();
-            const direccion = document.getElementById("chk-direccion").value.trim();
-            const ciudad = document.getElementById("chk-ciudad").value.trim();
-            const depto = document.getElementById("chk-departamento").value.trim();
+    if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
+        liberarBoton();
+        return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
+    }
 
-            if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
-                liberarBoton();
-                return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
-            }
+    try {
+        const { data: { session } } = await sbTienda.auth.getSession();
+        const headers = { "Content-Type": "application/json" };
+        if (session?.access_token) {
+            headers["Authorization"] = `Bearer ${session.access_token}`;
+        }
 
-            // 1. VERIFICAR STOCK EN TIEMPO REAL ANTES DE COBRAR (Evita sobreventas)
-            for (const item of bolsa) {
-                const { data: prodActual } = await sbTienda.from("catalogo_web").select("nombre, stock, tonos").eq("id", item.id).single();
-                if (!prodActual) {
-                    liberarBoton();
-                    return alert(`⚠️ El producto "${item.nombre}" ya no está disponible.`);
-                }
+        const urlCheckout = URL_BOT_MACALIA.replace("chat-macalia", "crear-pedido-y-firmar");
+        const respuesta = await fetch(urlCheckout, {
+            method: "POST",
+            headers,
+            body: JSON.stringify({
+                canal,
+                items: bolsa.map(i => ({ id: i.id, cantidad: i.cantidad, tono: i.tono || "" })),
+                cliente: { nombre, apellidos, cedula, telefono, direccion, ciudad, departamento: depto, correo: correoCompra }
+            })
+        });
 
+        const data = await respuesta.json();
+        if (!respuesta.ok || !data.ok) {
+            liberarBoton();
+            return alert(`⚠️ ${data.error || "No se pudo procesar tu pedido."}`);
+        }
 
-                if (item.tono && Array.isArray(prodActual.tonos) && prodActual.tonos.length > 0) {
-                    const tonoObj = prodActual.tonos.find(t => t.nombre.toUpperCase() === item.tono.toUpperCase());
-                    const dispTono = tonoObj ? (Number(tonoObj.stock) || 0) : 0;
-                    if (dispTono < item.cantidad) {
-                        return alert(`😔 Lo sentimos, acaban de llevarse las últimas unidades de "${item.nombre}" en tono ${item.tono}. Disponibles ahora: ${dispTono}.`);
-                    }
-                } else {
-                    const dispGen = Number(prodActual.stock) || 0;
-                    if (dispGen < item.cantidad) {
-                        return alert(`😔 Lo sentimos, de "${item.nombre}" solo quedan ${dispGen} unidades disponibles en este momento.`);
-                    }
-                }
-            }
+        localStorage.removeItem("macalia_bolsa_v1");
 
-            // 2. DESCONTAR Y RESERVAR INVENTARIO AL INSTANTE EN SUPABASE
-            for (const item of bolsa) {
-                const { data: prod } = await sbTienda.from("catalogo_web").select("stock, tonos").eq("id", item.id).maybeSingle();
-                if (!prod) continue;
-
-                let tonosActualizados = Array.isArray(prod.tonos) ? [...prod.tonos] : [];
-                let nuevoStockGeneral = Math.max(0, (Number(prod.stock) || 0) - Number(item.cantidad));
-
-                if (item.tono && tonosActualizados.length > 0) {
-                    tonosActualizados = tonosActualizados.map(t => {
-                        if (t.nombre.toUpperCase() === item.tono.toUpperCase()) {
-                            return { ...t, stock: Math.max(0, (Number(t.stock) || 0) - Number(item.cantidad)) };
-                        }
-                        return t;
-                    });
-                    nuevoStockGeneral = tonosActualizados.reduce((sum, t) => sum + (Number(t.stock) || 0), 0);
-                }
-
-                await sbTienda.from("catalogo_web").update({
-                    stock: nuevoStockGeneral,
-                    tonos: tonosActualizados
-                }).eq("id", item.id);
-            }
-
-            // 3. REGISTRAR PEDIDO Y MARCAR CARRITO COMO COMPRADO
-            const subtotal = bolsa.reduce((acc, item) => acc + (item.precio * item.cantidad), 0);
-            const costoEnvio = subtotal >= 160000 ? 0 : 14000;
-            const totalFinal = subtotal + costoEnvio;
-            const metodoSelect = document.getElementById("metodo-pago-web").value;
-            const nombreCompleto = `${nombre} ${apellidos} (CC: ${cedula} | Tel: ${telefono})`;
-            const ubicacionCompleta = `${direccion}, ${ciudad} - ${depto}`;
-
-            await registrarPedidoEnSupabase(nombreCompleto, ubicacionCompleta, canal === "Wompi" ? "Wompi" : metodoSelect, totalFinal);
-
-            const correoCompra = document.getElementById("chk-correo").value.trim().toLowerCase();
-            if (correoCompra) {
-                await sbTienda.from("carritos_abandonados").update({ estado: "Comprado" }).eq("correo", correoCompra);
-            }
-            localStorage.removeItem("macalia_bolsa_v1");
-
-            // 4. REDIRIGIR AL PAGO O WHATSAPP
-            if (canal === "Wompi") {
-
-
-                const referencia = `MACALIA-${Date.now()}`;
-                const montoCentavos = Math.round(totalFinal * 100);
-                const urlFirma = URL_BOT_MACALIA.replace("chat-macalia", "firmar-wompi");
-
-                try {
-                    const resFirma = await fetch(urlFirma, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            referencia: referencia,
-                            monto_centavos: montoCentavos
-                        })
-                    });
-                    const dataFirma = await resFirma.json();
-                    if (!dataFirma.firma || !dataFirma.llave_publica) throw new Error("No se pudo firmar el pago");
-
-
-                    bolsa = [];
-                    actualizarBolsa();
-                    cerrarModalCheckout();
-                    liberarBoton();
-
-                    const checkout = new WidgetCheckout({
-                        currency: "COP",
-                        amountInCents: montoCentavos,
-                        reference: referencia,
-                        publicKey: dataFirma.llave_publica,
-                        signature: { integrity: dataFirma.firma },
-                        customerData: {
-                            email: correoCompra || "cliente@macalia.co",
-                            fullName: `${nombre} ${apellidos}`,
-                            phoneNumber: telefono,
-                            phoneNumberPrefix: "+57",
-                            legalId: cedula,
-                            legalIdType: "CC"
-                        }
-                    });
-
-                    checkout.open(function (result) {
-                        const transaccion = result && result.transaction;
-                        if (transaccion && transaccion.status === "APPROVED") {
-                            alert(`🎉 ¡Pago aprobado por $${totalFinal.toLocaleString("es-CO")}! Referencia: ${referencia}`);
-                        }
-                    });
-                } catch (err) {
-                    console.error("Error iniciando Wompi:", err);
-                    alert("⚠️ No se pudo abrir la pasarela de pago en este momento. Intenta de nuevo en unos segundos.");
-                    liberarBoton();
-                }
-                return;
-            }
-
-
-            let resumen = `Hola Macalia ♡ Quiero confirmar mi pedido:\n\n`;
-            bolsa.forEach(i => {
-                resumen += `• ${i.cantidad}x ${i.nombre}${i.tono ? ` (${i.tono})` : ''} — $${(i.precio * i.cantidad).toLocaleString("es-CO")}\n`;
-            });
-            resumen += `\n*Subtotal:* $${subtotal.toLocaleString("es-CO")}`;
-            resumen += `\n*Envío:* ${costoEnvio === 0 ? "GRATIS 🎉" : "$" + costoEnvio.toLocaleString("es-CO")}`;
-            resumen += `\n*TOTAL A PAGAR:* $${totalFinal.toLocaleString("es-CO")}`;
-            resumen += `\n\n*Datos de Entrega:*\n👤 ${nombre} ${apellidos}\n🪪 CC: ${cedula}\n📱 Tel: ${telefono}\n📍 ${ubicacionCompleta}`;
-            resumen += `\n💳 *Pago:* ${metodoSelect === "llave_directa" ? "Transferencia por Llave (Adjunto comprobante)" : "Coordinar por WhatsApp"}`;
-
+        if (canal === "Wompi") {
             bolsa = [];
             actualizarBolsa();
             cerrarModalCheckout();
             liberarBoton();
-            window.open(`https://wa.me/${WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank");
+
+            const checkout = new WidgetCheckout({
+                currency: "COP",
+                amountInCents: data.monto_centavos,
+                reference: data.referencia,
+                publicKey: data.llave_publica,
+                signature: { integrity: data.firma },
+                customerData: {
+                    email: correoCompra || "cliente@macalia.co",
+                    fullName: `${nombre} ${apellidos}`,
+                    phoneNumber: telefono,
+                    phoneNumberPrefix: "+57",
+                    legalId: cedula,
+                    legalIdType: "CC"
+                }
+            });
+
+            checkout.open(function (result) {
+                const transaccion = result && result.transaction;
+                if (transaccion && transaccion.status === "APPROVED") {
+                    alert(`🎉 ¡Pago aprobado por $${Number(data.total).toLocaleString("es-CO")}! Referencia: ${data.referencia}`);
+                }
+                cargarCatalogoDesdeSupabase();
+            });
+            return;
         }
+
+        // Flujo WhatsApp / Llave Bre-B
+        const metodoSelect = document.getElementById("metodo-pago-web").value;
+        let resumen = `Hola Macalia ♡ Quiero confirmar mi pedido (${data.referencia}):\n\n`;
+        (data.productos || bolsa).forEach(i => {
+            resumen += `• ${i.cantidad}x ${i.nombre}${i.tono ? ` (${i.tono})` : ''} — $${(i.precio * i.cantidad).toLocaleString("es-CO")}\n`;
+        });
+        resumen += `\n*Subtotal:* $${Number(data.subtotal).toLocaleString("es-CO")}`;
+        resumen += `\n*Envío:* ${data.envio === 0 ? "GRATIS 🎉" : "$" + Number(data.envio).toLocaleString("es-CO")}`;
+        resumen += `\n*TOTAL A PAGAR:* $${Number(data.total).toLocaleString("es-CO")}`;
+        resumen += `\n\n*Datos de Entrega:*\n👤 ${nombre} ${apellidos}\n🪪 CC: ${cedula}\n📱 Tel: ${telefono}\n📍 ${direccion}, ${ciudad} - ${depto}`;
+        resumen += `\n💳 *Pago:* ${metodoSelect === "llave_directa" ? "Transferencia por Llave (Adjunto comprobante)" : "Coordinar por WhatsApp"}`;
+
+        bolsa = [];
+        actualizarBolsa();
+        cerrarModalCheckout();
+        liberarBoton();
+        window.open(`https://wa.me/${WHATSAPP_MACALIA}?text=${encodeURIComponent(resumen)}`, "_blank", "noopener,noreferrer");
+    } catch (err) {
+        console.error("Error en checkout:", err);
+        liberarBoton();
+        alert("⚠️ Error de conexión con el servidor. Intenta de nuevo en unos segundos.");
+    }
+}
+
+
 
 
 
@@ -1806,7 +1753,7 @@
             lista.innerHTML = "";
 
             if (coincidencias.length === 0) {
-                lista.innerHTML = `<p class="text-xs text-stone-400 py-3 text-center">No encontramos productos con "${texto}"</p>`;
+                lista.innerHTML = `<p class="text-xs text-stone-400 py-3 text-center">No encontramos productos con "${escaparHTML(texto)}"</p>`;
                 return;
             }
 
@@ -2016,7 +1963,7 @@ async function cerrarSesionMayorista() {
                 historial.innerHTML += `
                     <div class="flex justify-start">
                         <div class="bg-[#eddedb]/80 text-stone-800 p-3 rounded-2xl rounded-tl-none text-xs max-w-[85%] leading-relaxed">
-                            ${texto}
+                            ${escaparHTML(texto)}
                         </div>
                     </div>`;
             }
@@ -2053,7 +2000,7 @@ async function cerrarSesionMayorista() {
         function generarRespuestaMacalia(pregunta) {
             const p = pregunta.toLowerCase();
             if (p.includes("envio") || p.includes("envío") || p.includes("entrega")) {
-                return "🚚 Hacemos envíos a toda Colombia. En el Área Metropolitana (Medellín y Bello) llega en 24 horas, y a otras ciudades de 2 a 4 días hábiles. ¡Envío GRATIS por compras superiores a $150.000!";
+                return "🚚 Hacemos envíos a toda Colombia. En el Área Metropolitana (Medellín y Bello) llega en 24 horas, y a otras ciudades de 2 a 4 días hábiles. ¡Envío GRATIS por compras superiores a $160.000!";
             }
             if (p.includes("mayorista") || p.includes("por mayor")) {
                 return "👑 Para comprar al por mayor, toca el ícono de perfil arriba a la derecha (<b>Mayoristas</b>) y crea tu cuenta. Al ingresar, todos los precios de la tienda bajarán automáticamente.";
@@ -2284,7 +2231,7 @@ async function cerrarSesionMayorista() {
             document.getElementById("detalle-nombre-tone" in window ? "detalle-nombre-tone" : "detalle-nombre-tono").innerText = stockTono <= 0 ? `${nombreTono} (AGOTADO)` : nombreTono;
 
             const fotoRespaldo = (PRODUCTO_DETALLE_ACTUAL && PRODUCTO_DETALLE_ACTUAL.fotos && PRODUCTO_DETALLE_ACTUAL.fotos.length > 0)
-                ? PRODUCTO_DETALLE_ACTUAL.fotos
+                ? PRODUCTO_DETALLE_ACTUAL.fotos[0]
                 : "";
             const urlFinal = (fotoTono && fotoTono.startsWith("http")) ? fotoTono : fotoRespaldo;
             if (urlFinal) seleccionarFotoDetalle(urlFinal);
@@ -2296,19 +2243,16 @@ async function cerrarSesionMayorista() {
             });
             boton.classList.add("ring-2", "ring-offset-2", "ring-stone-800");
         }
-
-
-        function verificarHumanoTurnstile() {
-            // Si aún estamos abriendo el archivo local desde el PC (file://), permite probar sin bloqueo
+        
+        function verificarHumanoTurnstile(contenedorId) {
             if (window.location.protocol === "file:") return true;
-
-            const respuestas = document.querySelectorAll("[name='cf-turnstile-response']");
-            for (let input of respuestas) {
-                if (input.value && input.value.trim() !== "") return true;
-            }
-            alert("Por favor espera un segundo a que complete la verificación de seguridad (No soy un robot).");
+            const raiz = contenedorId ? document.getElementById(contenedorId) : document;
+            const input = raiz ? raiz.querySelector("[name='cf-turnstile-response']") : null;
+            if (input && input.value && input.value.trim() !== "") return true;
+            alert("Por favor espera un segundo a que se complete la verificación de seguridad.");
             return false;
         }
+
 
         // Recuperar bolsa guardada si la clienta recarga la página
         try {
