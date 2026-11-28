@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MACALÍA | Belleza y Más</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
@@ -31,6 +32,13 @@
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
+        svg.lucide {
+            width: 1rem;
+            height: 1rem;
+            display: inline-block;
+            vertical-align: -0.15em;
+            flex-shrink: 0;
+        }
     </style>
 </head>
 
@@ -50,7 +58,7 @@
                     class="w-full px-4 py-3 border border-rose-200 rounded-xl text-xs focus:outline-none focus:border-[#C87D87]">
                 <button type="submit" id="btn-login-admin"
                     class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full text-xs shadow transition">
-                    Entrar al Panel ✨
+                    Entrar al Panel <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
                 </button>
             </form>
 
@@ -89,11 +97,11 @@
                     <div class="flex flex-wrap gap-2">
                         <button type="button" onclick="descargarPlantillaExcel()"
                             class="bg-rose-50 hover:bg-rose-100 text-[#C87D87] text-xs font-bold px-4 py-2.5 rounded-full transition">
-                            📥 Descargar Plantilla Excel
+                            <i data-lucide="download" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Descargar Plantilla Excel
                         </button>
                         <label
                             class="bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow cursor-pointer transition">
-                            📤 Subir Archivo Excel (.xlsx)
+                            <i data-lucide="upload" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Subir Archivo Excel (.xlsx)
                             <input type="file" accept=".xlsx,.xls,.csv" onchange="procesarExcelMasivo(this)"
                                 class="hidden">
                         </label>
@@ -105,7 +113,7 @@
                     <!-- BANNERS DE PORTADA -->
                     <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
                         <div class="flex flex-wrap justify-between items-center gap-2">
-                            <h3 class="font-bold text-stone-700">🖼️ Banners de Portada (Carrusel)</h3>
+                            <h3 class="font-bold text-stone-700"><i data-lucide="image" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Banners de Portada (Carrusel)</h3>
                             <div class="flex items-center gap-2">
                                 <button type="button" onclick="agregarBannerAdmin()"
                                     class="bg-rose-50 hover:bg-rose-100 text-[#C87D87] text-[11px] font-bold px-3 py-1.5 rounded-full transition">
@@ -125,7 +133,7 @@
                     <!-- FOTOS DE CATEGORÍAS -->
                     <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-stone-700">🌸 Fotos de "Nuestras Categorías"</h3>
+                            <h3 class="font-bold text-stone-700"><i data-lucide="flower-2" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Fotos de "Nuestras Categorías"</h3>
                             <button type="button" onclick="guardarConfigCategorias()"
                                 class="bg-stone-800 text-white text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-[#C87D87] transition">Guardar
                                 Categorías</button>
@@ -195,8 +203,7 @@
 
                     <!-- SUBIDA DE FOTOS PRINCIPALES -->
                     <div class="bg-[#FDF6F7] p-3.5 rounded-2xl border border-rose-200/70">
-                        <label class="font-bold text-[#C87D87] block mb-1">📸 Fotos del Producto (puedes elegir
-                            varias)</label>
+                        <label class="font-bold text-[#C87D87] block mb-1"><i data-lucide="camera" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Fotos del Producto (puedes elegir varias)</label>
                         <input type="file" id="prod-fotos" accept="image/*" multiple required
                             class="w-full text-[11px] text-stone-600 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-[#C87D87] file:text-white file:font-semibold">
                     </div>
@@ -204,7 +211,7 @@
                     <!-- SECCIÓN OPCIONAL DE TONOS CON GOTERO VISUAL -->
                     <div class="bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100">
                         <div class="flex justify-between items-center mb-2">
-                            <label class="font-bold text-stone-700">🎨 Tonos disponibles (Opcional)</label>
+                            <label class="font-bold text-stone-700"><i data-lucide="palette" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Tonos disponibles (Opcional)</label>
                             <button type="button" onclick="agregarFilaTono()"
                                 class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+
                                 Agregar Tono</button>
@@ -216,7 +223,7 @@
 
                     <button type="submit" id="btn-guardar-prod"
                         class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition">
-                        Publicar en la Tienda ✨
+                        Publicar en la Tienda <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
                     </button>
                 </form>
             </section>
@@ -238,13 +245,13 @@
                 <div
                     class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-rose-50 pb-4">
                     <div>
-                        <h2 class="font-editorial text-2xl text-stone-800">Pedidos Web & Recuperación de Carritos ♡</h2>
+                        <h2 class="font-editorial text-2xl text-stone-800">Pedidos Web & Recuperación de Carritos</h2>
                         <p class="text-xs text-stone-400">Gestiona los pedidos que entran por la tienda y recupera
                             ventas de clientas que dejaron su correo</p>
                     </div>
                     <button type="button" onclick="exportarCorreosExcel()"
                         class="bg-stone-800 hover:bg-[#C87D87] text-white text-xs font-bold px-4 py-2.5 rounded-full shadow transition">
-                        📥 Descargar Base de Correos (Excel)
+                        <i data-lucide="download" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Descargar Base de Correos (Excel)
                     </button>
                 </div>
 
@@ -252,13 +259,13 @@
                     <!-- COLUMNA 1: PEDIDOS WEB RECIENTES -->
                     <div class="bg-[#FDFBF9] p-5 rounded-2xl border border-rose-100 space-y-4">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-stone-700">🛍️ Pedidos Recibidos en la Web</h3>
+                            <h3 class="font-bold text-stone-700"><i data-lucide="shopping-bag" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Pedidos Recibidos en la Web</h3>
                             <div class="flex items-center gap-3">
                                 <button type="button" onclick="limpiarHistorialPedidosWeb()"
-                                    class="text-[11px] text-stone-400 hover:text-red-500 font-bold transition">🗑️
-                                    Limpiar historial</button>
+                                    class="text-[11px] text-stone-400 hover:text-red-500 font-bold transition">
+                                    <i data-lucide="trash-2" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Limpiar historial
                                 <button type="button" onclick="cargarPedidosYCarritosAdmin()"
-                                    class="text-[11px] text-[#C87D87] font-bold hover:underline">↻ Actualizar</button>
+                                    class="text-[11px] text-[#C87D87] font-bold hover:underline"><i data-lucide="refresh-cw" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Actualizar</button>
                             </div>
                         </div>
 
@@ -268,7 +275,7 @@
                     <!-- COLUMNA 2: CARRITOS ABANDONADOS / CORREOS -->
                     <div class="bg-[#FDFBF9] p-4 rounded-2xl border border-rose-100 space-y-3">
                         <div class="flex justify-between items-center">
-                            <h3 class="font-bold text-stone-700">💌 Carritos Abandonados & Correos</h3>
+                            <h3 class="font-bold text-stone-700"><i data-lucide="mail" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Carritos Abandonados & Correos</h3>
                             <span id="contador-abandonados"
                                 class="bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full text-[10px]">0</span>
                         </div>
@@ -280,10 +287,10 @@
 <section class="lg:col-span-12 bg-white p-6 rounded-3xl border border-rose-100 shadow-sm space-y-4">
     <div class="flex justify-between items-center border-b border-rose-50 pb-3">
         <div>
-            <h2 class="font-editorial text-2xl text-stone-800">Clientes & Tarifas Mayoristas 👑</h2>
+            <h2 class="font-editorial text-2xl text-stone-800">Clientes & Tarifas Mayoristas <i data-lucide="crown" stroke-width="1.5" class="w-5 h-5 inline-block ml-1 text-[#C87D87] align-text-bottom"></i></h2>
             <p class="text-xs text-stone-400">Activa o desactiva el acceso a precios mayoristas para tus clientas registradas</p>
         </div>
-        <button type="button" onclick="cargarPerfilesMayoristasAdmin()" class="text-xs text-[#C87D87] font-bold hover:underline">↻ Actualizar lista</button>
+        class="text-xs text-[#C87D87] font-bold hover:underline"><i data-lucide="refresh-cw" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Actualizar lista</button>
     </div>
     <div id="admin-lista-mayoristas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs"></div>
 </section>
@@ -341,7 +348,7 @@
 
             <!-- GESTIÓN DE FOTOS ACTUALES Y NUEVAS -->
             <div class="bg-[#FDF6F7] p-3.5 rounded-2xl border border-rose-200/70 space-y-2">
-                <label class="font-bold text-[#C87D87] block">📸 Fotos actuales (toca × para quitar una)</label>
+                <label class="font-bold text-[#C87D87] block"><i data-lucide="camera" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Fotos actuales (toca x para quitar una)</label>
                 <div id="edit-lista-fotos-actuales" class="flex flex-wrap gap-2"></div>
                 <label class="font-bold text-stone-600 block pt-1">Agregar más fotos principales (opcional):</label>
                 <input type="file" id="edit-nuevas-fotos" accept="image/*" multiple
@@ -351,7 +358,7 @@
             <!-- EDITOR DE TONOS Y COLORES -->
             <div class="bg-[#FDFBF9] p-3.5 rounded-2xl border border-rose-100 space-y-2">
                 <div class="flex justify-between items-center">
-                    <label class="font-bold text-stone-700">🎨 Tonos y Colores</label>
+                    <label class="font-bold text-stone-700"><i data-lucide="palette" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i> Tonos y Colores</label>
                     <button type="button" onclick="agregarFilaTonoEdicion()"
                         class="text-[11px] bg-rose-100 hover:bg-[#C87D87] text-[#C87D87] hover:text-white font-bold px-2.5 py-1 rounded-full transition">+
                         Nuevo Tono</button>
@@ -361,7 +368,7 @@
 
             <button type="button" id="btn-guardar-edicion" onclick="guardarEdicionProducto()"
                 class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3 rounded-full shadow transition">
-                Guardar Todos los Cambios ✨
+                Guardar Todos los Cambios <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
             </button>
         </div>
     </div>
@@ -390,7 +397,7 @@ function escaparHTML(texto) {
             }
 
             const texto = String(mensaje || "");
-            const esError = texto.includes("⚠️") || texto.includes("❌") || texto.toLowerCase().includes("error") || texto.toLowerCase().includes("vacía") || texto.toLowerCase().includes("agotado");
+            const esError = texto.includes("") || texto.includes("") || texto.toLowerCase().includes("error") || texto.toLowerCase().includes("vacía") || texto.toLowerCase().includes("agotado");
 
             const toast = document.createElement("div");
             toast.className = `pointer-events-auto flex items-start gap-3 px-4 py-3.5 rounded-2xl shadow-xl border backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0 ${esError
@@ -435,24 +442,24 @@ async function verificarAccesoAdmin() {
     const password = document.getElementById("clave-admin-input").value;
 
     btn.disabled = true;
-    btn.innerText = "Verificando credenciales... ⏳";
+    btn.innerText = "Verificando credenciales...";
 
     const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
     if (error || !data?.user) {
         btn.disabled = false;
-        btn.innerText = "Entrar al Panel ✨";
-        alert("❌ Correo o contraseña incorrectos.");
+        btn.innerHTML = 'Entrar al Panel <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>';
+        alert("Correo o contraseña incorrectos.");
         return;
     }
 
     const esAdmin = await validarPermisoAdminReal(data.user.id);
     btn.disabled = false;
-    btn.innerText = "Entrar al Panel ✨";
+    btn.innerHTML = 'Entrar al Panel <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>';
 
     if (!esAdmin) {
         await sb.auth.signOut();
-        alert("⛔ Acceso denegado: Esta cuenta no tiene permisos de administradora.");
+        alert("Acceso denegado: Esta cuenta no tiene permisos de administradora.");
         return;
     }
 
@@ -581,9 +588,6 @@ revisarSesionActiva();
             return data.publicUrl;
         }
 
-
-
-
         async function cargarProductosAdmin() {
             const lista = document.getElementById("lista-admin-productos");
             const { data, error } = await sb.from("catalogo_web").select("*").eq("tienda", "macalia").order("id", { ascending: false });
@@ -592,7 +596,7 @@ revisarSesionActiva();
 
             document.getElementById("contador-admin-prod").innerText = `${data.length} productos`;
             if (data.length === 0) {
-                return lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Aún no has subido productos. Usa el formulario de la izquierda ✨</p>`;
+                return lista.innerHTML = '<p class="text-xs text-stone-400 text-center py-10">Aún no has subido productos. Usa el formulario de la izquierda.</p>';
             }
 
             lista.innerHTML = data.map(p => `
@@ -673,9 +677,6 @@ revisarSesionActiva();
             document.getElementById("modal-editar-prod").classList.remove("hidden");
         }
 
-
-
-
         function agregarFilaTono() {
             const cont = document.getElementById("contenedor-filas-tonos");
             const div = document.createElement("div");
@@ -698,7 +699,7 @@ revisarSesionActiva();
         async function guardarProductoNube() {
             const btn = document.getElementById("btn-guardar-prod");
             btn.disabled = true;
-            btn.innerText = "Subiendo fotos y guardando... ⏳";
+            btn.innerText = "Subiendo fotos y guardando... ";
 
             try {
                 const archivosFotos = document.getElementById("prod-fotos").files;
@@ -747,15 +748,15 @@ revisarSesionActiva();
                 const { error } = await sb.from("catalogo_web").insert([nuevoProducto]);
                 if (error) throw error;
 
-                alert("🎉 ¡Producto publicado exitosamente en Macalia!");
+                alert("¡Producto publicado exitosamente en Macalia!");
                 document.getElementById("form-producto-macalia").reset();
                 document.getElementById("contenedor-filas-tonos").innerHTML = "";
                 cargarProductosAdmin();
             } catch (err) {
-                alert("❌ Error al guardar: " + err.message);
+                alert("Error al guardar: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Publicar en la Tienda ✨";
+                btn.innerHTML = 'Publicar en la Tienda <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>';
             }
         }
 
@@ -784,7 +785,7 @@ revisarSesionActiva();
         async function guardarEdicionProducto() {
             const btn = document.getElementById("btn-guardar-edicion");
             btn.disabled = true;
-            btn.innerText = "Guardando cambios... ⏳";
+            btn.innerText = "Guardando cambios... ";
 
             try {
                 const id = document.getElementById("edit-id").value;
@@ -834,12 +835,12 @@ revisarSesionActiva();
 
                 document.getElementById("modal-editar-prod").classList.add("hidden");
                 cargarProductosAdmin();
-                alert("✅ ¡Producto, fotos y stock por tono actualizados!");
+                alert("¡Producto, fotos y stock por tono actualizados!");
             } catch (err) {
-                alert("❌ Error al actualizar: " + err.message);
+                alert("Error al actualizar: " + err.message);
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Guardar Todos los Cambios ✨";
+                btn.innerHTML = 'Guardar Todos los Cambios <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>';
             }
         }
 
@@ -953,12 +954,12 @@ revisarSesionActiva();
                 const { error } = await sb.from("catalogo_web").insert(productosParaSubir);
                 if (error) throw error;
 
-                alert(`🎉 ¡Se importaron ${productosParaSubir.length} productos desde Excel al instante!`);
+                alert(`¡Se importaron ${productosParaSubir.length} productos desde Excel al instante!`);
                 input.value = "";
                 cargarProductosAdmin();
                 cargarConfigVisualAdmin();
             } catch (err) {
-                alert("❌ Error al importar Excel: " + err.message);
+                alert("Error al importar Excel: " + err.message);
             }
         }
 
@@ -985,7 +986,7 @@ revisarSesionActiva();
                         </div>
                         <div class="flex items-center gap-1.5 shrink-0">
                             <label class="px-3 py-1.5 rounded-xl bg-rose-50 hover:bg-[#C87D87] text-[#C87D87] hover:text-white text-xs font-bold cursor-pointer transition">
-                                📷 ${b.foto ? 'Cambiar foto' : 'Subir foto'}
+                                <i data-lucide="camera" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> ${b.foto ? 'Cambiar foto' : 'Subir foto'}
                                 <input type="file" accept="image/*" onchange="subirFotoBannerAdmin(${idx}, this)" class="hidden">
                             </label>
                             ${BANNERS_ADMIN.length > 1 ? `
@@ -1003,7 +1004,7 @@ revisarSesionActiva();
         }
 
         function agregarBannerAdmin() {
-            if (BANNERS_ADMIN.length >= 5) return alert("⚠️ Puedes tener un máximo de 5 banners en la portada.");
+            if (BANNERS_ADMIN.length >= 5) return alert("Puedes tener un máximo de 5 banners en la portada.");
             BANNERS_ADMIN.push({
                 tag: "MACALIA MAKEUP STORE",
                 titulo1: "Nueva Colección",
@@ -1035,10 +1036,6 @@ revisarSesionActiva();
             pintarListaBannersAdmin();
         }
 
-
-
-
-
         function pintarCategoriasAdmin(productos) {
             const categoriasUnicas = [...new Set((productos || []).map(p => p.categoria).filter(Boolean))];
             const contCats = document.getElementById("admin-lista-categorias");
@@ -1054,11 +1051,11 @@ revisarSesionActiva();
                     ? `<img src="${FOTOS_CATEGORIAS_ADMIN[cat]}" class="w-11 h-11 rounded-full object-cover border border-rose-200 shrink-0">`
                     : `<div class="w-11 h-11 rounded-full bg-rose-100 text-[#C87D87] font-bold text-sm flex items-center justify-center shrink-0">${cat.charAt(0).toUpperCase()}</div>`}
                         <span class="font-bold text-stone-800 text-sm truncate">${cat}</span>
-                        <button type="button" onclick="renombrarCategoriaAdmin('${cat}')" title="Renombrar categoría" class="text-xs text-stone-400 hover:text-[#C87D87] transition">✏️</button>
+                        <button type="button" onclick="renombrarCategoriaAdmin('${cat}')" title="Renombrar categoría" class="text-xs text-stone-400 hover:text-[#C87D87] transition"><i data-lucide="pencil" stroke-width="1.5" class="w-3.5 h-3.5 inline-block"></i></button>
                     </div>
                     <div class="flex items-center gap-1.5 shrink-0">
                         <label class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-[#C87D87] text-[#C87D87] hover:text-white text-xs font-bold cursor-pointer transition">
-                            📷 ${FOTOS_CATEGORIAS_ADMIN[cat] ? 'Cambiar' : 'Subir foto'}
+                            <i data-lucide="camera" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> ${FOTOS_CATEGORIAS_ADMIN[cat] ? 'Cambiar' : 'Subir foto'}
                             <input type="file" accept="image/*" onchange="subirFotoCategoriaAdmin('${cat}', this)" class="hidden">
                         </label>
                         ${FOTOS_CATEGORIAS_ADMIN[cat] ? `
@@ -1112,7 +1109,7 @@ revisarSesionActiva();
                 delete FOTOS_CATEGORIAS_ADMIN[catVieja];
                 await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
             }
-            alert(`✅ Categoría renombrada a "${nombreLimpio}"`);
+            alert(`Categoría renombrada a "${nombreLimpio}"`);
             cargarProductosAdmin();
         }
 
@@ -1123,7 +1120,7 @@ revisarSesionActiva();
         async function quitarFotoCategoriaAdmin(cat) {
             delete FOTOS_CATEGORIAS_ADMIN[cat];
             await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
-            alert(`✅ Foto circular de "${cat}" eliminada`);
+            alert(`Foto circular de "${cat}" eliminada`);
             cargarProductosAdmin();
         }
 
@@ -1159,18 +1156,18 @@ revisarSesionActiva();
         async function guardarConfigPortada() {
             try {
                 await guardarEnConfigMacalia("banners_portada", BANNERS_ADMIN);
-                alert("🎉 ¡Banners de portada actualizados en la tienda!");
+                alert("¡Banners de portada actualizados en la tienda!");
             } catch (error) {
-                alert("❌ Error: " + error.message);
+                alert("Error: " + error.message);
             }
         }
 
         async function guardarConfigCategorias() {
             try {
                 await guardarEnConfigMacalia("fotos_categorias", FOTOS_CATEGORIAS_ADMIN);
-                alert("🎉 ¡Fotos de categorías actualizadas en la tienda!");
+                alert("¡Fotos de categorías actualizadas en la tienda!");
             } catch (error) {
-                alert("❌ Error: " + error.message);
+                alert("Error: " + error.message);
             }
         }
 
@@ -1196,7 +1193,7 @@ revisarSesionActiva();
                                     <p class="font-bold text-stone-800">${escaparHTML(p.cliente_nombre)}</p>
                                     <span class="font-bold text-[#C87D87] shrink-0">$${Number(p.total).toLocaleString("es-CO")}</span>
                                 </div>
-                                <p class="text-[11px] text-stone-500">📍 ${escaparHTML(p.cliente_direccion)}</p>
+                                <p class="text-[11px] text-stone-500"><i data-lucide="map-pin" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-[#C87D87] align-text-bottom"></i>${escaparHTML(p.cliente_direccion)}</p>
                                 <p class="text-[11px] text-stone-600 bg-rose-50/50 p-1.5 rounded-lg">${resumenProds}</p>
                                 <div class="flex justify-between items-center pt-1">
                                     <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${p.estado === 'Despachado' ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
@@ -1205,10 +1202,10 @@ revisarSesionActiva();
                                                                         ${p.estado !== 'Despachado' && p.estado !== 'Cancelado' ? `
                                         <div class="flex gap-1.5">
                                             <button type="button" onclick="cancelarPedidoYDevolverStock(${p.id})" class="text-[10px] bg-rose-50 hover:bg-red-500 text-red-600 hover:text-white font-bold px-2 py-1 rounded-lg transition">
-                                                ✕ Cancelar
+                                                <i data-lucide="x" stroke-width="1.6" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Cancelar
                                             </button>
                                             <button type="button" onclick="marcarPedidoDespachado(${p.id})" class="text-[10px] bg-stone-800 hover:bg-emerald-600 text-white font-bold px-2.5 py-1 rounded-lg transition">
-                                                ✓ Despachar
+                                                <i data-lucide="check" stroke-width="1.6" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Despachar
                                             </button>
                                         </div>
                                     ` : ''}
@@ -1250,7 +1247,7 @@ revisarSesionActiva();
                                 ${c.estado === 'Abandonado' ? `
                                     <div class="pt-1 flex justify-end">
                                         <a href="mailto:${c.correo}?subject=${asunto}&body=${cuerpo}" class="bg-[#C87D87] hover:bg-[#b56a74] text-white text-[10px] font-bold px-3 py-1 rounded-lg transition">
-                                            ✉️ Enviar Recordatorio por Correo
+                                            <i data-lucide="mail" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i> Enviar Recordatorio por Correo
                                         </a>
                                     </div>
                                 ` : ''}
@@ -1268,7 +1265,7 @@ revisarSesionActiva();
         }
 
         async function cancelarPedidoYDevolverStock(idPedido) {
-            if (!(await confirmarMacalia("⚠️ ¿Cancelar este pedido y devolver sus productos al inventario disponible?"))) return;
+            if (!(await confirmarMacalia("¿Cancelar este pedido y devolver sus productos al inventario disponible?"))) return;
             const { data: pedido } = await sb.from("pedidos_web").select("*").eq("id", idPedido).single();
             if (!pedido || pedido.estado === "Cancelado") return;
 
@@ -1297,8 +1294,6 @@ revisarSesionActiva();
             cargarPedidosYCarritosAdmin();
             cargarProductosAdmin();
         }
-
-
 
         function exportarCorreosExcel() {
             if (LISTA_CARRITOS_ADMIN.length === 0) return alert("Aún no hay correos registrados.");
@@ -1331,7 +1326,7 @@ revisarSesionActiva();
                     modal.className = "fixed inset-0 bg-black/50 backdrop-blur-xs z-[9999] hidden items-center justify-center p-4";
                     modal.innerHTML = `
                         <div class="bg-white border border-[#eddedb] rounded-3xl max-w-sm w-full p-6 shadow-2xl text-center space-y-4">
-                            <div class="w-12 h-12 rounded-2xl bg-[#FDF6F7] text-[#C87D87] mx-auto flex items-center justify-center text-xl">✨</div>
+                            <div class="w-12 h-12 rounded-2xl bg-[#FDF6F7] text-[#C87D87] mx-auto flex items-center justify-center"><i data-lucide="sparkles" stroke-width="1.5" class="w-5 h-5"></i></div>
                             <h3 class="font-bold text-stone-800 text-base">Confirmar acción</h3>
                             <p id="modal-confirm-texto" class="text-xs text-stone-600 leading-relaxed"></p>
                             <div class="flex gap-2 pt-2">
@@ -1379,13 +1374,13 @@ async function cargarPerfilesMayoristasAdmin() {
             <div class="min-w-0">
                 <p class="font-bold text-stone-800 truncate">${escaparHTML(u.nombre || "Sin nombre")}</p>
                 <p class="text-[11px] text-stone-500 truncate">${escaparHTML(u.correo)}</p>
-                ${u.es_admin ? `<span class="text-[9px] font-bold text-stone-600">🛡️ Admin</span>` : ""}
+                ${u.es_admin ? '<span class="text-[9px] font-bold text-stone-600"><i data-lucide="shield-check" stroke-width="1.5" class="w-3 h-3 inline-block mr-0.5 align-text-bottom text-[#C87D87]"></i> Admin</span>' : ''}
             </div>
             <button type="button" onclick="alternarMayoristaAdmin('${u.id}', ${!u.es_mayorista})"
                 class="px-3 py-1.5 rounded-full text-[10px] font-bold shrink-0 transition ${u.es_mayorista
                     ? "bg-[#C87D87] text-white"
                     : "bg-stone-200 text-stone-600 hover:bg-rose-100"}">
-                ${u.es_mayorista ? "👑 Mayorista ACTIVO" : "Cliente Normal"}
+                ${u.es_mayorista ? '<i data-lucide="crown" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Mayorista ACTIVO' : 'Cliente Normal'}
             </button>
         </div>
     `).join("");
@@ -1396,13 +1391,14 @@ async function alternarMayoristaAdmin(userId, nuevoEstado) {
         .from("perfiles_macalia")
         .update({ es_mayorista: nuevoEstado })
         .eq("id", userId);
-    if (error) return alert("❌ Error: " + error.message);
-    alert(nuevoEstado ? "👑 Tarifa mayorista activada para esta clienta." : "Tarifa mayorista desactivada.");
+    if (error) return alert("Error: " + error.message);
+    alert(nuevoEstado ? "Tarifa mayorista activada para esta clienta." : "Tarifa mayorista desactivada.");
     cargarPerfilesMayoristasAdmin();
 }
 
-
-
+if (window.lucide) lucide.createIcons();
+setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 600);
+setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 1800);
 
     </script>
 </body>
