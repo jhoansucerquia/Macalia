@@ -973,11 +973,11 @@
                 <!-- Botones de preguntas rápidas -->
                 <div class="flex flex-wrap gap-1.5 pt-1">
                     <button onclick="enviarDudaRapida('Hola, quiero saber sobre envíos y tiempos de entrega')"
-                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="truck" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Envíos</button>
+                       class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="truck" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Envíos</button>
                     <button onclick="enviarDudaRapida('Hola, quisiera información para ser mayorista')"
-                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">Mayoristas</button>
+                       class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="crown" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Mayoristas</button>
                     <button onclick="enviarDudaRapida('Hola, necesito asesoría con tonos de maquillaje')"
-                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="sparkles" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Asesoría</button>
+                       class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="sparkles" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Asesoría</button>
                 </div>
             </div>
 
@@ -1936,6 +1936,7 @@ async function cerrarSesionMayorista() {
         function alternarChatMacalia() {
             const caja = document.getElementById("caja-chat-macalia");
             caja.classList.toggle("hidden");
+            if (window.lucide) lucide.createIcons();
         }
 
         function agregarBurbujaChat(texto, esCliente, guardar = true) {
@@ -2000,7 +2001,7 @@ async function cerrarSesionMayorista() {
             if (p.includes("pago") || p.includes("wompi") || p.includes("nequi")) {
                 return " Aceptamos Nequi, Bancolombia, PSE y tarjetas de crédito/débito mediante Wompi, además de pago contra entrega en ciudades principales.";
             }
-            return " ¡Gracias por escribirnos! Una asesora de <b>Macalia Makeup Store</b> recibió tu mensaje y te responderá en breve por este mismo chat.";
+            return "¡Gracias por escribirnos! Una asesora de <b>Macalia Makeup Store</b> recibió tu mensaje y te responderá en breve por este mismo chat.";
         }
 
         const URL_BOT_MACALIA = "https://bot-macalia-store.onrender.com/chat-macalia";
