@@ -263,7 +263,7 @@
                             <div class="flex items-center gap-3">
                                 <button type="button" onclick="limpiarHistorialPedidosWeb()"
                                     class="text-[11px] text-stone-400 hover:text-red-500 font-bold transition">
-                                    <i data-lucide="trash-2" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Limpiar historial
+                                    <i data-lucide="trash-2" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Limpiar historial</button>
                                 <button type="button" onclick="cargarPedidosYCarritosAdmin()"
                                     class="text-[11px] text-[#C87D87] font-bold hover:underline"><i data-lucide="refresh-cw" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Actualizar</button>
                             </div>
@@ -290,8 +290,7 @@
             <h2 class="font-editorial text-2xl text-stone-800">Clientes & Tarifas Mayoristas <i data-lucide="crown" stroke-width="1.5" class="w-5 h-5 inline-block ml-1 text-[#C87D87] align-text-bottom"></i></h2>
             <p class="text-xs text-stone-400">Activa o desactiva el acceso a precios mayoristas para tus clientas registradas</p>
         </div>
-        class="text-xs text-[#C87D87] font-bold hover:underline"><i data-lucide="refresh-cw" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Actualizar lista</button>
-    </div>
+        <button type="button" onclick="cargarPerfilesMayoristasAdmin()" class="text-xs text-[#C87D87] font-bold hover:underline"><i data-lucide="refresh-cw" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Actualizar lista</button>
     <div id="admin-lista-mayoristas" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 text-xs"></div>
 </section>
 
@@ -1313,7 +1312,7 @@ revisarSesionActiva();
         async function limpiarHistorialPedidosWeb() {
             if (!(await confirmarMacalia("¿Eliminar de la lista todos los pedidos Despachados y Cancelados?"))) return;
             const { error } = await sb.from("pedidos_web").delete().in("estado", ["Despachado", "Cancelado"]);
-            if (error) return alert("❌ Error al limpiar: " + error.message);
+            if (error) return alert("Error al limpiar: " + error.message);
             cargarPedidosYCarritosAdmin();
         }
 
@@ -1344,6 +1343,7 @@ revisarSesionActiva();
 
                 modal.classList.remove("hidden");
                 modal.classList.add("flex");
+                if (window.lucide) lucide.createIcons();
 
                 const cerrar = (resultado) => {
                     modal.classList.add("hidden");
