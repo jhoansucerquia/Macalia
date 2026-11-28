@@ -7,8 +7,9 @@
     <title>MACALÍA | Belleza y Más</title>
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <!-- Importar las 3 tipografías elegantes desde Google Fonts -->
+    <!-- Importo las 3 tipografías elegantes desde Google Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Great+Vibes">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Playfair+Display">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Plus+Jakarta+Sans">
@@ -30,6 +31,13 @@
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        svg.lucide {
+            width: 1rem;
+            height: 1rem;
+            display: inline-block;
+            vertical-align: -0.15em;
+            flex-shrink: 0;
         }
     </style>
 
@@ -82,7 +90,7 @@
 
                         <div id="menu-categorias-dinamicas" class="py-2">
                             <a href="#catalogo" onclick="filtrarPorCategoria('Todos')"
-                                class="block px-4 py-2.5 text-xs font-semibold text-[#C87D87] hover:bg-rose-50 transition">✨
+                                class="block px-4 py-2.5 text-xs font-semibold text-[#C87D87] hover:bg-rose-50 transition"><i data-lucide="sparkles" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i>
                                 Ver Todo el Catálogo</a>
                         </div>
 
@@ -151,7 +159,7 @@
 
     <div id="menu-movil"
         class="hidden lg:hidden sticky top-16 z-40 bg-white border-t border-rose-100 px-6 py-4 space-y-3 text-sm font-medium text-stone-700 shadow-lg">
-        <input type="text" oninput="buscarProductoDesdeMovil(this.value)" placeholder="🔍 Buscar belleza..."
+        <input type="text" oninput="buscarProductoDesdeMovil(this.value)" placeholder="Buscar producto..."
             class="w-full px-4 py-2 bg-[#FDFBF9] border border-rose-200 rounded-full text-xs">
         <a href="#" onclick="document.getElementById('menu-movil').classList.add('hidden')"
             class="block py-1.5 text-[#C87D87] font-semibold">Inicio</a>
@@ -186,8 +194,7 @@
                             • Esencia</span>
                         <h1 class="font-editorial text-4xl md:text-5xl text-stone-800 mt-3 leading-tight">
                             Tu Belleza es <span
-                                class="font-cursiva text-5xl md:text-6xl text-[#C87D87] block mt-1">Nuestra Prioridad
-                                ♡</span>
+                                class="font-cursiva text-5xl md:text-6xl text-[#C87D87] block mt-1">Nuestra Prioridad <i data-lucide="sparkles" stroke-width="1.5" class="w-6 h-6 inline-block align-baseline"></i></span>
                         </h1>
                         <p class="text-sm text-stone-700 mt-3 leading-relaxed">
                             Descubre productos exclusivos, maquillaje y skincare diseñados para resaltar tu esencia
@@ -195,15 +202,12 @@
                         </p>
                         <a href="#catalogo"
                             class="inline-block mt-6 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-3.5 rounded-full shadow-md transition">
-                            Explorar Catálogo →
+                            Explorar Catálogo <i data-lucide="arrow-right" stroke-width="1.6" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
                         </a>
                     </div>
                 </div>
 
             </div>
-
-
-
 
             <!-- DIAPOSITIVA 2 (Nueva Colección / Tonos) -->
             <div
@@ -213,8 +217,7 @@
                     <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Nueva Colección
                         2026</span>
                     <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
-                        Brillo y Color <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Para
-                            Tus Labios ✨</span>
+                        Brillo y Color <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">Para Tus Labios <i data-lucide="sparkles" stroke-width="1.5" class="w-6 h-6 inline-block align-baseline"></i></span>
                     </h2>
                     <p class="text-sm text-stone-600 mt-4 leading-relaxed">
                         Prueba nuestros nuevos delineadores y gloss hidratantes con tonos pensados para cada tipo de
@@ -222,12 +225,12 @@
                     </p>
                     <a href="#catalogo"
                         class="inline-block mt-7 bg-stone-900 hover:bg-stone-800 text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
-                        Ver Tonos Nuevos →
+                        Ver Tonos Nuevos <i data-lucide="arrow-right" stroke-width="1.6" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
                     </a>
                 </div>
                 <div
                     class="relative w-64 h-64 md:w-80 md:h-80 rounded-3xl bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
-                    <span class="text-7xl mb-3">💄</span>
+                    <span class="mb-3 text-[#C87D87]"><i data-lucide="sparkles" stroke-width="1.2" class="w-12 h-12"></i></span>
                     <span class="font-editorial text-xl text-stone-800 font-bold">Rose Glow Edition</span>
                     <span class="text-xs text-[#C87D87] mt-1">Hidratación 12 Horas</span>
                 </div>
@@ -241,8 +244,7 @@
                     <span class="text-[11px] uppercase tracking-[0.3em] text-[#C87D87] font-bold">Beneficio
                         Exclusivo</span>
                     <h2 class="font-editorial text-4xl md:text-6xl text-stone-800 mt-3 leading-tight">
-                        Envíos Gratis <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">A Toda
-                            Colombia 🚚</span>
+                        Envíos Gratis <span class="font-cursiva text-5xl md:text-7xl text-[#C87D87] block mt-1">A Toda Colombia <i data-lucide="truck" stroke-width="1.5" class="w-7 h-7 inline-block ml-1 align-baseline"></i></span>
                     </h2>
                     <p class="text-sm text-stone-600 mt-4 leading-relaxed">
                         Por compras superiores a $160.000 recibe tu pedido en la puerta de tu casa con empaque de
@@ -250,12 +252,12 @@
                     </p>
                     <a href="#catalogo"
                         class="inline-block mt-7 bg-[#C87D87] hover:bg-[#b56a74] text-white text-xs font-bold uppercase tracking-widest px-8 py-4 rounded-full shadow-md transition">
-                        Comprar Ahora →
+                        Comprar Ahora <i data-lucide="arrow-right" stroke-width="1.6" class="w-4 h-4 inline-block ml-1 align-text-bottom"></i>
                     </a>
                 </div>
                 <div
                     class="relative w-64 h-64 md:w-80 md:h-80 rounded-full bg-white/80 p-6 shadow-xl border border-white flex flex-col items-center justify-center text-center">
-                    <span class="text-7xl mb-3">🎁</span>
+                    <span class="mb-3 text-[#C87D87]"><i data-lucide="gift" stroke-width="1.2" class="w-12 h-12"></i></span>
                     <span class="font-editorial text-xl text-stone-800 font-bold">Empaque Boutique</span>
                     <span class="text-xs text-[#C87D87] mt-1">Medellín • Bello • Nacional</span>
                 </div>
@@ -305,13 +307,11 @@
                 <!-- Botones para cambiar entre Vista Cuadrícula y Vista Tabla -->
                 <div class="flex bg-rose-50 p-1 rounded-full border border-rose-200/70">
                     <button onclick="cambiarVistaCatalogo('tarjetas')" id="btn-vista-tarjetas"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition">▦
-                        Tarjetas</button>
+                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold bg-[#C87D87] text-white transition"><i data-lucide="layout-grid" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Tarjetas</button>
                     <button onclick="cambiarVistaCatalogo('tabla')" id="btn-vista-tabla"
-                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition">☰
-                        Tabla</button>
+                        class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-stone-600 hover:text-[#C87D87] transition"><i data-lucide="list" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Tabla</button>
                 </div>
-                <input type="text" id="buscador-tienda" oninput="buscarProducto()" placeholder="🔍 Buscar producto..."
+                <input type="text" id="buscador-tienda" oninput="buscarProducto()" placeholder="Buscar producto..."
                     class="w-full sm:w-60 px-4 py-2 bg-white border border-rose-200 rounded-full text-xs focus:outline-none focus:border-[#C87D87]">
             </div>
         </div>
@@ -350,9 +350,9 @@
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-3">Atención al Cliente</h4>
-                <p class="text-xs text-stone-600">📍 Envíos a toda Colombia</p>
-                <p class="text-xs text-stone-600">📍 Domicilios en todo el Valle de Aburrá</p>
-                <p class="text-xs text-stone-600 mt-1">⏰ Lunes a Sábado: 9:00 AM - 7:00 PM</p>
+                <p class="text-xs text-stone-600"><i data-lucide="map-pin" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i>Envíos a toda Colombia</p>
+                <p class="text-xs text-stone-600"><i data-lucide="truck" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i>Domicilios en todo el Valle de Aburrá</p>
+                <p class="text-xs text-stone-600 mt-1"><i data-lucide="clock" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 text-[#C87D87] align-text-bottom"></i>Lunes a Sábado: 9:00 AM - 7:00 PM</p>
             </div>
             <div>
                 <h4 class="text-xs font-bold uppercase tracking-widest text-[#C87D87] mb-4">Síguenos y Contáctanos</h4>
@@ -404,7 +404,7 @@
                         class="hover:text-[#C87D87] underline underline-offset-2 transition">Uso de Cookies</button>
                 </div>
                 <div class="flex items-center gap-2 bg-white/80 px-3 py-1.5 rounded-full border border-[#E3D1CC]">
-                    <span>🔒 Pagos 100% seguros con</span>
+                    <span><i data-lucide="shield-check" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-emerald-600 align-text-bottom"></i>Pagos 100% seguros con</span>
                     <strong class="text-stone-800">Wompi (Bancolombia)</strong>
                 </div>
             </div>
@@ -420,7 +420,7 @@
         <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between p-6">
             <!-- Encabezado de la bolsa -->
             <div class="flex justify-between items-center border-b border-rose-100 pb-4">
-                <h3 class="font-editorial text-2xl text-stone-800">Tu Bolsa Macalia ♡</h3>
+                <h3 class="font-editorial text-2xl text-stone-800">Tu Bolsa Macalia <i data-lucide="shopping-bag" stroke-width="1.5" class="w-5 h-5 inline-block ml-1 text-[#C87D87] align-text-bottom"></i></h3>
                 <button onclick="cerrarCarrito()"
                     class="text-stone-400 hover:text-stone-800 text-2xl leading-none">&times;</button>
             </div>
@@ -603,7 +603,7 @@
                                 </div>
                                 <button type="button" onclick="copiarLlavePago('3106051359')"
                                     class="bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold text-[11px] px-3.5 py-2 rounded-xl shadow-xs transition">
-                                    📋 Copiar Llave
+                                    <i data-lucide="copy" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Copiar Llave
                                 </button>
                             </div>
                             <p class="text-[10px] text-stone-500 leading-relaxed">
@@ -703,14 +703,14 @@
 
                         <button id="btn-pagar-wompi" type="button" onclick="procesarCheckoutMacalia('Wompi')"
                             class="hidden w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-4 rounded-full text-xs uppercase tracking-widest shadow-lg transition flex items-center justify-center gap-2">
-                            🔒 Pagar de Forma Segura con Wompi
+                            <i data-lucide="lock" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i> Pagar de Forma Segura con Wompi
                         </button>
 
 
 
                         <button id="btn-pagar-whatsapp" type="button" onclick="procesarCheckoutMacalia('WhatsApp')"
                             class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-4 rounded-full text-xs uppercase tracking-wider shadow-lg transition">
-                            📲 Ya transferí — Enviar Pedido y Comprobante
+                            <i data-lucide="send" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i> Ya transferí - Enviar Pedido y Comprobante
                         </button>
                     </div>
                 </div>
@@ -748,7 +748,7 @@
 
                     <div
                         class="mt-6 bg-white/80 p-3.5 rounded-2xl border border-rose-100 text-[11px] text-stone-500 text-center">
-                        🔒 Compra protegida • Envíos seguros a toda Colombia desde Antioquia.
+                        <i data-lucide="shield-check" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-emerald-600 align-text-bottom"></i> Compra protegida • Envíos seguros a toda Colombia.
                     </div>
                 </div>
 
@@ -777,7 +777,7 @@
 
                 <!-- Tira de miniaturas para cambiar de foto -->
                 <div id="detalle-miniaturas" class="flex items-center gap-2.5 mt-4 overflow-x-auto max-w-full py-1">
-                    <!-- Aquí JavaScript pondrá las miniaturas si hay varias fotos -->
+                    <!-- Aquí se ponen las miniaturas si hay varias fotos -->
                 </div>
             </div>
 
@@ -795,7 +795,7 @@
                         <span id="detalle-precio-final" class="text-2xl font-bold text-[#C87D87]">$0</span>
                         <span id="detalle-precio-tachado" class="hidden text-xs line-through text-stone-400">$0</span>
                         <span id="detalle-badge-mayorista"
-                            class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full">👑
+                            class="hidden text-[10px] bg-rose-100 text-[#C87D87] font-bold px-2.5 py-0.5 rounded-full"><i data-lucide="crown" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i>
                             Tarifa Mayorista</span>
                     </div>
 
@@ -834,7 +834,7 @@
 
                     <button onclick="agregarDesdeDetalle()"
                         class="w-full bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full shadow-md transition text-xs tracking-wide">
-                        🛍️ Agregar a Mi Bolsa
+                        <i data-lucide="shopping-bag" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Agregar a Mi Bolsa
                     </button>
                 </div>
             </div>
@@ -851,7 +851,7 @@
                 class="absolute top-4 right-5 text-stone-400 hover:text-stone-800 text-2xl">&times;</button>
 
             <div class="text-center mb-5">
-                <span class="text-3xl">👑</span>
+                <div class="w-12 h-12 rounded-2xl bg-[#FDF6F7] text-[#C87D87] mx-auto flex items-center justify-center mb-2"><i data-lucide="crown" stroke-width="1.5" class="w-5 h-5"></i></div>
                 <h3 class="font-editorial text-2xl text-stone-800 mt-1">Mi cuenta</h3>
                 <p class="text-xs text-stone-500 mt-1">Accede  y disfruta de nuestra tienda</p>
             </div>
@@ -905,7 +905,7 @@
 
                 <button type="submit"
                     class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-3 rounded-full text-xs shadow transition">
-                    Crear Cuenta ✨
+                    Crear Cuenta 
                 </button>
             </form>
             </div>
@@ -913,7 +913,7 @@
             <!-- VISTA CUANDO YA INICIÓ SESIÓN MAYORISTA -->
             <div id="vista-mayorista-activa" class="hidden text-center space-y-4 py-2">
                 <div class="bg-[#FDF2F4] border border-[#C87D87]/40 rounded-2xl p-4 space-y-1">
-                    <p class="text-[11px] font-bold uppercase tracking-wider text-[#C87D87]">Cuenta Activa ✓
+                    <p class="text-[11px] font-bold uppercase tracking-wider text-[#C87D87]"><i data-lucide="check-circle-2" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 align-text-bottom"></i> Cuenta Activa</p>
                     </p>
                     <p id="nombre-mayorista-activo" class="font-editorial text-xl text-stone-800 font-bold">Mayorista
                     </p>
@@ -967,19 +967,17 @@
             <div id="historial-chat-macalia" class="p-4 bg-[#FDFBF9] space-y-3 max-h-64 overflow-y-auto text-xs">
                 <!-- Mensaje automático de bienvenida -->
                 <div class="bg-[#eddedb]/70 text-stone-800 p-3 rounded-2xl rounded-tl-none shadow-sm leading-relaxed">
-                    ¡Hola! ✨ Bienvenida a <b>Macalia Makeup Store</b>. ¿En qué podemos asesorarte hoy?
+                    ¡Hola! Bienvenida a <b>Macalia Makeup Store</b>. ¿En qué podemos asesorarte hoy?
                 </div>
 
                 <!-- Botones de preguntas rápidas -->
                 <div class="flex flex-wrap gap-1.5 pt-1">
                     <button onclick="enviarDudaRapida('Hola, quiero saber sobre envíos y tiempos de entrega')"
-                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">🚚
-                        Envíos</button>
+                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="truck" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Envíos</button>
                     <button onclick="enviarDudaRapida('Hola, quisiera información para ser mayorista')"
                         class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">Mayoristas</button>
                     <button onclick="enviarDudaRapida('Hola, necesito asesoría con tonos de maquillaje')"
-                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition">💄
-                        Asesoría</button>
+                        class="text-[11px] bg-white hover:bg-rose-50 text-[#C87D87] border border-rose-200 px-3 py-1.5 rounded-full transition"><i data-lucide="sparkles" stroke-width="1.5" class="w-3 h-3 inline-block mr-1 align-text-bottom"></i> Asesoría</button>
                 </div>
             </div>
 
@@ -1076,7 +1074,7 @@
                 stock: p.stock,
                 descripcion: p.descripcion || "",
                 fotos: (p.fotos && p.fotos.length > 0) ? p.fotos : [],
-                emoji: (p.fotos && p.fotos.length > 0) ? p.fotos.at(0) : "✨",
+                emoji: (p.fotos && p.fotos.length > 0) ? p.fotos.at(0) : "",
                 tonos: p.tonos || []
             }));
 
@@ -1230,8 +1228,6 @@
         }
 
 
-
-
         let bolsa = [];
 
         let VISTA_ACTUAL = 'tarjetas';
@@ -1282,8 +1278,6 @@
                 }
             });
         }, 3500);
-
-
 
         function mostrarProductos(lista) {
             LISTA_FILTRADA = lista;
@@ -1353,7 +1347,7 @@
 
         function copiarLlavePago(llave) {
             navigator.clipboard.writeText(llave);
-            alert("✅ Llave (" + llave + ") copiada. Pégala en tu app bancaria o Nequi para transferir.");
+            alert("Llave (" + llave + ") copiada. Pégala en tu app bancaria o Nequi para transferir.");
         }
 
         function seleccionarMetodoVisual(metodo, botonClic) {
@@ -1384,8 +1378,8 @@
                 btnWompi.classList.add("hidden");
                 btnWa.classList.remove("hidden");
                 btnWa.innerHTML = metodo === "llave_directa"
-                    ? "📲 Ya transferí — Enviar Pedido y Comprobante"
-                    : "Finalizar Pedido por WhatsApp 💬";
+                    ? '<i data-lucide="send" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i> Ya transferí - Enviar Pedido y Comprobante'
+                    : '<i data-lucide="message-circle" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1.5 align-text-bottom"></i> Finalizar Pedido por WhatsApp';
             }
         }
 
@@ -1405,7 +1399,7 @@
         }
 
         function abrirModalCheckout() {
-            if (bolsa.length === 0) return alert("⚠️ Tu bolsa está vacía. Agrega al menos un producto.");
+            if (bolsa.length === 0) return alert("Tu bolsa está vacía. Agrega al menos un producto.");
             document.getElementById("modal-bolsa").classList.add("hidden");
 
 
@@ -1415,7 +1409,7 @@
 
             document.getElementById("chk-subtotal").innerText = "$" + subtotal.toLocaleString("es-CO");
             document.getElementById("chk-envio").innerHTML = costoEnvio === 0
-                ? `<span class="text-emerald-600 font-bold">GRATIS 🎉</span>`
+                ? `<span class="text-emerald-600 font-bold">GRATIS </span>`
                 : "$" + costoEnvio.toLocaleString("es-CO");
             document.getElementById("chk-total-final").innerText = "$" + totalFinal.toLocaleString("es-CO");
 
@@ -1457,7 +1451,7 @@ async function procesarCheckoutMacalia(canal) {
     if (btnAccion) {
         if (btnAccion.disabled) return;
         btnAccion.disabled = true;
-        btnAccion.innerHTML = canal === "Wompi" ? "⏳ Reservando y conectando con Wompi..." : "⏳ Registrando pedido...";
+        btnAccion.innerHTML = canal === "wompi" ? 'Reservando y conectando con Wompi...' : 'Registrando pedido...';
     }
 
     const nombre = document.getElementById("chk-nombre").value.trim();
@@ -1471,7 +1465,7 @@ async function procesarCheckoutMacalia(canal) {
 
     if (!nombre || !apellidos || !cedula || !telefono || !direccion || !ciudad) {
         liberarBoton();
-        return alert("⚠️ Por favor completa todos los campos obligatorios (*) para el envío.");
+        return alert(" Por favor completa todos los campos obligatorios (*) para el envío.");
     }
 
     try {
@@ -1495,7 +1489,7 @@ async function procesarCheckoutMacalia(canal) {
         const data = await respuesta.json();
         if (!respuesta.ok || !data.ok) {
             liberarBoton();
-            return alert(`⚠️ ${data.error || "No se pudo procesar tu pedido."}`);
+            return alert(` ${data.error || "No se pudo procesar tu pedido."}`);
         }
 
         localStorage.removeItem("macalia_bolsa_v1");
@@ -1556,10 +1550,6 @@ async function procesarCheckoutMacalia(canal) {
     }
 }
 
-
-
-
-
         function filtrarCategoria(cat) {
             const seccionCatalogo = document.getElementById("catalogo");
             if (seccionCatalogo) {
@@ -1578,7 +1568,7 @@ async function procesarCheckoutMacalia(canal) {
             if (filtrados.length === 0) {
                 document.getElementById("grid-productos").innerHTML = `
                     <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-rose-100">
-                        <p class="font-editorial text-xl text-stone-700">Próximamente en ${cat} ✨</p>
+                        <p class="font-editorial text-xl text-stone-700">Próximamente en ${cat} <i data-lucide="sparkles" stroke-width="1.5" class="w-4 h-4 inline-block ml-1 text-[#C87D87] align-text-bottom"></i></p>
                         <p class="text-xs text-stone-400 mt-1">Aún no hay productos cargados en esta categoría.</p>
                         <button onclick="filtrarCategoria('Todos')" class="mt-4 bg-[#C87D87] text-white text-xs font-bold px-5 py-2 rounded-full">Ver Todo el Catálogo</button>
                     </div>`;
@@ -1688,7 +1678,7 @@ async function procesarCheckoutMacalia(canal) {
             });
 
             if (bolsa.length === 0) {
-                lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Tu bolsa está vacía ✨</p>`;
+                lista.innerHTML = `<p class="text-xs text-stone-400 text-center py-10">Tu bolsa está vacía </p>`;
             }
 
             totalEl.innerText = `$${total.toLocaleString()}`;
@@ -1702,8 +1692,8 @@ async function procesarCheckoutMacalia(canal) {
             if (txtEnvio && barraEnvio) {
                 barraEnvio.style.width = porcentaje + "%";
                 txtEnvio.innerHTML = faltante === 0
-                    ? "🎉 ¡Felicidades! Tienes <strong>ENVÍO GRATIS</strong> en este pedido."
-                    : `¡Agrega <span class="font-bold text-[#C87D87]">$${faltante.toLocaleString("es-CO")}</span> más y consigue envío gratuito!`;
+                    ? '<i data-lucide="sparkles" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-[#C87D87] align-text-bottom"></i> ¡Felicidades! Tienes <strong>ENVÍO GRATIS</strong> en este pedido.'
+                    : '<i data-lucide="truck" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-[#C87D87] align-text-bottom"></i> Agrega <span class="font-bold text-[#C87D87]">$' + faltante.toLocaleString("es-CO") + '</span> más y consigue envío gratuito!';
             }
 
             localStorage.setItem("macalia_bolsa_v1", JSON.stringify(bolsa));
@@ -1858,7 +1848,7 @@ async function verificarSesionMayoristaReal() {
 
     const etiqueta = document.getElementById("etiqueta-mayorista");
     if (etiqueta) {
-        etiqueta.textContent = ES_MAYORISTA ? `👑 ${nombre}` : `♡ ${nombre}`;
+        etiqueta.textContent = ES_MAYORISTA ? `${nombre}` : `♡ ${nombre}`;
         etiqueta.classList.add("text-[#C87D87]", "font-bold");
     }
 
@@ -1878,7 +1868,7 @@ async function registrarMayorista() {
     const clave = document.getElementById("reg-may-clave").value;
 
     if (!nombre || !contacto || clave.length < 6) {
-        return alert("⚠️ Ingresa tu nombre, un correo válido y una contraseña de mínimo 6 caracteres.");
+        return alert("Ingresa tu nombre, un correo válido y una contraseña de mínimo 6 caracteres.");
     }
     const emailAuth = contacto.includes("@") ? contacto : `${contacto.replace(/\D/g, "")}@clientes.macalia.co`;
 
@@ -1889,12 +1879,12 @@ async function registrarMayorista() {
     });
 
     if (error) {
-        return alert(`⚠️ ${error.message.includes("already registered") ? "Esta cuenta ya existe. Selecciona 'Ingresar'." : error.message}`);
+        return alert(` ${error.message.includes("already registered") ? "Esta cuenta ya existe. Selecciona 'Ingresar'." : error.message}`);
     }
 
     cerrarModalMayorista();
     await verificarSesionMayoristaReal();
-    alert(`✨ ¡Cuenta creada, ${nombre}! Si eres mayorista, escríbenos por WhatsApp para activar tu tarifa especial.`);
+    alert(`¡Cuenta creada, ${nombre}! Si eres mayorista, escríbenos por WhatsApp para activar tu tarifa especial.`);
 }
 
 async function iniciarSesionMayorista() {
@@ -1909,12 +1899,12 @@ async function iniciarSesionMayorista() {
     });
 
     if (error || !data?.user) {
-        return alert("❌ Usuario o contraseña incorrectos.");
+        return alert("Usuario o contraseña incorrectos.");
     }
 
     cerrarModalMayorista();
     await verificarSesionMayoristaReal();
-    alert(ES_MAYORISTA ? "👑 ¡Bienvenida! Tus precios mayoristas están activos." : "✨ ¡Bienvenida de nuevo a Macalia!");
+    alert(ES_MAYORISTA ? " ¡Bienvenida! Tus precios mayoristas están activos." : " ¡Bienvenida de nuevo a Macalia!");
 }
 
 async function cerrarSesionMayorista() {
@@ -1922,7 +1912,6 @@ async function cerrarSesionMayorista() {
     localStorage.removeItem("macalia_mayorista");
     location.reload();
 }
-
 
 
         function activarBeneficioMayorista(nombre) {
@@ -1937,7 +1926,7 @@ async function cerrarSesionMayorista() {
             cerrarModalMayorista();
             const etiqueta = document.getElementById("etiqueta-mayorista");
             if (etiqueta) {
-                etiqueta.innerText = `👑 ${nombre}`;
+                etiqueta.innerText = ` ${nombre}`;
                 etiqueta.classList.add("text-[#C87D87]", "font-bold");
             }
             mostrarProductos(productosMacalia);
@@ -1981,7 +1970,7 @@ async function cerrarSesionMayorista() {
                 historial.innerHTML = `
                     <div class="flex justify-start">
                         <div class="bg-[#eddedb]/80 text-stone-800 p-3 rounded-2xl rounded-tl-none text-xs max-w-[85%] leading-relaxed">
-                            ¡Hola! ✨ Bienvenida a <b>Macalia Makeup Store</b>. ¿En qué podemos asesorarte hoy?
+                            ¡Hola!  Bienvenida a <b>Macalia Makeup Store</b>. ¿En qué podemos asesorarte hoy?
                         </div>
                     </div>`;
             }
@@ -2000,18 +1989,18 @@ async function cerrarSesionMayorista() {
         function generarRespuestaMacalia(pregunta) {
             const p = pregunta.toLowerCase();
             if (p.includes("envio") || p.includes("envío") || p.includes("entrega")) {
-                return "🚚 Hacemos envíos a toda Colombia. En el Área Metropolitana (Medellín y Bello) llega en 24 horas, y a otras ciudades de 2 a 4 días hábiles. ¡Envío GRATIS por compras superiores a $160.000!";
+                return " Hacemos envíos a toda Colombia. En el Área Metropolitana (Medellín y Bello) llega en 24 horas, y a otras ciudades de 2 a 4 días hábiles. ¡Envío GRATIS por compras superiores a $160.000!";
             }
             if (p.includes("mayorista") || p.includes("por mayor")) {
-                return "👑 Para comprar al por mayor, toca el ícono de perfil arriba a la derecha (<b>Mayoristas</b>) y crea tu cuenta. Al ingresar, todos los precios de la tienda bajarán automáticamente.";
+                return " Para comprar al por mayor, toca el ícono de perfil arriba a la derecha (<b>Mayoristas</b>) y crea tu cuenta. Al ingresar, todos los precios de la tienda bajarán automáticamente.";
             }
             if (p.includes("tono") || p.includes("asesoria") || p.includes("asesoría") || p.includes("piel")) {
-                return "💄 ¡Con gusto! Cuéntanos qué tipo de piel tienes (seca, mixta o grasa) y qué producto buscas para recomendarte el tono ideal.";
+                return " ¡Con gusto! Cuéntanos qué tipo de piel tienes (seca, mixta o grasa) y qué producto buscas para recomendarte el tono ideal.";
             }
             if (p.includes("pago") || p.includes("wompi") || p.includes("nequi")) {
-                return "💳 Aceptamos Nequi, Bancolombia, PSE y tarjetas de crédito/débito mediante Wompi, además de pago contra entrega en ciudades principales.";
+                return " Aceptamos Nequi, Bancolombia, PSE y tarjetas de crédito/débito mediante Wompi, además de pago contra entrega en ciudades principales.";
             }
-            return "✨ ¡Gracias por escribirnos! Una asesora de <b>Macalia Makeup Store</b> recibió tu mensaje y te responderá en breve por este mismo chat.";
+            return " ¡Gracias por escribirnos! Una asesora de <b>Macalia Makeup Store</b> recibió tu mensaje y te responderá en breve por este mismo chat.";
         }
 
         const URL_BOT_MACALIA = "https://bot-macalia-store.onrender.com/chat-macalia";
@@ -2132,8 +2121,6 @@ async function cerrarSesionMayorista() {
         }
 
 
-
-
         let SLIDE_ACTUAL = 0;
 
         function irASlidePortada(indice) {
@@ -2174,11 +2161,11 @@ async function cerrarSesionMayorista() {
 
             if (stockDisponible <= 0) {
                 btnAgregar.disabled = true;
-                btnAgregar.innerText = "Tono Agotado 😔";
+                btnAgregar.innerText = "Tono Agotado";
                 btnAgregar.className = "w-full mt-5 bg-stone-300 text-stone-500 font-bold py-3.5 rounded-full text-xs cursor-not-allowed";
             } else {
                 btnAgregar.disabled = false;
-                btnAgregar.innerHTML = "🛍️ Agregar a Mi Bolsa";
+                btnAgregar.innerHTML = '<i data-lucide="shopping-bag" stroke-width="1.5" class="w-4 h-4 inline-block mr-1.5 align-text-bottom"></i> Agregar a Mi Bolsa';
                 btnAgregar.className = "w-full mt-5 bg-[#C87D87] hover:bg-[#b56a74] text-white font-bold py-3.5 rounded-full text-xs shadow-md transition";
             }
         }
@@ -2351,7 +2338,7 @@ async function cerrarSesionMayorista() {
             banner.className = "fixed bottom-4 left-4 right-4 md:left-6 md:right-auto md:max-w-md bg-white/95 backdrop-blur-md border border-[#E3D1CC] rounded-2xl p-4 shadow-xl z-[9990] flex flex-col gap-3";
             banner.innerHTML = `
                 <p class="text-[11px] text-stone-600 leading-relaxed">
-                    🍪 Usamos cookies esenciales para guardar tu bolsa de compras y brindarte una experiencia segura. Conoce nuestra <button type="button" onclick="abrirModalLegal('datos')" class="text-[#C87D87] font-semibold underline">Política de Privacidad</button>.
+                    <i data-lucide="shield-check" stroke-width="1.5" class="w-3.5 h-3.5 inline-block mr-1 text-[#C87D87] align-text-bottom"></i> Usamos cookies esenciales para guardar tu bolsa de compras y brindarte una experiencia segura. Conoce nuestra <button type="button" onclick="abrirModalLegal('datos')" class="text-[#C87D87] font-semibold underline">Política de Datos</button>.
                 </p>
                 <div class="flex justify-end gap-2">
                     <button type="button" onclick="abrirModalLegal('cookies')" class="px-3 py-1.5 rounded-xl border border-stone-200 text-[11px] text-stone-600 hover:bg-stone-50">Detalles</button>
@@ -2363,6 +2350,9 @@ async function cerrarSesionMayorista() {
                 banner.remove();
             };
         })();
+if (window.lucide) lucide.createIcons();
+setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 600);
+setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 1800);
 
 
     </script>
